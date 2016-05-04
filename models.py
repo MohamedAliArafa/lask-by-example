@@ -32,9 +32,12 @@ class Shop(db.Model):
     shop_cover_pic = db.Column(db.String(200))
     mobile = db.Column(db.String)
     description = db.Column(db.String(250))
+    short_description = db.Column(db.String(250))
     longitude = db.Column(db.String)
     latitude = db.Column(db.String)
     shop_address = db.Column(db.String(150))
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
@@ -51,7 +54,9 @@ class Shop(db.Model):
             'longitude': self.longitude,
             'latitude': self.latitude,
             'owner_name': self.owner_name,
-            'owner_profile_pic': self.shop_profile_pic
+            'owner_profile_pic': self.shop_profile_pic,
+            'created': self.created,
+            'updated': self.updated
         }
 
 
@@ -81,7 +86,7 @@ class SubCategory(db.Model):
 
     @property
     def serialize(self):
-        # Returns object data in easly serialized format
+        # Returns object data in easily serialized format
         return {
             'id': self.id,
             'name': self.name,
@@ -99,12 +104,15 @@ class Items(db.Model):
     description = db.Column(db.String(500))
     quantity = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String(50))
+    images = db.Column(JSON)
     price = db.Column(db.String(8))
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'))
-    shop = db.relationship(Shop, cascade="all, delete-orphan", single_parent=True)
+    shop = db.relationship(Shop)
     cat_id = db.Column(db.Integer, db.ForeignKey('sub_category.id'))
     SubCategory = db.relationship(SubCategory)
     is_main = db.Column(db.Boolean)
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
@@ -116,11 +124,14 @@ class Items(db.Model):
             'description': self.description,
             'price': self.price,
             'image': self.image,
+            'images': self.images,
             'shop_id': self.shop.id,
             'shop_name': self.shop.shop_name,
             'cat_id': self.SubCategory.category.id,
             'sub_cat_id': self.SubCategory.id,
-            'is_main': self.is_main
+            'is_main': self.is_main,
+            'created': self.created,
+            'updated': self.updated,
         }
 
 
@@ -136,6 +147,8 @@ class User(db.Model):
     DOB = db.Column(db.Date)
     profile_pic = db.Column(db.String)
     authenticated = db.Column(db.Boolean, default=False)
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     def get_id(self):
         return self.id
@@ -157,7 +170,7 @@ class User(db.Model):
 
     @property
     def serialize(self):
-        # Returns object data in easly serialized format
+        # Returns object data in easily serialized format
         return {
             'id': self.id,
             'name': self.name,
@@ -168,6 +181,8 @@ class User(db.Model):
             'mobile': self.mobile,
             'profile_pic': self.profile_pic,
             'authenticated': self.authenticated,
+            'created': self.created,
+            'updated': self.updated
         }
 
 
@@ -178,15 +193,50 @@ class ShoppingCart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     item = db.relationship(Items)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'), primary_key=True)
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
-        # Returns object data in easly serialized format
+        # Returns object data in easily serialized format
         return {
             'shop_id': self.item.shop.id,
             'shop_name': self.item.shop.shop_name,
             'item_id': self.item.id,
             'item_name': self.item.name,
             'item_desc': self.item.description,
-            'item_price': self.item.price
+            'item_price': self.item.price,
+            'created': self.created,
+            'updated': self.updated
+        }
+
+
+class Orders(db.Model):
+    __tablename__ = 'orders'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.relationship(User)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    item = db.relationship(Items)
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    quantity = db.Column(db.Integer)
+    shipping_address = db.Column(db.String)
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'shop_id': self.item.shop.id,
+            'shop_name': self.item.shop.shop_name,
+            'shop_address': self.item.shop.shop_address,
+            'item_id': self.item.id,
+            'item_name': self.item.name,
+            'item_desc': self.item.description,
+            'item_price': self.item.price,
+            'item_quantity': self.quantity,
+            'shipping_address': self.shipping_address,
+            'created': self.created,
+            'updated': self.updated
         }

@@ -14,6 +14,7 @@ db = SQLAlchemy(app)
 
 import models
 
+
 def allowed_file(file_name):
     return '.' in file_name and file_name.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
@@ -342,18 +343,18 @@ def edit_shop_item():
         return render_template('editMenuItem.html', shop=shop, item=item, categories=categories)
 
 
-@app.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
-# Task 3: Create route for deleteShopItem function here
-def delete_shop_item(shop_id, item_id):
-    shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
-    item = db.session.query(models.Items).filter_by(id=item_id, shop_id=shop_id).one()
-    if request.method == 'POST':
-        db.session.delete(item)
-        db.session.commit()
-        # flash("New Item DELETED!!")
-        return redirect(url_for('get_shop_items_json', shop_id=shop_id))
-    else:
-        return render_template('deleteMenuItem.html', shop=shop, item=item)
+# @app.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
+# # Task 3: Create route for deleteShopItem function here
+# def delete_shop_item(shop_id, item_id):
+#     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+#     item = db.session.query(models.Items).filter_by(id=item_id, shop_id=shop_id).one()
+#     if request.method == 'POST':
+#         db.session.delete(item)
+#         db.session.commit()
+#         # flash("New Item DELETED!!")
+#         return redirect(url_for('get_shop_items_json', shop_id=shop_id))
+#     else:
+#         return render_template('deleteMenuItem.html', shop=shop, item=item)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -537,9 +538,13 @@ def edit_shop_item_temp(shop_id, item_id):
         if request.form.get('cat_id'):
             print('category', request.form.get('cat_id'))
             item.cat_id = request.form['cat_id']
-        if request.files['image'] and allowed_file(request.files['image'].filename):
-            image_file = request.files['image']
+        if request.form['image']:
+            image_file = request.form['image']
             item.image = image_file
+
+        item.images = [{"id": 1, "url": "570269c0f2302.png"}, {"id": 2, "url": "570269c0f2302.png"},
+                       {"id": 3, "url": "570269c0f2302.png"}, {"id": 4, "url": "570269c0f2302.png"},
+                       {"id": 5, "url": "570269c0f2302.png"}, ]
         db.session.add(item)
         db.session.commit()
         flash("New Item Edited!!")
@@ -565,6 +570,8 @@ def delete_shop_item_temp(shop_id, item_id):
 @app.route("/export", methods=['GET'])
 def doexport():
     return excel.make_response_from_tables(db.session, [models.Shop, models.Items], "xls")
+
+
 # def hello():
 #     print(os.environ['APP_SETTINGS'])
 #     return "Hello World!"
