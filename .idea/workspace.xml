@@ -79,8 +79,8 @@
       <file leaf-file-name="6e9e297805ff_.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/migrations/versions/6e9e297805ff_.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.62886596">
-              <caret line="51" column="28" selection-start-line="35" selection-start-column="2" selection-end-line="51" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.58247423">
+              <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -586,8 +586,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/migrations/versions/6e9e297805ff_.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62886596">
-          <caret line="51" column="28" selection-start-line="35" selection-start-column="2" selection-end-line="51" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.58247423">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
           <folding />
         </state>
       </provider>
