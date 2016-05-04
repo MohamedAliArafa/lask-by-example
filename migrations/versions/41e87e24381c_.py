@@ -28,7 +28,7 @@ def upgrade():
     sa.Column('authenticated', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.drop_table('user')
+    # op.drop_table('user')
     op.drop_constraint(u'shopping_cart_user_id_fkey', 'shopping_cart', type_='foreignkey')
     op.create_foreign_key(None, 'shopping_cart', 'users', ['user_id'], ['id'])
     ### end Alembic commands ###
