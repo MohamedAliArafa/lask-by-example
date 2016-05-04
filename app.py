@@ -1,8 +1,8 @@
 import os
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
-# from flask.ext import excel
-# import pyexcel.ext.xls
+from flask.ext import excel
+import pyexcel.ext.xls
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -562,9 +562,9 @@ def delete_shop_item_temp(shop_id, item_id):
         return render_template('deleteMenuItem.html', shop=shop, item=item)
 
 
-# @app.route("/export", methods=['GET'])
-# def doexport():
-#     return excel.make_response_from_tables(db.session, [models.Shop, models.Items], "xls")
+@app.route("/export", methods=['GET'])
+def doexport():
+    return excel.make_response_from_tables(db.session, [models.Shop, models.Items], "xls")
 # def hello():
 #     print(os.environ['APP_SETTINGS'])
 #     return "Hello World!"
