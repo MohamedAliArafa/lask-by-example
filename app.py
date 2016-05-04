@@ -1,5 +1,4 @@
 import os
-import models
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 # from flask.ext import excel
@@ -13,6 +12,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 
+import models
 
 def allowed_file(file_name):
     return '.' in file_name and file_name.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
