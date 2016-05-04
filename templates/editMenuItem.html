@@ -1,0 +1,58 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+<h1>
+    {{ shop.shop_name }} | New Menu Item
+</h1>
+
+<form action="{{url_for('edit_shop_item', shop_id=shop.id, item_id=item.id)}}" method="post"  enctype=multipart/form-data>
+
+    <p>Name</p>
+    <input type="text" size="30" name="name" placeholder="{{item.name}}">
+
+    <p>Description</p>
+    <input type="text" size="30" name="description" placeholder="{{item.description}}">
+
+    <p>Price</p>
+    <input type="text" size="30" name="price" placeholder="{{item.price}}">
+
+    <p>Quantity</p>
+    <input type="text" size="30" name="quantity"  placeholder="{{item.quantity}}">
+
+    <p><input type="text" name="image" placeholder="{{item.image}}">
+
+    <p>Category</p>
+    <select name="cat_id">
+        <option value="" disabled="disabled" selected="selected">Please select a Category</option>
+        <option value="" disabled="disabled">Clothing</option>
+        <option value="3">Children</option>
+        <option value="1">Crocheting</option>
+        <option value="12">Knitting</option>
+        <option value="" disabled="disabled">Crafts</option>
+        <option value="2">Floral Craft</option>
+        <option value="8">Leathercraft</option>
+        <option value="9">Woodworking</option>
+        <option value="" disabled="disabled">Home</option>
+        <option value="4">Decor</option>
+        <option value="5">Lighting</option>
+        <option value="7">Kitchen</option>
+        <option value="" disabled="disabled">Accessory</option>
+        <option value="6">Rings</option>
+        <option value="10">Necklaces</option>
+        <option value="11">Earnings</option>
+        <option value="13">Bracelets</option>
+        <option value="" disabled="disabled">Artwork</option>
+        <option value="14">Drawing</option>
+        <option value="15">Glass Art</option>
+        <option value="16">Photography</option>
+    </select>
+    <input type="submit" value="Edit">
+    <a href="{{url_for('get_shop_items', shop_id=shop.id)}}">Cancel</a>
+</form>
+
+<iframe src="http://bubble.zeowls.com/upload.php"></iframe>
+
+</body>
+</html>

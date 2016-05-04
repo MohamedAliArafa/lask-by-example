@@ -1,0 +1,38 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+<h1>
+    Edit {{ shop.name }}
+</h1>
+
+<form action="{{url_for('edit_shop', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
+
+    <p>Name</p>
+    <input type="text" size="30" name="name" placeholder="{{ shop.name }}">
+
+    <p>Owner</p>
+    <input type="text" size="30" name="owner" placeholder="{{ shop.owner }}">
+
+    <p>Description</p>
+    <input type="text" size="30" name="description" placeholder="{{ shop.description }}">
+
+    <p><input type="text" name="profile_pic" placeholder="{{ shop.profile_pic }}">
+
+    <p>Category</p>
+    <select name="cat_id">
+        <option value="" disabled="disabled" selected="selected">Please select a Category</option>
+        <option value="1">Books Store</option>
+        <option value="2">Cloth Store</option>
+        <option value="3">Jewelery Store</option>
+        <option value="4">Home Store</option>
+    </select>
+    <input type="submit" value="Edit">
+    <a href="{{url_for('get_shop', shop_id=shop.id)}}">Cancel</a>
+</form>
+
+<iframe src="http://bubble.zeowls.com/upload.php"></iframe>
+
+</body>
+</html>
