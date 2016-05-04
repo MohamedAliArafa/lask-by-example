@@ -565,8 +565,6 @@ def delete_shop_item_temp(shop_id, item_id):
 @app.route("/export", methods=['GET'])
 def doexport():
     return excel.make_response_from_tables(db.session, [models.Shop, models.Items], "xls")
-
-
 # def hello():
 #     print(os.environ['APP_SETTINGS'])
 #     return "Hello World!"
