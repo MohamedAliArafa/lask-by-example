@@ -2,8 +2,6 @@ import os
 import models
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext import excel
-import pyexcel.ext.xls
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
