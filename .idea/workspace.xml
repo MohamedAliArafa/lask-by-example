@@ -22,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="additems.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="additems.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/additems.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.9072165">
+              <caret line="719" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="719" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -72,10 +72,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="8980a79fec72_.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="8980a79fec72_.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/migrations/versions/8980a79fec72_.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.871134">
+            <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -110,11 +110,11 @@
         <option value="$PROJECT_DIR$/manage.py" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/app.py" />
-        <option value="$PROJECT_DIR$/additems.py" />
         <option value="$PROJECT_DIR$/migrations/versions/596e7848124b_.py" />
         <option value="$PROJECT_DIR$/models.py" />
         <option value="$PROJECT_DIR$/migrations/versions/41e87e24381c_.py" />
         <option value="$PROJECT_DIR$/migrations/versions/6e9e297805ff_.py" />
+        <option value="$PROJECT_DIR$/additems.py" />
       </list>
     </option>
   </component>
@@ -502,14 +502,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/additems.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/migrations/alembic.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -552,8 +544,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/migrations/versions/8980a79fec72_.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.871134">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/additems.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9072165">
+          <caret line="719" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="719" selection-end-column="0" />
           <folding />
         </state>
       </provider>
