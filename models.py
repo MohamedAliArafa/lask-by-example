@@ -1,8 +1,5 @@
-import app
+from app import db
 from sqlalchemy.dialects.postgresql import JSON
-from flask.ext.sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy(app)
 
 
 class Result(db.Model):
@@ -49,7 +46,7 @@ class Shop(db.Model):
             'mobile': self.mobile,
             'owner_email': self.owner_email,
             'shop_address': self.shop_address,
-            # 'short_description': self.short_description,
+            'short_description': self.short_description,
             'description': self.description,
             'longitude': self.longitude,
             'latitude': self.latitude,
