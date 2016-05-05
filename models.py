@@ -141,6 +141,7 @@ class Items(db.Model):
             'short_description': self.short_description,
             'description': self.description,
             'price': self.price,
+            'quantity': self.quantity,
             'image': self.image,
             'images': self.images,
             'shop_id': self.shop.id,
