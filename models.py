@@ -39,6 +39,24 @@ class Shop(db.Model):
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
+    def get_id(self):
+        return self.id
+
+    def get_email(self):
+        return self.email
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
     @property
     def serialize(self):
         return {
@@ -127,11 +145,14 @@ class Items(db.Model):
             'images': self.images,
             'shop_id': self.shop.id,
             'shop_name': self.shop.shop_name,
+            'shop_short_desc': self.shop.short_description,
+            'shop_image': self.shop.shop_profile_pic,
+            'shop_address': self.shop.shop_address,
             'cat_id': self.SubCategory.category.id,
             'sub_cat_id': self.SubCategory.id,
             'is_main': self.is_main,
             'created': self.created,
-            'updated': self.updated,
+            'updated': self.updated
         }
 
 
@@ -162,7 +183,7 @@ class User(db.Model):
 
     @property
     def is_authenticated(self):
-        return self.authenticated
+        return True
 
     @property
     def is_anonymous(self):
