@@ -1,11 +1,15 @@
 import os
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, Response
+import json
+from time import mktime
+from flask_restplus import Api, Resource, fields
+from datetime import datetime
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, Response, send_from_directory
 from flask.ext.login import LoginManager, login_required, login_user, logout_user, current_user
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext import excel
-import pyexcel.ext.xls
+import pandas
 
 app = Flask(__name__)
+api = Api(app, version='1.0', title='Bubble API', description='bubble mobile app api API')
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 UPLOAD_FOLDER = 'uploads'
@@ -13,6 +17,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 API_KEY = '627562626c6520617069206b6579'
 API_KEY_ERROR = "Invalid API KEY"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -25,6 +30,18 @@ def allowed_file(file_name):
     return '.' in file_name and file_name.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return int(mktime(obj.timetuple()))
+
+        return json.JSONEncoder.default(self, obj)
+
+
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
+
 @login_manager.user_loader
 def load_user(user_id):
     print(user_id)
@@ -33,7 +50,6 @@ def load_user(user_id):
     return user
 
 
-# somewhere to login
 @app.route("/login", methods=["GET", "POST"])
 def login_temp():
     if request.method == 'POST':
@@ -182,6 +198,30 @@ def home_page():
     return API_KEY_ERROR
 
 
+@app.route('/HomePageTest/JSON')
+def home_page_test():
+    if request.headers.get('Authorization') == API_KEY:
+        current = 0
+        out_put = "["
+        categories = db.session.query(models.SubCategory)
+        count = categories.count()
+        print count
+        for category in categories:
+            current += 1
+            if count == current:
+                items = db.session.query(models.Items).filter_by(cat_id=category.id)
+                out_put += jsonify(Catname=category.name, ategory=[i.serialize for i in items[:4]]).get_data(as_text=True)
+            else:
+                items = db.session.query(models.Items).filter_by(cat_id=category.id)
+                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(as_text=True)
+                out_put += ","
+            print(current)
+        out_put += "]"
+        return out_put
+        # return jsonify(Category=[i.serialize for i in categories])
+    return API_KEY_ERROR
+
+
 @app.route('/editCategory', methods=['GET', 'POST'])
 def edit_category():
     if request.headers.get('Authorization') == API_KEY:
@@ -267,6 +307,27 @@ def get_category_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         category = db.session.query(models.Category).filter_by(id=cat_id)
         return jsonify(Category=[i.serialize for i in category])
+    return API_KEY_ERROR
+
+
+@app.route('/Orders/JSON')
+def get_orders():
+    if request.headers.get('Authorization') == API_KEY:
+        orders = db.session.query(models.Orders).all()
+        return jsonify(orders=[i.serialize for i in orders])
+    return API_KEY_ERROR
+
+
+@app.route('/makeOrder/<int:item_id>/<int:user_id>')
+def make_order(item_id, user_id):
+    if request.headers.get('Authorization') == API_KEY:
+        item = db.session.query(models.Items).filter_by(id=item_id).one()
+        user = db.session.query(models.User).filter_by(id=user_id).one()
+        order = models.Orders(user=user, item=item, quantity=1)
+        db.session.add(order)
+        db.session.commit()
+        orders = db.session.query(models.Orders).all()
+        return jsonify(orders=[i.serialize for i in orders])
     return API_KEY_ERROR
 
 
@@ -438,6 +499,7 @@ def edit_shop_item():
         return jsonify(response=1)
     else:
         return render_template('editMenuItem.html', shop=shop, item=item, categories=categories)
+
 
 # @app.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
 # # Task 3: Create route for deleteShopItem function here
@@ -685,16 +747,22 @@ def delete_shop_item_temp(shop_id, item_id):
 @app.route("/export", methods=['GET'])
 @login_required
 def doexport():
-    return excel.make_response_from_tables(db.session, [models.Shop, models.User], "xls")
+    orders = db.session.query(models.Orders).all()
+    data = [i.serialize for i in orders]
+    print(data)
+    json_data = json.dumps(data, default=date_handler)
+    pandas.read_json(json_data).to_excel("output.xlsx")
+    return send_from_directory(directory=APP_ROOT, filename="output.xlsx")
 
 
 # def hello():
 #     print(os.environ['APP_SETTINGS'])
 #     return "Hello World!"
-# 
-# 
+
+
 # @app.route('/<name>')
 # def hello_name(name):
 #     return "Hello {}!".format(name)
+
 if __name__ == '__main__':
     app.run()

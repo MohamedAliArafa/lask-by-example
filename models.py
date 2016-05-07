@@ -241,7 +241,11 @@ class Orders(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item = db.relationship(Items)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    quantity = db.Column(db.Integer)
+    quantity = db.Column(db.Integer, default=1)
+    #0: peniding, 1: Confirmed by User
+    #2: Confirmed by shop, 3: recived by Delivery
+    #4: Recivied by User
+    status = db.Column(db.Integer, default=0)
     shipping_address = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
@@ -250,15 +254,23 @@ class Orders(db.Model):
     def serialize(self):
         # Returns object data in easily serialized format
         return {
+            'id': self.id,
+            'user_id': self.user.id,
+            'user_name': self.user.name,
+            'user_mobile': self.user.mobile,
+            'user_email': self.user.email,
+            'shipping_address': self.shipping_address,
             'shop_id': self.item.shop.id,
             'shop_name': self.item.shop.shop_name,
+            'shop_mobile': self.item.shop.mobile,
+            'shop_email': self.item.shop.owner_email,
             'shop_address': self.item.shop.shop_address,
             'item_id': self.item.id,
             'item_name': self.item.name,
             'item_desc': self.item.description,
             'item_price': self.item.price,
             'item_quantity': self.quantity,
-            'shipping_address': self.shipping_address,
+            'order_status': self.status,
             'created': self.created,
             'updated': self.updated
         }
