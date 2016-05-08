@@ -350,7 +350,7 @@ def make_order():
     return API_KEY_ERROR
 
 
-@app.route('/getOrdersByUser')
+@app.route('/getOrdersByUser', methods=['GET', 'POST'])
 def get_orders_by_user():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
