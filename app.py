@@ -331,7 +331,7 @@ def make_order_temp(item_id, user_id):
     return API_KEY_ERROR
 
 
-@app.route('/makeOrder')
+@app.route('/makeOrder', methods=['GET', 'POST'])
 def make_order():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
