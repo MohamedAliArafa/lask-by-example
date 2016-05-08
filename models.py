@@ -242,9 +242,9 @@ class Orders(db.Model):
     item = db.relationship(Items)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
     quantity = db.Column(db.Integer, default=1)
-    #0: peniding, 1: Confirmed by User
-    #2: Confirmed by shop, 3: recived by Delivery
-    #4: Recivied by User
+    # 0: pending, 1: Confirmed by User
+    # 2: Confirmed by shop, 3: received by Delivery
+    # 4: Received by User
     status = db.Column(db.Integer, default=0)
     shipping_address = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
