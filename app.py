@@ -9,7 +9,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import pandas
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='Bubble API', description='bubble mobile app api API')
+# api = Api(app, version='1.0', title='Bubble API', description='bubble mobile app api API')
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 UPLOAD_FOLDER = 'uploads'
@@ -50,7 +50,7 @@ def load_user(user_id):
     return user
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/loginTemp", methods=["GET", "POST"])
 def login_temp():
     if request.method == 'POST':
         username = request.form['username']
@@ -319,7 +319,7 @@ def get_orders():
 
 
 @app.route('/makeOrder/<int:item_id>/<int:user_id>')
-def make_order(item_id, user_id):
+def make_order_temp(item_id, user_id):
     if request.headers.get('Authorization') == API_KEY:
         item = db.session.query(models.Items).filter_by(id=item_id).one()
         user = db.session.query(models.User).filter_by(id=user_id).one()
@@ -328,6 +328,36 @@ def make_order(item_id, user_id):
         db.session.commit()
         orders = db.session.query(models.Orders).all()
         return jsonify(orders=[i.serialize for i in orders])
+    return API_KEY_ERROR
+
+
+@app.route('/makeOrder')
+def make_order():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            item_id = req_json['item_id']
+            user_id = req_json['user_id']
+            quantity = req_json['quantity']
+            item = db.session.query(models.Items).filter_by(id=item_id).one()
+            user = db.session.query(models.User).filter_by(id=user_id).one()
+            order = models.Orders(user=user, item=item, quantity=quantity)
+            db.session.add(order)
+            db.session.commit()
+            return jsonify(response=1)
+        else:
+            return jsonify(response=-1)
+    return API_KEY_ERROR
+
+
+@app.route('/getOrdersByUser')
+def get_orders_by_user():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            user_id = req_json['user_id']
+            orders = db.session.query(models.Orders).filter_by(user_id=user_id)
+            return jsonify(orders=[i.serialize for i in orders])
     return API_KEY_ERROR
 
 
