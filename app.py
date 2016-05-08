@@ -358,6 +358,8 @@ def get_orders_by_user():
             user_id = req_json['user_id']
             orders = db.session.query(models.Orders).filter_by(user_id=user_id)
             return jsonify(orders=[i.serialize for i in orders])
+        else:
+            return jsonify(response=-1)
     return API_KEY_ERROR
 
 
