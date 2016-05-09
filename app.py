@@ -1,6 +1,7 @@
 import os
 import json
 from time import mktime
+from flask_pushjack import FlaskGCM
 from flask_restplus import Api, Resource, fields
 from datetime import datetime
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, Response, send_from_directory
@@ -12,10 +13,21 @@ app = Flask(__name__)
 # api = Api(app, version='1.0', title='Bubble API', description='bubble mobile app api API')
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+config = {
+    'GCM_API_KEY': '<api-key>'
+}
+app.config.update(config)
+
+client = FlaskGCM()
+client.init_app(app)
+
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
 API_KEY = '627562626c6520617069206b6579'
 API_KEY_ERROR = "Invalid API KEY"
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
 db = SQLAlchemy(app)
@@ -698,7 +710,19 @@ def register_device():
         device_token = req_json['device_token']
         user = db.session.query(models.User).filter_by(user_id=user_id).one()
         user.device_token = device_token
-        return jsonify(Cart=[i.serialize for i in user])
+        client.send(device_token, "welcome To Bubble!!")
+        return jsonify(response=device_token)
+    return API_KEY_ERROR
+
+
+@app.route('/sendPush', methods=['GET', 'POST'])
+def send_push():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.form['user_id']:
+            user_id = request.form['user_id']
+            message = request.form['message']
+            user = db.session.query(models.User).filter_by(user_id=user_id).one()
+            return jsonify(Cart=[i.serialize for i in user])
     return API_KEY_ERROR
 
 
