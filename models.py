@@ -207,6 +207,7 @@ class User(db.Model):
             'mobile': self.mobile,
             'profile_pic': self.profile_pic,
             'authenticated': self.authenticated,
+            'device_token': self.device_token,
             'created': self.created,
             'updated': self.updated
         }
