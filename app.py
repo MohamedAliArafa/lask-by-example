@@ -356,7 +356,7 @@ def make_order():
             quantity = req_json['quantity']
             item = db.session.query(models.Items).filter_by(id=item_id).one()
             user = db.session.query(models.User).filter_by(id=user_id).one()
-            order = db.session.query(models.Orders).filter_by(user_id=user_id, item_id=item_id).one()
+            order = db.session.query(models.Orders).filter_by(user_id=user_id, item_id=item_id).first()
             if order is None:
                 order = models.Orders(user=user, item=item, quantity=quantity)
             else:
