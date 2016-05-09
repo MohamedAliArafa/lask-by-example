@@ -356,7 +356,13 @@ def make_order():
             quantity = req_json['quantity']
             item = db.session.query(models.Items).filter_by(id=item_id).one()
             user = db.session.query(models.User).filter_by(id=user_id).one()
-            order = models.Orders(user=user, item=item, quantity=quantity)
+            order = db.session.query(models.User).filter_by(user_id=user_id, item_id=item_id)
+            if order is None:
+                order = models.Orders(user=user, item=item, quantity=quantity)
+            else:
+                order.quantity = quantity
+                db.session.add(order)
+                db.session.commit()
             db.session.add(order)
             db.session.commit()
             return jsonify(response=1)
@@ -730,7 +736,7 @@ def send_push():
                 message = request.form['message']
                 user = db.session.query(models.User).filter_by(id=user_id).one()
                 client.send(user.device_token, message)
-                return Response('<p>SENT to' + user.device_token)
+                return Response('<p>SENT to: ' + user.device_token)
             else:
                 return
         else:
