@@ -223,10 +223,12 @@ def home_page_test():
             current += 1
             if count == current:
                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(as_text=True)
+                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(
+                    as_text=True)
             else:
                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(as_text=True)
+                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(
+                    as_text=True)
                 out_put += ","
             print(current)
         out_put += "]"
@@ -720,11 +722,23 @@ def register_device():
 @app.route('/sendPush', methods=['GET', 'POST'])
 def send_push():
     if request.headers.get('Authorization') == API_KEY:
-        if request.form['user_id']:
-            user_id = request.form['user_id']
-            message = request.form['message']
-            user = db.session.query(models.User).filter_by(user_id=user_id).one()
-            return jsonify(Cart=[i.serialize for i in user])
+        if request.method == "POST":
+            if request.form['user_id']:
+                user_id = request.form['user_id']
+                message = request.form['message']
+                user = db.session.query(models.User).filter_by(user_id=user_id).one()
+                client.send(user.device_token, message)
+                return Response('<p>SENT')
+            else:
+                return
+        else:
+            return Response('''
+        <form action="" method="post">
+            <p><input type=text name=user_id>
+            <p><input type=text name=message>
+            <p><input type=submit value=Send>
+        </form>
+        ''')
     return API_KEY_ERROR
 
 
