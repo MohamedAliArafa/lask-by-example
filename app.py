@@ -365,6 +365,7 @@ def make_order():
                 db.session.commit()
             db.session.add(order)
             db.session.commit()
+            
             return jsonify(response=1)
         else:
             return jsonify(response=-1)
