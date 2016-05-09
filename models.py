@@ -36,6 +36,8 @@ class Shop(db.Model):
     longitude = db.Column(db.String)
     latitude = db.Column(db.String)
     shop_address = db.Column(db.String(150))
+    fb_token = db.Column(db.String)
+    device_token = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
@@ -169,6 +171,8 @@ class User(db.Model):
     DOB = db.Column(db.Date)
     profile_pic = db.Column(db.String)
     authenticated = db.Column(db.Boolean, default=False)
+    fb_token = db.Column(db.String)
+    device_token = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
