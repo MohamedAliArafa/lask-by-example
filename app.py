@@ -690,6 +690,18 @@ def get_user_shop_cart(user_id):
     return API_KEY_ERROR
 
 
+@app.route('/registerDevice', methods=['GET', 'POST'])
+def register_device():
+    if request.headers.get('Authorization') == API_KEY:
+        req_json = request.get_json()
+        user_id = req_json['user_id']
+        device_token = req_json['device_token']
+        user = db.session.query(models.User).filter_by(user_id=user_id).one()
+        user.device_token = device_token
+        return jsonify(Cart=[i.serialize for i in user])
+    return API_KEY_ERROR
+
+
 @app.route('/signUpShopTemp', methods=['GET', 'POST'])
 @login_required
 def sign_up_shop_temp():
