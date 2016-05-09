@@ -30,6 +30,7 @@ API_KEY_ERROR = "Invalid API KEY"
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))  # refers to application_top
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
