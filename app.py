@@ -715,6 +715,8 @@ def register_device():
         user.device_token = device_token
         print(device_token)
         client.send(device_token, "welcome To Bubble!!")
+        db.session.add(user)
+        db.session.commit()
         return jsonify(response=device_token)
     return API_KEY_ERROR
 
