@@ -15,7 +15,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 config = {
-    'GCM_API_KEY': '<api-key>'
+    'GCM_API_KEY': 'AIzaSyCzQAHq4TuZV8J6YKZvQnyKrNSHyGp-b54'
 }
 app.config.update(config)
 
