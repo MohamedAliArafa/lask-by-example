@@ -36,11 +36,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-11.571428">
-                  <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.53222835">
+                  <caret line="713" column="27" selection-start-line="713" selection-start-column="27" selection-end-line="713" selection-end-column="27" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -68,10 +68,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="true">
+          <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/requirements.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.31048387">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
                   <folding />
                 </state>
@@ -85,7 +85,7 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7096774">
+                <state vertical-scroll-proportion="0.61862916">
                   <caret line="39" column="16" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -187,8 +187,8 @@
         <option value="$PROJECT_DIR$/restApp.py" />
         <option value="$PROJECT_DIR$/templates/welcome.html" />
         <option value="$PROJECT_DIR$/models.py" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/app.py" />
       </list>
     </option>
   </component>
@@ -203,7 +203,7 @@
     <option name="x" value="1365" />
     <option name="y" value="-1" />
     <option name="width" value="1442" />
-    <option name="height" value="617" />
+    <option name="height" value="690" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -518,7 +518,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1365" y="-1" width="1442" height="617" extended-state="0" />
+    <frame x="1365" y="-1" width="1442" height="690" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -779,21 +779,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.py">
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.571428">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31048387">
-          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
-          <folding />
+        <state vertical-scroll-proportion="0.53222835">
+          <caret line="713" column="27" selection-start-line="713" selection-start-column="27" selection-end-line="713" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

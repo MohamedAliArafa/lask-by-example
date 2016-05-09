@@ -711,6 +711,7 @@ def register_device():
         device_token = req_json['device_token']
         user = db.session.query(models.User).filter_by(user_id=user_id).one()
         user.device_token = device_token
+        print(device_token)
         client.send(device_token, "welcome To Bubble!!")
         return jsonify(response=device_token)
     return API_KEY_ERROR
