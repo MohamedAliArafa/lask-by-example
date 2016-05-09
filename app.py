@@ -709,7 +709,7 @@ def register_device():
         req_json = request.get_json()
         user_id = req_json['user_id']
         device_token = req_json['device_token']
-        user = db.session.query(models.User).filter_by(user_id=user_id).one()
+        user = db.session.query(models.User).filter_by(id=user_id).one()
         user.device_token = device_token
         print(device_token)
         client.send(device_token, "welcome To Bubble!!")
