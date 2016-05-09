@@ -726,7 +726,7 @@ def send_push():
             if request.form['user_id']:
                 user_id = request.form['user_id']
                 message = request.form['message']
-                user = db.session.query(models.User).filter_by(user_id=user_id).one()
+                user = db.session.query(models.User).filter_by(id=user_id).one()
                 client.send(user.device_token, message)
                 return Response('<p>SENT')
             else:
