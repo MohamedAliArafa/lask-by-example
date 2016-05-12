@@ -606,6 +606,7 @@ def login():
 def fb_login():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
+        print(str(req_json))
         username = req_json['email']
         birthday = req_json['birthday']
         gender = req_json['gender']
