@@ -603,7 +603,7 @@ def login():
 
 
 @app.route('/FBlogin', methods=['GET', 'POST'])
-def login():
+def fb_login():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
         username = req_json['email']
