@@ -167,7 +167,7 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False)
     password = db.Column(db.String)
     mobile = db.Column(db.String)
-    gender = db.Column(db.CHAR)
+    gender = db.Column(db.String)
     DOB = db.Column(db.Date)
     profile_pic = db.Column(db.String)
     authenticated = db.Column(db.Boolean, default=False)
