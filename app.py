@@ -361,6 +361,7 @@ def make_order():
                 order = models.Orders(user=user, item=item, quantity=quantity)
             else:
                 order.quantity = quantity
+                print(order.id)
                 db.session.add(order)
                 db.session.commit()
             db.session.add(order)
@@ -380,6 +381,19 @@ def get_orders_by_user():
             user_id = req_json['user_id']
             orders = db.session.query(models.Orders).filter_by(user_id=user_id)
             return jsonify(orders=[i.serialize for i in orders])
+        else:
+            return jsonify(response=-1)
+    return API_KEY_ERROR
+
+
+@app.route('/getUser', methods=['GET', 'POST'])
+def get_user():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            user_id = req_json['user_id']
+            user = db.session.query(models.User).filter_by(id=user_id)
+            return jsonify(orders=[i.serialize for i in user])
         else:
             return jsonify(response=-1)
     return API_KEY_ERROR
@@ -578,10 +592,14 @@ def login():
         user = db.session.query(models.User).filter_by(email=username).all()
         if len(user) > 0:
             if user[0].password == password:
-                return jsonify(response=user[0].id)
+                return jsonify(response=user)
             else:
-                # wrong password
-                return jsonify(response=-1)
+                if user[0].password != password:
+                    # wrong password
+                    return jsonify(response=-1)
+                else:
+                    # no password
+                    return jsonify(response=-3)
         else:
             # no matching email
             return jsonify(response=-2)
