@@ -173,7 +173,6 @@ class User(db.Model):
     authenticated = db.Column(db.Boolean, default=False)
     fb_token = db.Column(db.String)
     device_token = db.Column(db.String)
-    token = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
