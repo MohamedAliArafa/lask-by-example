@@ -594,12 +594,8 @@ def login():
             if user[0].password == password:
                 return jsonify(response=user)
             else:
-                if user[0].password != password:
-                    # wrong password
-                    return jsonify(response=-1)
-                else:
-                    # no password
-                    return jsonify(response=-3)
+                # wrong password
+                return jsonify(response=-1)
         else:
             # no matching email
             return jsonify(response=-2)
