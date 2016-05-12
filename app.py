@@ -602,6 +602,27 @@ def login():
     return API_KEY_ERROR
 
 
+@app.route('/FBlogin', methods=['GET', 'POST'])
+def login():
+    if request.headers.get('Authorization') == API_KEY:
+        req_json = request.get_json()
+        username = req_json['email']
+        fb_token = req_json['fb_token']
+        # mobile = req_json['mobile']
+        user = db.session.query(models.User).filter_by(email=username).all()
+        if len(user) > 0:
+            return jsonify(response=user[0].id)
+        else:
+            # no matching email
+            user = models.User(email=username, fb_token=fb_token)
+            db.session.add(user)
+            db.session.flush()
+            new_id = user.id
+            db.session.commit()
+            return jsonify(response=new_id)
+    return API_KEY_ERROR
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.headers.get('Authorization') == API_KEY:
