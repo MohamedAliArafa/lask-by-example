@@ -607,6 +607,9 @@ def fb_login():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
         username = req_json['email']
+        birthday = req_json['birthday']
+        gender = req_json['gender']
+        name = req_json['name']
         fb_token = req_json['fb_token']
         # mobile = req_json['mobile']
         user = db.session.query(models.User).filter_by(email=username).all()
@@ -614,7 +617,7 @@ def fb_login():
             return jsonify(response=user[0].id)
         else:
             # no matching email
-            user = models.User(email=username, fb_token=fb_token)
+            user = models.User(name= name, DOB=birthday, gender=gender, email=username, fb_token=fb_token)
             db.session.add(user)
             db.session.flush()
             new_id = user.id
