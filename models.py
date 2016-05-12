@@ -168,7 +168,7 @@ class User(db.Model):
     password = db.Column(db.String)
     mobile = db.Column(db.String)
     gender = db.Column(db.String)
-    DOB = db.Column(db.Date)
+    DOB = db.Column(db.String)
     profile_pic = db.Column(db.String)
     authenticated = db.Column(db.Boolean, default=False)
     fb_token = db.Column(db.String)
