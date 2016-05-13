@@ -612,13 +612,14 @@ def fb_login():
         gender = req_json['gender']
         name = req_json['name']
         fb_token = req_json['fb_token']
+        fb_id = req_json['id']
         # mobile = req_json['mobile']
         user = db.session.query(models.User).filter_by(email=username).all()
         if len(user) > 0:
             return jsonify(response=user[0].id)
         else:
             # no matching email
-            user = models.User(name= name, DOB=birthday, gender=gender, email=username, fb_token=fb_token)
+            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id)
             db.session.add(user)
             db.session.flush()
             new_id = user.id
@@ -760,7 +761,7 @@ def register_device():
         user = db.session.query(models.User).filter_by(id=user_id).one()
         user.device_token = device_token
         print(device_token)
-        client.send(device_token, "welcome To Bubble!!")
+        # client.send(device_token, "welcome To Bubble!!")
         db.session.add(user)
         db.session.commit()
         return jsonify(response=device_token)

@@ -172,6 +172,7 @@ class User(db.Model):
     profile_pic = db.Column(db.String)
     authenticated = db.Column(db.Boolean, default=False)
     fb_token = db.Column(db.String)
+    fb_id = db.Column(db.String)
     device_token = db.Column(db.String)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
