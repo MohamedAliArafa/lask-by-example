@@ -610,9 +610,9 @@ def fb_login():
         req_json = request.get_json()
         print(str(req_json))
         username = req_json['email']
-        if req_json['birthday']:
+        if 'birthday' in req_json.keys():
             birthday = req_json['birthday']
-        if req_json['gender']:
+        if 'gender' in req_json.keys():
             gender = req_json['gender']
         name = req_json['name']
         fb_token = req_json['fb_token']
