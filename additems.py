@@ -48,7 +48,7 @@ db.session.commit()
 SubCat5 = models.SubCategory(name="Woodworking", category=Cat2)
 db.session.add(SubCat5)
 db.session.commit()
-SubCat6 = models.SubCategory(name="Leathercraft", category=Cat2)
+SubCat6 = models.SubCategory(name="Leather Craft", category=Cat2)
 db.session.add(SubCat6)
 db.session.commit()
 
@@ -65,7 +65,7 @@ db.session.commit()
 SubCat11 = models.SubCategory(name="Rings", category=Cat4)
 db.session.add(SubCat11)
 db.session.commit()
-db.session.commit()
+# db.session.commit()
 SubCat13 = models.SubCategory(name="Earrings", category=Cat4)
 db.session.add(SubCat13)
 SubCat12 = models.SubCategory(name="Necklaces", category=Cat4)
@@ -136,7 +136,7 @@ Items2 = models.Items(name="Awesome Monster Hat", image="56fd78def1754.jpg",
                               description="This monster hat will draw comments from everyone who sees it! It can be made in any color"
                                           " and any size! Just put color and size on the message to seller section! Come on! You know"
                                           " you want a monster hat! ",
-                              quantity=10, price="3.49", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
+                              quantity=10, price="3.49", short_description="Entree", SubCategory=SubCat2, shop=Shop1)
 
 db.session.add(Items2)
 db.session.commit()
@@ -145,7 +145,7 @@ Items1 = models.Items(name="SOFT CLOTH DOLLS BLUES", image="56fd6be50af78.jpg",
                               description="YOU ARE BUYING A SET OF DOLLS WITH ALL NATURAL BOTH ARE FILLED WITH POLY FILL AND ALL "
                                           "NEW MATERIAL THE LOOK IS THAT OF AND OLD CHURCH DOLL THAT MEANS ITS DOES NOT MAKE NOICE"
                                           " AND KIDS ARE THROW IT LOL AND CHEW ON IT AND THEN IT CAN BE WASHED ",
-                              quantity=10, price="2.99", short_description="Appetizer", SubCategory=SubCat1, shop=Shop1)
+                              quantity=10, price="2.99", short_description="Appetizer", SubCategory=SubCat2, shop=Shop1)
 
 db.session.add(Items1)
 db.session.commit()
@@ -153,7 +153,7 @@ db.session.commit()
 Items2 = models.Items(name="Peach Cotton Lady's Slippers", image="56fd6c5839cc1.jpg",
                               description=" Cotton cozy slippers, made by hand, designed for comfort and fun. Great in the kitchen. ",
                               quantity=10,
-                              price="3.99", short_description="Entree", SubCategory=SubCat2, shop=Shop1)
+                              price="3.99", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
 
 db.session.add(Items2)
 db.session.commit()
@@ -165,7 +165,7 @@ Items3 = models.Items(name="Baby Bib", image="56fd6bcc6c10d.jpg",
                                           " & dry stylish scarf look. This bib fits little ones from 3 months to 2 years old. "
                                           "The closure is a KAMsnap. The petit bandeau in pic 2 is available separately.  ",
                               quantity=10,
-                              price="7.99", short_description="Dessert", SubCategory=SubCat1, shop=Shop1)
+                              price="7.99", short_description="Dessert", SubCategory=SubCat2, shop=Shop1)
 
 db.session.add(Items3)
 db.session.commit()
@@ -175,7 +175,7 @@ Items4 = models.Items(name="Tatiana - Lacy edge rust hat", image="56fd6c91eebfb.
                                           " Measures 9\" deep by 20\" around. Coming soon in a variety of heathery shades and"
                                           " striking colors!",
                               quantity=10,
-                              price="5.99", short_description="Entree", SubCategory=SubCat3, shop=Shop1)
+                              price="5.99", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
 
 db.session.add(Items4)
 db.session.commit()
@@ -186,7 +186,7 @@ Items5 = models.Items(name="Baseball Potholder", image="56fd78fb66e6c.jpg",
                                           "dries beautifully. A baseball fills the front on a red background. The back is plain red"
                                           " and the potholder is trimmed in white with a hanging loop.",
                               quantity=10,
-                              price="1.99", short_description="Beverage", SubCategory=SubCat2, shop=Shop1)
+                              price="1.99", short_description="Beverage", SubCategory=SubCat3, shop=Shop1)
 
 db.session.add(Items5)
 db.session.commit()
@@ -196,7 +196,7 @@ Items6 = models.Items(name="Fun drawstring bags", image="56fd6c6e53e5b.jpeg",
                                           " Throw whatever you need in and be on your way! They are cute and have plenty of"
                                           " room inside!",
                               quantity=10,
-                              price=".99", short_description="Beverage", SubCategory=SubCat3, shop=Shop1)
+                              price=".99", short_description="Beverage", SubCategory=SubCat7, shop=Shop1)
 
 db.session.add(Items6)
 db.session.commit()
@@ -206,7 +206,7 @@ Items7 = models.Items(name="Handmade Curley Bunny", image="56fd6b71e857f.jpg",
                                           " cuddley. He is 16\" in a sitting position. It is stuffed with the best qulity fiberfill"
                                           " and is very soft and cuddly.",
                               quantity=10,
-                              price="3.49", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
+                              price="3.49", short_description="Entree", SubCategory=SubCat2, shop=Shop1)
 
 db.session.add(Items7)
 db.session.commit()
@@ -218,7 +218,7 @@ Items8 = models.Items(name="Delicate & Dainty Pink Shells Crocheted Scarf", imag
                                           " shoulders. Measures 62\" by 5\" Hand wash in cold water & lay flat to dry for best"
                                           " results when laundering.",
                               quantity=10,
-                              price="5.99", short_description="Entree", SubCategory=SubCat2, shop=Shop1)
+                              price="5.99", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
 
 db.session.add(Items8)
 db.session.commit()
@@ -239,7 +239,7 @@ Items1 = models.Items(name="Pretty Infinity Scarf", image="56fd7d3954f14.jpg",
                                           "three Acrylic yarns, it is lightweight and just perfect for the Spring season. Great "
                                           "for casual wear and to compliment a plainT shirt or sweater.",
                               quantity=10,
-                              price="7.99", short_description="Entree", SubCategory=SubCat4, shop=Shop2)
+                              price="7.99", short_description="Entree", SubCategory=SubCat3, shop=Shop2)
 
 db.session.add(Items1)
 db.session.commit()
@@ -248,7 +248,7 @@ Items2 = models.Items(
     name="Fiery Red Infinity Scarf", image="56fd7b46d254c.jpg",
     description="Here is a bright red infinity scarf, loosely knit with an Acrylic yarn. Quite a little show stopper "
                 "which will compliment other red accessories perfectly. Wash on a cold/ delicates machine cycle. ",
-    price="25", quantity=10, short_description="Entree", SubCategory=SubCat2, shop=Shop2)
+    price="25", quantity=10, short_description="Entree", SubCategory=SubCat3, shop=Shop2)
 
 db.session.add(Items2)
 db.session.commit()
@@ -268,7 +268,7 @@ Items4 = models.Items(name="Blue Bunny Set. Age 6/9 mos ", image="56fd7ce754b58.
                                           "just to add cuteness. Age 6- 9 months approximately. Material 100 % Acrylic. Can be machine"
                                           " washed on a cool gentle/delicates cycle. ",
                               quantity=10,
-                              price="12", short_description="Entree", SubCategory=SubCat1, shop=Shop2)
+                              price="12", short_description="Entree", SubCategory=SubCat2, shop=Shop2)
 
 db.session.add(Items4)
 db.session.commit()
@@ -287,7 +287,7 @@ Items6 = models.Items(name="Knitted Small Fringed Rug", image="56fd7d027150f.jpg
                                           " Very attractive by using a combination of both Acrylic and Cotton yarn in colors "
                                           "of purple, green and white.",
                               quantity=10,
-                              price="12", short_description="Entree", SubCategory=SubCat2, shop=Shop2)
+                              price="12", short_description="Entree", SubCategory=SubCat3, shop=Shop2)
 
 db.session.add(Items6)
 db.session.commit()
@@ -328,7 +328,7 @@ Items3 = models.Items(name="Feather Butterfly Bouquet", image="",
                                           " and adorned with swarovski crystals for a finished look.  These can also be made to top "
                                           "cakes of all kinds, or a table centerpieces.",
                               quantity=10,
-                              price="9.95", short_description="Entree", SubCategory=SubCat1, shop=Shop1)
+                              price="9.95", short_description="Entree", SubCategory=SubCat4, shop=Shop1)
 
 db.session.add(Items3)
 db.session.commit()

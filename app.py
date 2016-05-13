@@ -604,12 +604,16 @@ def login():
 
 @app.route('/FBlogin', methods=['GET', 'POST'])
 def fb_login():
+    birthday = ""
+    gender = ""
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
         print(str(req_json))
         username = req_json['email']
-        birthday = req_json['birthday']
-        gender = req_json['gender']
+        if req_json['birthday']:
+            birthday = req_json['birthday']
+        if req_json['gender']:
+            gender = req_json['gender']
         name = req_json['name']
         fb_token = req_json['fb_token']
         fb_id = req_json['id']
