@@ -604,8 +604,9 @@ def login():
 
 @app.route('/FBlogin', methods=['GET', 'POST'])
 def fb_login():
-    birthday = ""
-    gender = ""
+    birthday = None
+    gender = None
+    profile_pic = None
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
         print(str(req_json))
@@ -614,6 +615,8 @@ def fb_login():
             birthday = req_json['birthday']
         if 'gender' in req_json.keys():
             gender = req_json['gender']
+        if 'picture' in req_json.keys():
+            profile_pic = req_json['picture'].get_json()['data'].get_json()['url']
         name = req_json['name']
         fb_token = req_json['fb_token']
         fb_id = req_json['id']
@@ -623,7 +626,7 @@ def fb_login():
             return jsonify(response=user[0].id)
         else:
             # no matching email
-            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id)
+            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id, profile_pic=profile_pic)
             db.session.add(user)
             db.session.flush()
             new_id = user.id
