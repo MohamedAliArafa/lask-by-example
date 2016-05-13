@@ -616,7 +616,7 @@ def fb_login():
         if 'gender' in req_json.keys():
             gender = req_json['gender']
         if 'picture' in req_json.keys():
-            profile_pic = req_json['picture'].get_json()['data'].get_json()['url']
+            profile_pic = req_json['picture']['data']['url']
         name = req_json['name']
         fb_token = req_json['fb_token']
         fb_id = req_json['id']

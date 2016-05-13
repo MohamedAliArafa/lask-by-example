@@ -38,7 +38,7 @@
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.47241378">
-              <caret line="618" column="80" selection-start-line="618" selection-start-column="80" selection-end-line="618" selection-end-column="80" />
+              <caret line="618" column="53" selection-start-line="618" selection-start-column="53" selection-end-line="618" selection-end-column="53" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -947,7 +947,7 @@
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.47241378">
-          <caret line="618" column="80" selection-start-line="618" selection-start-column="80" selection-end-line="618" selection-end-column="80" />
+          <caret line="618" column="53" selection-start-line="618" selection-start-column="53" selection-end-line="618" selection-end-column="53" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
