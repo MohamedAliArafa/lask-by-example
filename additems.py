@@ -370,7 +370,7 @@ Shop1 = models.Shop(shop_name="Paul Parkman", owner_name="Ebrahim Arafa", owner_
 db.session.add(Shop1)
 db.session.commit()
 
-Items1 = models.Items(name="Paul Parkman Men's Brown Crocodile Embossed Tassel Loafer", image="",
+Items1 = models.Items(name="Paul Parkman Men's Brown Crocodile Embossed Tassel Loafer", image="57026adb9cedd.jpg",
                               description="Brown hand painted crocodile embossed leather upper Natural antiqued leather sole."
                                           " Bordeaux leather lining. Tassel loafer, slip-on style men's shoes.",
                               quantity=10,
@@ -379,7 +379,7 @@ Items1 = models.Items(name="Paul Parkman Men's Brown Crocodile Embossed Tassel L
 db.session.add(Items1)
 db.session.commit()
 
-Items2 = models.Items(name="Paul Parkman Men's Captoe ", image="",
+Items2 = models.Items(name="Paul Parkman Men's Captoe ", image="57026af67bbbd.jpg ",
                               description="Description : Men's Captoe Oxfords - "
                                           "Navy / Beige Hand-Painted Suede Upper "
                                           "and Leather Sole", quantity=10,
@@ -388,7 +388,7 @@ Items2 = models.Items(name="Paul Parkman Men's Captoe ", image="",
 db.session.add(Items2)
 db.session.commit()
 
-Items3 = models.Items(name="Paul Parkman Men's Side Handsewn Tassel", image="",
+Items3 = models.Items(name="Paul Parkman Men's Side Handsewn Tassel", image="57026b0a3164a.jpg",
                               description="Side hand-sewn tassel loafer Slip-on style men's shoes. Green hand painted leather"
                                           " upper Leather sole and bordeaux leather lining.",
                               quantity=10,
@@ -397,7 +397,7 @@ Items3 = models.Items(name="Paul Parkman Men's Side Handsewn Tassel", image="",
 db.session.add(Items3)
 db.session.commit()
 
-Items4 = models.Items(name="Paul Parkman Men's Reddish Camel Medallion", image="",
+Items4 = models.Items(name="Paul Parkman Men's Reddish Camel Medallion", image="57026b2239ce5.jpg",
                               description="Medallion Toe Handmade Oxfords Goodyear welted, double leather sole Reddish Camel"
                                           " hand painted leather upper Bordeaux leather lining. Leather wrapped beige laces with"
                                           " four eyelet",
@@ -407,7 +407,7 @@ Items4 = models.Items(name="Paul Parkman Men's Reddish Camel Medallion", image="
 db.session.add(Items4)
 db.session.commit()
 
-Items5 = models.Items(name="Paul Parkman Men's Captoe Oxfords Brown Hand Painted Shoes", image="",
+Items5 = models.Items(name="Paul Parkman Men's Captoe Oxfords Brown Hand Painted Shoes", image="57026b3eed935.jpg",
                               description="Side handsewn captoe oxford style men's handmade shoes. Brown hand painted leather"
                                           " upper with leather sole and bordeaux leather lining.  This is a made-to-order product."
                                           " Please allow 15 days for the delivery",
@@ -417,7 +417,7 @@ Items5 = models.Items(name="Paul Parkman Men's Captoe Oxfords Brown Hand Painted
 db.session.add(Items5)
 db.session.commit()
 
-Items2 = models.Items(name="Paul Parkman Men's Captoe Oxfords Black Shoes", image="",
+Items2 = models.Items(name="Paul Parkman Men's Captoe Oxfords Black Shoes", image="57026b533b928.jpg",
                               description="Side handsewn captoe "
                                           "oxford style men's handmade"
                                           " shoes. Black hand painted "
@@ -442,7 +442,7 @@ Shop1 = models.Shop(shop_name="Handmade Birdhouses", owner_name="Ahmed El-Mahala
 db.session.add(Shop1)
 db.session.commit()
 
-Items1 = models.Items(name="Feeding or Nesting Shelf", image="",
+Items1 = models.Items(name="Feeding or Nesting Shelf", image="57026b883ce2a.jpg",
                               description="This is a bird nesting or feeding shelf. Natural wood finish and weathered."
                                           " Handcrafted and designed by me. Great for Robins or Morning Dove. Can be placed"
                                           " on a long pole or hung from house.", quantity=10,
@@ -451,7 +451,7 @@ Items1 = models.Items(name="Feeding or Nesting Shelf", image="",
 db.session.add(Items1)
 db.session.commit()
 
-Items2 = models.Items(name="Finch Birdhouse", image="",
+Items2 = models.Items(name="Finch Birdhouse", image="57026b960014e.jpg",
                               description="This is a specially designed Finch birdhouse."
                                           " Should be mount on a long pole 10’ – 15’ off "
                                           "of the ground. The finch will enter through a hidden"
@@ -461,7 +461,7 @@ Items2 = models.Items(name="Finch Birdhouse", image="",
 db.session.add(Items2)
 db.session.commit()
 
-Items3 = models.Items(name="Round Green Birdhouse", image="",
+Items3 = models.Items(name="Round Green Birdhouse", image="57026ba895b1c.jpg",
                               description="This is a round 6.25” and 12” tall birdhouse."
                                           " Made from recycled materials. It has an old "
                                           "rusted spiral wire perch. Green with white stripes."
@@ -472,7 +472,7 @@ Items3 = models.Items(name="Round Green Birdhouse", image="",
 db.session.add(Items3)
 db.session.commit()
 
-Items4 = models.Items(name="Tree Birdhouse", image="", quantity=10,
+Items4 = models.Items(name="Tree Birdhouse", image="57026bbe650e2.jpg", quantity=10,
                               description="Tree Birdhouse, made with 4 pieces, to create the tree. And a nesting box round"
                                           " with screws, so it can be removed for easy cleaning. 10 ?” W x 11” D x 15” H Weight: "
                                           "3 pounds", price="3.95", short_description="Dessert", SubCategory=SubCat5,
@@ -481,7 +481,7 @@ Items4 = models.Items(name="Tree Birdhouse", image="", quantity=10,
 db.session.add(Items4)
 db.session.commit()
 
-Items5 = models.Items(name="Recycled wooden slates and rusting metal straps", image="",
+Items5 = models.Items(name="Recycled wooden slates and rusting metal straps", image="57026bcda0ff5.jpg",
                               description="Wooden slates and rusting metal straps give this duplex birdhouse a unique look."
                                           " Each end is different, one end “BRICKS” the other “WOODEN STONES”, also recycled wood.",
                               quantity=10,
@@ -501,7 +501,7 @@ Shop1 = models.Shop(shop_name="At Home", owner_name="Ehab Hashem", owner_email="
 db.session.add(Shop1)
 db.session.commit()
 
-Items1 = models.Items(name="Midnight bling", image="",
+Items1 = models.Items(name="Midnight bling", image="57026bf12af40.jpg",
                               description="This set of jars are ready to add some bling to your home. Using broken pieces "
                                           "of jewelry, I added rhinestones and a piece from a bracelet to these once spaghetti"
                                           " sauce jars. I love spaghetti :)",
@@ -511,7 +511,7 @@ Items1 = models.Items(name="Midnight bling", image="",
 db.session.add(Items1)
 db.session.commit()
 
-Items2 = models.Items(name="Squiggly lines, dots and whatever else", image="",
+Items2 = models.Items(name="Squiggly lines, dots and whatever else", image="57026bfe27316.jpg",
                               description="My \"Squiggly lines, dots"
                                           " and whatever else\" design "
                                           "is back! This black and white"
@@ -525,7 +525,7 @@ Items2 = models.Items(name="Squiggly lines, dots and whatever else", image="",
 db.session.add(Items2)
 db.session.commit()
 
-Items3 = models.Items(name="A Trail in the Forest", image="",
+Items3 = models.Items(name="A Trail in the Forest", image="57026c0c4a025.jpg",
                               description="This glass beer bottle is like a forest..."
                                           "one can get lost just looking at it. Hand painted "
                                           "and decorated using beads, this bottle is sure to "
@@ -537,7 +537,7 @@ Items3 = models.Items(name="A Trail in the Forest", image="",
 db.session.add(Items3)
 db.session.commit()
 
-Items4 = models.Items(name="Buzz buzz", image="",
+Items4 = models.Items(name="Buzz buzz", image="57026c193eab6.jpg",
                               description="What's that sound? Where is it coming from? A bee in its "
                                           "beehive...well not exactly. This former honey jar is now"
                                           " a blinged out work of art. The \"gold\" accent jewelry"
@@ -547,7 +547,7 @@ Items4 = models.Items(name="Buzz buzz", image="",
 db.session.add(Items4)
 db.session.commit()
 
-Items2 = models.Items(name="His Eyes are on the Sparrow", image="",
+Items2 = models.Items(name="His Eyes are on the Sparrow", image="57026c257b952.jpg",
                               description="I like to call this a \"freestyle paint "
                                           "doodle\" that I painted on a glass coffee jar"
                                           ". And yes I love coffee :) The stokes"
@@ -572,7 +572,7 @@ Shop1 = models.Shop(shop_name="Kirkland's Home", owner_name="Eslam Abo El-Fotoh"
 db.session.add(Shop1)
 db.session.commit()
 
-Items9 = models.Items(name="Leaf - MooDooNano paper", image="",
+Items9 = models.Items(name="Leaf - MooDooNano paper", image="57026c44b47da.jpg",
                               description="Material Our current production offers a portfolio of eco design lamps made of a "
                                           "special laminated MooDooNano paper, which is being constantly developed in cooperation"
                                           " with NanoGraph paper mill.", quantity=10,
@@ -581,7 +581,7 @@ Items9 = models.Items(name="Leaf - MooDooNano paper", image="",
 db.session.add(Items9)
 db.session.commit()
 
-Items1 = models.Items(name="Valentine's Heart - MooDoo Lamp", image="",
+Items1 = models.Items(name="Valentine's Heart - MooDoo Lamp", image="57026c51ecafd.jpg",
                               description="The beautiful lamp for everybody who wants to spread love and light.  "
                                           "Lamp shade is made out of resistant, laminated paper.",
                               quantity=10,
@@ -590,7 +590,7 @@ Items1 = models.Items(name="Valentine's Heart - MooDoo Lamp", image="",
 db.session.add(Items1)
 db.session.commit()
 
-Items2 = models.Items(name="Leaf - MooDooNano paper", image="",
+Items2 = models.Items(name="Leaf - MooDooNano paper", image="57026c5e2c459.jpg ",
                               description="Material Our current production offers a portfolio of eco design lamps made "
                                           "of a special laminated MooDooNano paper, which is being constantly developed in"
                                           " cooperation with NanoGraph paper mill.",
@@ -600,7 +600,7 @@ Items2 = models.Items(name="Leaf - MooDooNano paper", image="",
 db.session.add(Items2)
 db.session.commit()
 
-Items3 = models.Items(name="Literary Lampshade #2", image="",
+Items3 = models.Items(name="Literary Lampshade #2", image="57026c704962d.jpg",
                               description="This literary lampshade was created using Part I of Madame Bovary. "
                                           "I included pictures from the novel. When the light shines through the pictures "
                                           "it casts a lovely glow.", quantity=10,
@@ -609,7 +609,7 @@ Items3 = models.Items(name="Literary Lampshade #2", image="",
 db.session.add(Items3)
 db.session.commit()
 
-Items4 = models.Items(name="MooDoo Lamp", image="",
+Items4 = models.Items(name="MooDoo Lamp", image="57026c7defb25.jpg",
                               description="The beautiful lamp for everybody who wants to spread love and light.",
                               quantity=10,
                               price="8.95", short_description="Entree", SubCategory=SubCat8, shop=Shop1)
@@ -617,7 +617,7 @@ Items4 = models.Items(name="MooDoo Lamp", image="",
 db.session.add(Items4)
 db.session.commit()
 
-Items2 = models.Items(name="Leaf - MooDooNano paper design lamp on wire stand", image="",
+Items2 = models.Items(name="Leaf - MooDooNano paper design lamp on wire stand", image="57026c8d5fbad.jpg",
                               description="Guard is a knight."
                                           " Active,"
                                           " the invincible "
@@ -637,7 +637,7 @@ Items2 = models.Items(name="Leaf - MooDooNano paper design lamp on wire stand", 
 db.session.add(Items2)
 db.session.commit()
 
-Items10 = models.Items(name="Literary Lampshade, \"Emma\" by Jane Austen", image="",
+Items10 = models.Items(name="Literary Lampshade, \"Emma\" by Jane Austen", image="57026c9ccb3f5.jpg",
                                description="Emma by Jane Austen "
                                            " I used pages from "
                                            "a pre-1918 edition of "
@@ -667,7 +667,7 @@ Shop1 = models.Shop(shop_name="rue21", owner_name="Ahmed Maher", owner_email="ma
 db.session.add(Shop1)
 db.session.commit()
 
-Items1 = models.Items(name="knit leaf coasters", image="",
+Items1 = models.Items(name="knit leaf coasters", image="57026cbf875af.jpg",
                               description="These mug rugs are inspired by nature,bring the outdoors in with these handmade leaf"
                                           " shape coasters, that could double as a dish cloth.", quantity=10,
                               price="5.95", short_description="Entree", SubCategory=SubCat3, shop=Shop1)
@@ -675,7 +675,7 @@ Items1 = models.Items(name="knit leaf coasters", image="",
 db.session.add(Items1)
 db.session.commit()
 
-Items2 = models.Items(name="nerdy knit coasters", image="",
+Items2 = models.Items(name="nerdy knit coasters", image="57026cd5561e1.jpg",
                               description="This is for a set of coasters featuring the water tribe symbol from the Avatar:"
                                           " the last airbender. This is the perfect, subtle, gift for anime fans.",
                               quantity=10,
@@ -693,7 +693,7 @@ Shop1 = models.Shop(shop_name="Ross Dress for Less", owner_name="Mohamed El-Gazz
 db.session.add(Shop1)
 db.session.commit()
 
-Items1 = models.Items(name="Chantrelle Toast", image="",
+Items1 = models.Items(name="Chantrelle Toast", image="57026d2cd900d.jpg",
                               description="Crispy Toast with Sesame Seeds slathered with buttery chantrelle mushrooms",
                               quantity=10,
                               price="5.95", short_description="Appetizer", SubCategory=SubCat2, shop=Shop1)
@@ -701,14 +701,14 @@ Items1 = models.Items(name="Chantrelle Toast", image="",
 db.session.add(Items1)
 db.session.commit()
 
-Items1 = models.Items(name="Guanciale Chawanmushi", quantity=10, image="",
+Items1 = models.Items(name="Guanciale Chawanmushi", quantity=10, image="57026d6e439f2.jpg",
                               description="Japanese egg custard served hot with spicey Italian Pork Jowl (guanciale)",
                               price="6.95", short_description="Dessert", SubCategory=SubCat4, shop=Shop1)
 
 db.session.add(Items1)
 db.session.commit()
 
-Items1 = models.Items(name="Lemon Curd Ice Cream Sandwich", image="",
+Items1 = models.Items(name="Lemon Curd Ice Cream Sandwich", image="57026da6a171b.jpg",
                               description="Lemon Curd Ice Cream Sandwich on a chocolate macaron with cardamom meringue and cashews",
                               quantity=10,
                               price="4.25", short_description="Dessert", SubCategory=SubCat3, shop=Shop1)
