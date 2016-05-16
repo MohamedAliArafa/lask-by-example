@@ -805,15 +805,21 @@ def send_push_all():
         if request.method == "POST":
             users = db.session.query(models.User).all()
             message = request.form['message']
+            title = request.form['title']
+            body = request.form['body']
+            icon = request.form['icon']
             for user in users:
                 if None is not user.device_token:
                     client.send(user.device_token, message,
-                                notification={'title': 'Bubble', 'body': 'You Are Our Lucky User Check New Items NOW'})
+                                notification={'title': title, 'body': body, 'icon': icon})
                     flash("Sent To" + user.name)
         else:
             return Response('''
         <form action="" method="post">
             <p><input type=text name=message>
+            <p><input type=text name=title>
+            <p><input type=text name=body>
+            <p><input type=text name=icon>
             <p><input type=submit value=Send>
         </form>
         ''')
