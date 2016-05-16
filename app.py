@@ -807,8 +807,7 @@ def send_push_all():
             message = request.form['message']
             for user in users:
                 if None is not user.device_token:
-                    client.send(user.device_token, message, title='New Item',
-                                launch_image='http://www.happilyunmarried.com/media/catalog/product/cache/1/small_image/256x/9df78eab33525d08d6e5fb8d27136e95/h/a/happily_unmarried_cool_t_shirt_black---fk_s_1.jpg')
+                    client.send(user.device_token, message, title='New Item')
                     flash("Sent To" + user.name)
         else:
             return Response('''
