@@ -7,28 +7,38 @@
     Edit {{ shop.name }}
 </h1>
 
-<form action="{{url_for('edit_shop', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
+<form action="{{url_for('edit_shop_temp', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
 
     <p>Name</p>
-    <input type="text" size="30" name="name" placeholder="{{ shop.name }}">
+    <input type="text" size="30" name="shop_name" placeholder="{{ shop.shop_name }}">
 
     <p>Owner</p>
-    <input type="text" size="30" name="owner" placeholder="{{ shop.owner }}">
+    <input type="text" size="30" name="owner_name" placeholder="{{ shop.owner_name }}">
+
+    <p>Owner Email</p>
+    <input type="text" size="30" name="owner_email" placeholder="{{ shop.owner_email }}">
 
     <p>Description</p>
-    <input type="text" size="30" name="description" placeholder="{{ shop.description }}">
+    <input type="text" size="50" name="description" placeholder="{{ shop.description }}">
 
-    <p><input type="text" name="profile_pic" placeholder="{{ shop.profile_pic }}">
+    <p>Address</p>
+    <input type="text" size="30" name="shop_address" placeholder="{{ shop.shop_address }}">
 
-    <p>Category</p>
-    <select name="cat_id">
-        <option value="" disabled="disabled" selected="selected">Please select a Category</option>
-        <option value="1">Books Store</option>
-        <option value="2">Cloth Store</option>
-        <option value="3">Jewelery Store</option>
-        <option value="4">Home Store</option>
-    </select>
-    <input type="submit" value="Edit">
+    <p>Mobile No.</p>
+    <input type="number" size="11" name="mobile" placeholder="{{ shop.mobile }}">
+
+    <p>Image</p>
+    <p><input type="text" name="image" placeholder="{{ shop.shop_profile_pic }}">
+
+    <!--<p>Category</p>-->
+    <!--<select name="cat_id">-->
+        <!--<option value="" disabled="disabled" selected="selected">Please select a Category</option>-->
+        <!--<option value="1">Books Store</option>-->
+        <!--<option value="2">Cloth Store</option>-->
+        <!--<option value="3">Jewelery Store</option>-->
+        <!--<option value="4">Home Store</option>-->
+    <!--</select>-->
+    <input type="submit" class="btn btn-primary btn-block btn-large" value="Edit">
     <a href="{{url_for('get_shop', shop_id=shop.id)}}">Cancel</a>
 </form>
 

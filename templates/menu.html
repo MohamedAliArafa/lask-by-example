@@ -3,8 +3,9 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
 </head>
 <body>
+
 <h1>
-    {{ shop.shop_name }}
+    {{ shop.shop_name }} <a href="{{url_for('edit_shop_temp', shop_id=shop.id)}}">Edit Shop</a>
 </h1>
 <br>
 {% with messages = get_flashed_messages() %}
@@ -19,12 +20,12 @@
 {% for item in items %}
 <br>
 <br>
-<p>{{ item.name }}</p>
+
+<h2>{{ item.name }} ( ${{ item.price }} )</h2>
 <p>{{ item.description}}</p>
-<p>${{ item.price }}
+
 <a href="{{url_for('edit_shop_item_temp', shop_id=shop.id, item_id=item.id)}}">( Edit Item | تعديل المنتج )</a>
 <a href="{{url_for('delete_shop_item_temp', shop_id=shop.id, item_id=item.id)}}">( Delete Item | حذف المنتج )</a>
-</p>
 
 <br>
 
