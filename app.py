@@ -626,7 +626,8 @@ def fb_login():
             return jsonify(response=user[0].id)
         else:
             # no matching email
-            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id, profile_pic=profile_pic)
+            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id,
+                               profile_pic=profile_pic)
             db.session.add(user)
             db.session.flush()
             new_id = user.id
@@ -791,6 +792,26 @@ def send_push():
             return Response('''
         <form action="" method="post">
             <p><input type=text name=user_id>
+            <p><input type=text name=message>
+            <p><input type=submit value=Send>
+        </form>
+        ''')
+    return API_KEY_ERROR
+
+
+@app.route('/sendPushAll', methods=['GET', 'POST'])
+def send_push_all():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == "POST":
+            users = db.session.query(models.User).all()
+            message = request.form['message']
+            for user in users:
+                if None is not user.device_token:
+                    client.send(user.device_token, message)
+                    flash("Sent To" + user.name)
+        else:
+            return Response('''
+        <form action="" method="post">
             <p><input type=text name=message>
             <p><input type=submit value=Send>
         </form>

@@ -35,9 +35,11 @@ db.session.commit()
 SubCat1 = models.SubCategory(name="Crocheting", category=Cat1)
 db.session.add(SubCat1)
 db.session.commit()
+
 SubCat2 = models.SubCategory(name="Children", category=Cat1)
 db.session.add(SubCat2)
 db.session.commit()
+
 SubCat3 = models.SubCategory(name="Knitting", category=Cat1)
 db.session.add(SubCat3)
 db.session.commit()
@@ -45,9 +47,11 @@ db.session.commit()
 SubCat4 = models.SubCategory(name="Floral Craft", category=Cat2)
 db.session.add(SubCat4)
 db.session.commit()
+
 SubCat5 = models.SubCategory(name="Woodworking", category=Cat2)
 db.session.add(SubCat5)
 db.session.commit()
+
 SubCat6 = models.SubCategory(name="Leather Craft", category=Cat2)
 db.session.add(SubCat6)
 db.session.commit()
@@ -99,7 +103,7 @@ User3 = models.User(name="Nora Amer", email="nora@gmail.com.com", mobile="012222
 db.session.add(User3)
 db.session.commit()
 
-User4 = models.User(name="Ebrahim Arafa", email="hema@gameil.com", mobile="0122222222", password="hema123")
+User4 = models.User(name="Ebrahim Arafa", email="hema@gmail.com", mobile="0122222222", password="hema123")
 db.session.add(User4)
 db.session.commit()
 
@@ -111,17 +115,18 @@ User6 = models.User(name="Ehab Hashem", email="ehab@gmail.com", mobile="01222222
 db.session.add(User2)
 db.session.commit()
 
-User7 = models.User(name="Eslam Abo El-Fotoh", email="eslam@gmail.com.com", mobile="0122222222", password="eslam123")
+User7 = models.User(name="Eslam Abo El-Fotoh", email="eslam@gmail.com", mobile="0122222222", password="eslam123")
 db.session.add(User3)
 db.session.commit()
 
-User8 = models.User(name="Ahmed Maher", email="maher@gameil.com", mobile="0122222222", password="maher123")
+User8 = models.User(name="Ahmed Maher", email="maher@gmail.com", mobile="0122222222", password="maher123")
 db.session.add(User4)
 db.session.commit()
 
-User9 = models.User(name="Mohamed El-Gazzar", email="gazzar@gameil.com", mobile="0122222222", password="gazzar123")
+User9 = models.User(name="Mohamed El-Gazzar", email="gazzar@gmail.com", mobile="0122222222", password="gazzar123")
 db.session.add(User4)
 db.session.commit()
+
 # Menu for UrbanBurger
 Shop1 = models.Shop(shop_name="Barnes & Noble", owner_name="Mohamed Arafa", owner_email="arafa@gmail.com",
                             mobile="0122222222", password="arafa2012", shop_profile_pic="570269c0f2302.png",
