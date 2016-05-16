@@ -807,7 +807,8 @@ def send_push_all():
             message = request.form['message']
             for user in users:
                 if None is not user.device_token:
-                    client.send(user.device_token, message, title='New Item')
+                    client.send(user.device_token, message,
+                                notification={'title': 'Bubble', 'body': 'You Are Our Lucky User Check New Items NOW'})
                     flash("Sent To" + user.name)
         else:
             return Response('''
