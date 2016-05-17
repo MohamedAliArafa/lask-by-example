@@ -619,7 +619,7 @@ def new_shop_item_temp(shop_id):
             else:
                 return render_template('newMenuItem.html', shop=shop)
         else:
-                return Response("Not Authorised")
+            return Response("Not Authorised")
     return API_KEY_ERROR
 
 
@@ -712,6 +712,17 @@ def delete_shop_item_temp(shop_id, item_id):
             return redirect(url_for('get_shop_items', shop_id=shop_id))
         else:
             return render_template('deleteMenuItem.html', shop=shop, item=item)
+    return Response("Not Authorised")
+
+
+@app.route('/myOrders/<int:shop_id>', methods=['GET', 'POST'])
+@login_required
+# Task 3: Create route for deleteShopItem function here
+def ge_shop_orders_temp(shop_id):
+    shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+    if int(current_user.id) == int(shop_id):
+        orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
+        return render_template('orders.html', shop=shop, orders=orders)
     return Response("Not Authorised")
 
 
@@ -951,7 +962,6 @@ def login_temp():
         password = request.form.get('password')
         print(username + ":" + password)
         user = db.session.query(models.Shop).filter_by(owner_email=username, password=password).first()
-        print(user.id)
         if user is None:
             # flash('Username or Password is invalid', 'error')
             errors.append("Username or Password is invalid")
