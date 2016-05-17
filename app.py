@@ -856,7 +856,7 @@ def make_order():
                 order = models.Orders(user=user, item=item, quantity=quantity)
             else:
                 order.quantity = quantity
-                print(order.id)
+                print("OrderID: "+order.id + ", ItemID:" + item.id + ", UserID:" + user.id)
                 db.session.add(order)
                 db.session.commit()
             db.session.add(order)
