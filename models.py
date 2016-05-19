@@ -75,6 +75,7 @@ class Shop(db.Model):
             'latitude': self.latitude,
             'owner_name': self.owner_name,
             'owner_profile_pic': self.shop_profile_pic,
+            'device_token': self.device_token,
             'created': self.created,
             'updated': self.updated
         }
