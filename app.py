@@ -882,20 +882,20 @@ def make_order():
             user = db.session.query(models.User).filter_by(id=user_id).one()
             shop = db.session.query(models.Shop).filter_by(id=item.shop_id).one()
             order = db.session.query(models.Orders).filter_by(user_id=user_id, item_id=item_id).first()
-            alert = {'Order Sent': 'Hello world', 'notification': {'title': "Order Sent",
-                                                                        'body': "Your Order have been sent to " +
-                                                                                shop.shop_name +
-                                                                                " waiting for approval"}}
             if order is None:
                 order = models.Orders(user=user, item=item, quantity=quantity)
-                client.send(user.device_token, alert)
+                client.send(user.device_token, notification={'title': "Order Sent",
+                                                             'body': shop.shop_name + " Recived Your Order"
+                                                                                      " and waiting for approval"})
                 client.send(shop.device_token, "Order: " + item.name, notification={'title': "Order: " + item.name,
                                                                                     'body': "please response to this "
                                                                                             "order for " + item.name})
             else:
                 order.quantity = quantity
                 print("OrderID: " + str(order.id) + ", ItemID:" + str(item.id) + ", UserID:" + str(user.id))
-                client.send(user.device_token, alert)
+                client.send(user.device_token, "Order Sent", notification={'title': "Order Sent",
+                                                                           'body': "Your Order have been sent to shop "
+                                                                                   "waiting for approval"})
                 client.send(shop.device_token, "Order: " + item.name, notification={'title': "Order: " + item.name,
                                                                                     'body': "please response to this "
                                                                                             "order for " + item.name})
