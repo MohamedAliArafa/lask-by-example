@@ -729,7 +729,7 @@ def ge_shop_orders_temp(shop_id):
 @app.route('/getOrdersByShopID', methods=['GET', 'POST'])
 @login_required
 # Task 3: Create route for deleteShopItem function here
-def ge_shop_orders_temp():
+def get_shop_orders():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
             req_json = request.get_json()
