@@ -726,6 +726,19 @@ def ge_shop_orders_temp(shop_id):
     return Response("Not Authorised")
 
 
+@app.route('/getOrdersByShopID', methods=['GET', 'POST'])
+@login_required
+# Task 3: Create route for deleteShopItem function here
+def ge_shop_orders_temp():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            shop_id = req_json['shop_id']
+            orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
+            return jsonify(Orders=[i.serialize for i in orders])
+    return API_KEY_ERROR
+
+
 @app.route("/export", methods=['GET'])
 @login_required
 def doexport():
@@ -856,7 +869,7 @@ def make_order():
                 order = models.Orders(user=user, item=item, quantity=quantity)
             else:
                 order.quantity = quantity
-                print("OrderID: "+ str(order.id) + ", ItemID:" + str(item.id) + ", UserID:" + str(user.id))
+                print("OrderID: " + str(order.id) + ", ItemID:" + str(item.id) + ", UserID:" + str(user.id))
                 db.session.add(order)
                 db.session.commit()
             db.session.add(order)
