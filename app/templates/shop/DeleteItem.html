@@ -6,9 +6,9 @@
 <h1>
     {{ shop.shop_name }} | Delete Menu Item | {{ item.name }}
 </h1>
-<form action="{{url_for('delete_shop_item_temp', shop_id=shop.id, item_id=item.id)}}" method="post">
+<form action="{{url_for('website.delete_shop_item', shop_id=shop.id, item_id=item.id)}}" method="post">
     <input type="submit" value="Delete | حذف">
-    <a href="{{url_for('get_shop_items', shop_id=shop.id)}}">Cancel</a>
+    <a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}">Cancel</a>
 </form>
 
 </body>

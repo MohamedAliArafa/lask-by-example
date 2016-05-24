@@ -3,29 +3,26 @@
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
 </head>
 <body>
-
 <h1>
-    {{ shop.shop_name }} | New Shop Item | منتج جديد
+    {{ shop.shop_name }} | New Menu Item
 </h1>
 
-<form action="{{url_for('edit_shop_item_temp', shop_id=shop.id, item_id=item.id)}}" method="post"
-      enctype=multipart/form-data>
+<form action="{{url_for('website.new_shop_item', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
 
     <p>Name | الإسم</p>
-    <input type="text" size="30" name="name" placeholder="{{item.name}}">
+    <input type="text" required="required" size="30" name="name">
 
-    <p>Description | الوصف </p>
-    <input type="text" size="30" name="description" placeholder="{{item.description}}">
+    <p>Description | الوصف</p>
+    <input type="text" required="required" size="30" name="description">
 
     <p>Price | السعر</p>
-    <input type="text" size="30" name="price" placeholder="{{item.price}}">
+    <input type="text" required="required" size="30" name="price">
 
     <p>Quantity | الكمية</p>
-    <input type="text" size="30" name="quantity" placeholder="{{item.quantity}}">
+    <input type="text" required="required" size="30" name="quantity">
 
     <p>Photo | صورة</p>
-
-    <p><input type="text" name="image" placeholder="{{item.image}}">
+    <input type="text" name="profile_pic" required="required">
 
     <p>Category | الفئة</p>
     <select name="cat_id" required="required">
@@ -36,6 +33,10 @@
         <option value="{{cat.id}}">{{cat.name}}</option>
         {% endfor %}
         {% endfor %}
+    </select>
+
+    <!--<p>Category | الفئة</p>-->
+    <!--<select name="cat_id" required="required">-->
         <!--<option value="" disabled="disabled" selected="selected">Please select a Category</option>-->
         <!--<option value="" disabled="disabled">Clothing | ملابس</option>-->
         <!--<option value="3">Children | أطفال</option>-->
@@ -58,11 +59,12 @@
         <!--<option value="14">Drawing | رسم</option>-->
         <!--<option value="15">Glass Art | زجاج</option>-->
         <!--<option value="16">Photography | تصوير</option>-->
-    </select>
-    <input type="submit" class="btn btn-primary btn-block btn-large" value="Edit | تعديل">
-    <a href="{{url_for('get_shop_items', shop_id=shop.id)}}" class="btn btn-primary btn-block btn-large">Cancel</a>
+    <!--</select>-->
+    <input type="submit" value="Create | إنشاء">
+
 </form>
 
 <iframe src="http://bubble.zeowls.com/upload.php"></iframe>
+
 </body>
 </html>
