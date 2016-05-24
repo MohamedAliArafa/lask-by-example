@@ -1,7 +1,6 @@
 __author__ = 'fantom'
 from flask import Blueprint, request, render_template, flash, redirect, url_for, Response
 from flask.ext.login import login_required, login_user, logout_user, current_user
-
 from app import db, login_manager, models
 
 mod_site = Blueprint('website', __name__)
@@ -190,3 +189,25 @@ def ge_shop_orders(shop_id):
         orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
         return render_template('shop/OredrsList.html', shop=shop, orders=orders)
     return Response("Not Authorised")
+
+
+@mod_site.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        print("POST")
+        errors = []
+        username = request.form.get('username')
+        password = request.form.get('password')
+        print(username + ":" + password)
+        user = db.session.query(models.Shop).filter_by(owner_email=username, password=password).first()
+        if user is None:
+            # flash('Username or Password is invalid', 'error')
+            errors.append("Username or Password is invalid")
+            return render_template('shop/Login.html', errors=errors)
+        else:
+            user.authenticated = True
+            login_user(user)
+            # flash('Logged in successfully')
+            return redirect(request.args.get('next') or url_for('website.get_shop_items', shop_id=user.id))
+    else:
+        return render_template('shop/Login.html')

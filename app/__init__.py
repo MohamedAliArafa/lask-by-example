@@ -50,11 +50,6 @@ login_manager.init_app(app)
 def not_found(error):
     return render_template('404.html'), 404
 
-
-# Date handler for Create and Update Date
-def date_handler(obj):
-    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
-
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.shopsite.controller import mod_site as site_module
 from app.admin.controller import mod_admin as admin_module
@@ -63,4 +58,26 @@ from app.admin.controller import mod_admin as admin_module
 app.register_blueprint(site_module)
 app.register_blueprint(admin_module)
 # app.register_blueprint(xyz_module)
+
+from itsdangerous import URLSafeTimedSerializer
+
+
+# Date handler for Create and Update Date
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
+
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'], max_age=expiration)
+    except:
+        return False
+    return email
+
 

@@ -1,13 +1,17 @@
-from sqlalchemy.dialects.postgresql import json
 from django.shortcuts import redirect
-from flask import request, jsonify, render_template, url_for, Response, flash, send_from_directory
 from flask.ext.login import login_required
-from app import models, client, date_handler, APP_ROOT
-from app import app, db, API_KEY, API_KEY_ERROR
+
+__author__ = 'fantom'
+import json
+from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory
+from app import db, API_KEY, API_KEY_ERROR, client, date_handler, APP_ROOT
+from app import models
 import pandas
 
+mod_mobile_user = Blueprint('mobile', __name__)
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@mod_mobile_user.route('/login', methods=['GET', 'POST'])
 def login():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -26,7 +30,7 @@ def login():
     return API_KEY_ERROR
 
 
-@app.route('/FBlogin', methods=['GET', 'POST'])
+@mod_mobile_user.route('/FBlogin', methods=['GET', 'POST'])
 def fb_login():
     birthday = None
     gender = None
@@ -60,7 +64,7 @@ def fb_login():
     return API_KEY_ERROR
 
 #
-# @app.route('/HomePage/JSON')
+# @mod_mobile_user.route('/HomePage/JSON')
 # def home_page():
 #     if request.headers.get('Authorization') == API_KEY:
 #         current = 0
@@ -86,8 +90,8 @@ def fb_login():
 
 #
 
-@app.route('/HomePageTest/JSON')
-def home_page_test():
+@mod_mobile_user.route('/HomePage/JSON')
+def home_page():
     if request.headers.get('Authorization') == API_KEY:
         current = 0
         out_put = "["
@@ -110,9 +114,9 @@ def home_page_test():
         return out_put
         # return jsonify(Category=[i.serialize for i in categories])
     return API_KEY_ERROR
-#
-#
-@app.route('/GetSubCategoriesById/<int:cat_id>/JSON')
+
+
+@mod_mobile_user.route('/GetSubCategoriesById/<int:cat_id>/JSON')
 def get_sub_categories_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         categories = db.session.query(models.SubCategory).filter_by(parentCat=cat_id)
@@ -120,7 +124,7 @@ def get_sub_categories_by_id(cat_id):
     return API_KEY_ERROR
 
 
-@app.route('/GetCategoryById/<int:cat_id>/JSON')
+@mod_mobile_user.route('/GetCategoryById/<int:cat_id>/JSON')
 def get_category_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         category = db.session.query(models.Category).filter_by(id=cat_id)
@@ -128,7 +132,7 @@ def get_category_by_id(cat_id):
     return API_KEY_ERROR
 
 
-# @app.route('/makeOrder/<int:item_id>/<int:user_id>')
+# @mod_mobile_user.route('/makeOrder/<int:item_id>/<int:user_id>')
 # def make_order_temp(item_id, user_id):
 #     if request.headers.get('Authorization') == API_KEY:
 #         item = db.session.query(models.Items).filter_by(id=item_id).one()
@@ -141,7 +145,7 @@ def get_category_by_id(cat_id):
 #     return API_KEY_ERROR
 
 
-@app.route('/GetShop/<int:shop_id>/JSON')
+@mod_mobile_user.route('/GetShop/<int:shop_id>/JSON')
 def get_shop(shop_id):
     if request.headers.get('Authorization') == API_KEY:
         shops = db.session.query(models.Shop).filter_by(id=shop_id)
@@ -149,7 +153,7 @@ def get_shop(shop_id):
     return API_KEY_ERROR
 
 
-@app.route('/GetShopItems/<int:shop_id>/JSON')
+@mod_mobile_user.route('/GetShopItems/<int:shop_id>/JSON')
 def get_shop_items_json(shop_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(shop_id=shop_id)
@@ -157,7 +161,7 @@ def get_shop_items_json(shop_id):
     return API_KEY_ERROR
 
 
-@app.route('/GetItem/<int:item_id>/JSON')
+@mod_mobile_user.route('/GetItem/<int:item_id>/JSON')
 def get_item_json(item_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(id=item_id)
@@ -165,7 +169,7 @@ def get_item_json(item_id):
     return API_KEY_ERROR
 
 
-@app.route('/GetItemByCategory/<int:cat_id>/JSON')
+@mod_mobile_user.route('/GetItemByCategory/<int:cat_id>/JSON')
 def get_item_by_cat_json(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(cat_id=cat_id)
@@ -173,7 +177,7 @@ def get_item_by_cat_json(cat_id):
     return API_KEY_ERROR
 
 
-@app.route('/newShopItem', methods=['GET', 'POST'])
+@mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
 # Task 1: Create route for newShopItem function here
 def new_shop_item():
     req_json = request.get_json()
@@ -205,7 +209,7 @@ def new_shop_item():
         return jsonify(response=-1)
 
 
-@app.route('/editShopItem', methods=['GET', 'POST'])
+@mod_mobile_user.route('/editShopItem', methods=['GET', 'POST'])
 # Task 2: Create route for editShopItem function here
 def edit_shop_item():
     if request.headers.get('Authorization') == API_KEY:
@@ -241,7 +245,7 @@ def edit_shop_item():
     return API_KEY_ERROR
 
 
-# @app.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
+# @mod_mobile_user.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
 # # Task 3: Create route for deleteShopItem function here
 # def delete_shop_item(shop_id, item_id):
 #     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
@@ -255,7 +259,7 @@ def edit_shop_item():
 #         return render_template('deleteMenuItem.html', shop=shop, item=item)
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@mod_mobile_user.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -289,7 +293,7 @@ def signup():
     return API_KEY_ERROR
 
 
-@app.route('/signupShop', methods=['GET', 'POST'])
+@mod_mobile_user.route('/signupShop', methods=['GET', 'POST'])
 def signup_shop():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -327,7 +331,7 @@ def signup_shop():
     return API_KEY_ERROR
 
 
-@app.route('/loginShop', methods=['GET', 'POST'])
+@mod_mobile_user.route('/loginShop', methods=['GET', 'POST'])
 def login_shop():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -346,7 +350,7 @@ def login_shop():
     return API_KEY_ERROR
 
 
-@app.route('/addToShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
+@mod_mobile_user.route('/addToShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
 def add_to_shop_cart(user_id, item_id):
     if request.headers.get('Authorization') == API_KEY:
         user = db.session.query(models.User).filter_by(id=user_id).one()
@@ -358,7 +362,7 @@ def add_to_shop_cart(user_id, item_id):
 
 
 # ToDo
-@app.route('/removeFromShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
+@mod_mobile_user.route('/removeFromShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
 def remove_from_shop_cart(user_id, item_id):
     if request.headers.get('Authorization') == API_KEY:
         user = db.session.query(models.User).filter_by(id=user_id).one()
@@ -372,7 +376,7 @@ def remove_from_shop_cart(user_id, item_id):
     return API_KEY_ERROR
 
 
-@app.route('/getUserShopCart/<int:user_id>/', methods=['GET', 'POST'])
+@mod_mobile_user.route('/getUserShopCart/<int:user_id>/', methods=['GET', 'POST'])
 def get_user_shop_cart(user_id):
     if request.headers.get('Authorization') == API_KEY:
         cart_items = db.session.query(models.ShoppingCart).filter_by(user_id=user_id).all()
@@ -380,7 +384,7 @@ def get_user_shop_cart(user_id):
     return API_KEY_ERROR
 
 
-@app.route('/registerDevice', methods=['GET', 'POST'])
+@mod_mobile_user.route('/registerDevice', methods=['GET', 'POST'])
 def register_device():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -396,7 +400,7 @@ def register_device():
     return API_KEY_ERROR
 
 
-@app.route('/registerShopDevice', methods=['GET', 'POST'])
+@mod_mobile_user.route('/registerShopDevice', methods=['GET', 'POST'])
 def register_shop_device():
     if request.headers.get('Authorization') == API_KEY:
         req_json = request.get_json()
@@ -412,7 +416,7 @@ def register_shop_device():
     return API_KEY_ERROR
 
 
-@app.route('/sendPush', methods=['GET', 'POST'])
+@mod_mobile_user.route('/sendPush', methods=['GET', 'POST'])
 def send_push():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
@@ -435,7 +439,7 @@ def send_push():
     return API_KEY_ERROR
 
 
-@app.route('/sendPushAll', methods=['GET', 'POST'])
+@mod_mobile_user.route('/sendPushAll', methods=['GET', 'POST'])
 def send_push_all():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
@@ -462,7 +466,7 @@ def send_push_all():
     return API_KEY_ERROR
 
 
-@app.route('/getOrdersByShopID', methods=['GET', 'POST'])
+@mod_mobile_user.route('/getOrdersByShopID', methods=['GET', 'POST'])
 @login_required
 # Task 3: Create route for deleteShopItem function here
 def get_shop_orders():
@@ -475,7 +479,7 @@ def get_shop_orders():
     return API_KEY_ERROR
 
 
-@app.route("/export", methods=['GET'])
+@mod_mobile_user.route("/export", methods=['GET'])
 @login_required
 def doexport():
     orders = db.session.query(models.Orders).all()
@@ -486,7 +490,7 @@ def doexport():
     return send_from_directory(directory=APP_ROOT, filename="output.xlsx")
 
 
-@app.route('/editUser', methods=['GET', 'POST'])
+@mod_mobile_user.route('/editUser', methods=['GET', 'POST'])
 def edit_user():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -518,7 +522,7 @@ def edit_user():
         return API_KEY_ERROR
 
 
-@app.route('/editCategory', methods=['GET', 'POST'])
+@mod_mobile_user.route('/editCategory', methods=['GET', 'POST'])
 def edit_category():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -538,7 +542,7 @@ def edit_category():
     return API_KEY_ERROR
 
 
-@app.route('/newCategory', methods=['GET', 'POST'])
+@mod_mobile_user.route('/newCategory', methods=['GET', 'POST'])
 def new_category():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -553,7 +557,7 @@ def new_category():
     return API_KEY_ERROR
 
 
-@app.route('/newSubCategory', methods=['GET', 'POST'])
+@mod_mobile_user.route('/newSubCategory', methods=['GET', 'POST'])
 def new_sub_category():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -570,7 +574,7 @@ def new_sub_category():
     return API_KEY_ERROR
 
 
-@app.route('/editSubCategory', methods=['GET', 'POST'])
+@mod_mobile_user.route('/editSubCategory', methods=['GET', 'POST'])
 def edit_sub_category():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -590,7 +594,7 @@ def edit_sub_category():
     return API_KEY_ERROR
 
 
-@app.route('/makeOrder', methods=['GET', 'POST'])
+@mod_mobile_user.route('/makeOrder', methods=['GET', 'POST'])
 def make_order():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -606,7 +610,7 @@ def make_order():
                 order = models.Orders(user=user, item=item, quantity=quantity)
                 client.send(user.device_token, "Order: " + item.name, notification={'title': "Order Sent",
                                                                                     'body': shop.shop_name + " Received Your Order"
-                                                                                                             " and waiting for approval"})
+                                                                                                             " and waiting for mod_mobile_userroval"})
                 client.send(shop.device_token, "Order: " + item.name, notification={'title': "Order: " + item.name,
                                                                                     'body': "please response to this "
                                                                                             "order for " + item.name})
@@ -615,7 +619,7 @@ def make_order():
                 print("OrderID: " + str(order.id) + ", ItemID:" + str(item.id) + ", UserID:" + str(user.id))
                 client.send(user.device_token, "Order: " + item.name, notification={'title': "Order Sent",
                                                                                     'body': "Your Order have been sent to shop "
-                                                                                            "waiting for approval"})
+                                                                                            "waiting for mod_mobile_userroval"})
                 client.send(shop.device_token, "Order: " + item.name, notification={'title': "Order: " + item.name,
                                                                                     'body': "please response to this "
                                                                                             "order for " + item.name})
@@ -630,7 +634,7 @@ def make_order():
     return API_KEY_ERROR
 
 
-@app.route('/getOrdersByUser', methods=['GET', 'POST'])
+@mod_mobile_user.route('/getOrdersByUser', methods=['GET', 'POST'])
 def get_orders_by_user():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -643,7 +647,7 @@ def get_orders_by_user():
     return API_KEY_ERROR
 
 
-@app.route('/getUser', methods=['GET', 'POST'])
+@mod_mobile_user.route('/getUser', methods=['GET', 'POST'])
 def get_user():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
@@ -656,7 +660,7 @@ def get_user():
     return API_KEY_ERROR
 
 
-@app.route('/editShop', methods=['GET', 'POST'])
+@mod_mobile_user.route('/editShop', methods=['GET', 'POST'])
 # Task 1: Create route for newShopItem function here
 def edit_shop():
     if request.headers.get('Authorization') == API_KEY:
@@ -713,7 +717,3 @@ def edit_shop():
         else:
             return jsonify(response=-1)
     return API_KEY_ERROR
-
-
-if __name__ == '__main__':
-    app.run()
