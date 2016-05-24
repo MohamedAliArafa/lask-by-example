@@ -53,18 +53,15 @@ def not_found(error):
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.shopsite.controller import mod_site as site_module
 from app.admin.controller import mod_admin as admin_module
+from app.UserMobileService.controller import mod_mobile_user as user_module
 
 # Register blueprint(s)
 app.register_blueprint(site_module)
 app.register_blueprint(admin_module)
+app.register_blueprint(user_module)
 # app.register_blueprint(xyz_module)
 
 from itsdangerous import URLSafeTimedSerializer
-
-
-# Date handler for Create and Update Date
-def date_handler(obj):
-    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
 def generate_confirmation_token(email):

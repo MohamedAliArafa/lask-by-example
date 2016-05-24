@@ -1,14 +1,18 @@
-from django.shortcuts import redirect
 from flask.ext.login import login_required
 
 __author__ = 'fantom'
 import json
-from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory
-from app import db, API_KEY, API_KEY_ERROR, client, date_handler, APP_ROOT
+from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory, redirect
+from app import db, API_KEY, API_KEY_ERROR, client, APP_ROOT
 from app import models
 import pandas
 
 mod_mobile_user = Blueprint('mobile', __name__)
+
+
+# Date handler for Create and Update Date
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
 @mod_mobile_user.route('/login', methods=['GET', 'POST'])
