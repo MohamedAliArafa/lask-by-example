@@ -651,6 +651,24 @@ def get_orders_by_user():
     return API_KEY_ERROR
 
 
+@mod_mobile_user.route('/editOrdersByUser', methods=['GET', 'POST'])
+def edit_orders_by_user():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            order_id = req_json['order_id']
+            order = db.session.query(models.Orders).filter_by(id=order_id).one()
+            if req_json['shipping_address'] is not None:
+                order.shipping_address = req_json['shipping_address']
+            db.session.add(order)
+            db.session.commit()
+            # return jsonify(orders=[i.serialize for i in orders])
+            return jsonify(response=1)
+        else:
+            return jsonify(response=-1)
+    return API_KEY_ERROR
+
+
 @mod_mobile_user.route('/getUser', methods=['GET', 'POST'])
 def get_user():
     if request.headers.get('Authorization') == API_KEY:

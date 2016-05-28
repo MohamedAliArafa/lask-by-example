@@ -274,6 +274,7 @@ class Orders(db.Model):
             'shop_address': self.item.shop.shop_address,
             'item_id': self.item.id,
             'item_name': self.item.name,
+            'item_image': self.item.image,
             'item_desc': self.item.description,
             'item_price': self.item.price,
             'item_quantity': self.quantity,
