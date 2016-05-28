@@ -269,6 +269,7 @@ class Orders(db.Model):
             'shipping_address': self.shipping_address,
             'shop_id': self.item.shop.id,
             'shop_name': self.item.shop.shop_name,
+            'shop_image': self.item.shop.shop_profile_pic,
             'shop_mobile': self.item.shop.mobile,
             'shop_email': self.item.shop.owner_email,
             'shop_address': self.item.shop.shop_address,
