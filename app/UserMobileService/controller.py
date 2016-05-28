@@ -106,11 +106,11 @@ def home_page():
             current += 1
             if count == current:
                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(
+                out_put += jsonify(Catname=category.name, Items=[i.serialize for i in items[:4]]).get_data(
                     as_text=True)
             else:
                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Category=[i.serialize for i in items[:4]]).get_data(
+                out_put += jsonify(Catname=category.name, Items=[i.serialize for i in items[:4]]).get_data(
                     as_text=True)
                 out_put += ","
             print(current)
