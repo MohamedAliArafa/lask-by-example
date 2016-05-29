@@ -70,5 +70,5 @@ def edit_order_by_id(order_id):
             db.session.commit()
             return render_template('Admin/OrdersList.html', shop=shop)
         else:
-            return render_template('Admin/EditOrder.html', orders=order)
+            return render_template('Admin/EditOrder.html', order=order)
     return API_KEY_ERROR
