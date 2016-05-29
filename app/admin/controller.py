@@ -60,7 +60,7 @@ def get_orders():
 def edit_order_by_id(order_id):
     if request.headers.get('Authorization') == API_KEY:
         order = db.session.query(models.Orders).filter_by(id=order_id).one()
-        shop = order.shop
+        shop = order.item.shop
         if request.method == 'POST':
             if request.form['shipping_address'] is not None:
                 order.shipping_address = request.form['shipping_address']
