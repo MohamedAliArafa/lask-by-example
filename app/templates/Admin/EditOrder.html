@@ -5,7 +5,7 @@
 <body>
 
 <h1>
-    {{ order.shop.shop_name }} | New Shop Item | منتج جديد
+    {{ order.item.shop.shop_name }} | New Shop Item | منتج جديد
 </h1>
 
 <form action="{{url_for('admin.edit_order_by_id', order_id=order.id)}}" method="post"
