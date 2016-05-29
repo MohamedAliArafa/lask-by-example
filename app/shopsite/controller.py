@@ -183,11 +183,11 @@ def delete_shop_item(shop_id, item_id):
 @mod_site.route('/myOrders/<int:shop_id>', methods=['GET', 'POST'])
 @login_required
 # route for myOrders function here
-def ge_shop_orders(shop_id):
+def get_shop_orders(shop_id):
     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
     if int(current_user.id) == int(shop_id):
         orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
-        return render_template('shop/OredrsList.html', shop=shop, orders=orders)
+        return render_template('shop/OrdersList.html', shop=shop, orders=orders)
     return Response("Not Authorised")
 
 
