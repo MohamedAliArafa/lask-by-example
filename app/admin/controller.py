@@ -68,7 +68,7 @@ def edit_order_by_id(order_id):
                 order.quantity = request.form['quantity']
             db.session.add(order)
             db.session.commit()
-            return render_template('Admin/EditOrder.html', orders=order)
-        else:
             return render_template('Admin/OrdersList.html', shop=shop)
+        else:
+            return render_template('Admin/EditOrder.html', orders=order)
     return API_KEY_ERROR
