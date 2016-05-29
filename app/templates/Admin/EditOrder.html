@@ -14,8 +14,8 @@
     <p>Name | الإسم: {{order.item.name}}</p>
     <!--<input type="text" size="30" name="name" placeholder="{{order.item.name}}">-->
 
-    <p>Description | الوصف  : {{item.description}}</p>
-    <input type="text" size="30" name="description" placeholder="{{item.description}}">
+    <p>Description | الوصف  : {{order.item.description}}</p>
+    <input type="text" size="30" name="description" placeholder="{{order.item.description}}">
 
     <p>Price | السعر  : {{order.item.price}}</p>
     <input type="text" size="30" name="price" placeholder="{{order.item.price}}">
@@ -27,7 +27,7 @@
     <input type="text" size="30" name="shipping_address" placeholder="{{order.shipping_address}}">
 
     <input type="submit" class="btn btn-primary btn-block btn-large" value="Edit | تعديل">
-    <a href="{{url_for('website.get_shop_orders')}}" class="btn btn-primary btn-block btn-large">Cancel</a>
+    <a href="{{url_for('website.get_shop_orders', shop_id=order.item.shop.id)}}" class="btn btn-primary btn-block btn-large">Cancel</a>
 </form>
 
 <iframe src="http://bubble.zeowls.com/upload.php"></iframe>
