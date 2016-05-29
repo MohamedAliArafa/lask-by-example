@@ -59,8 +59,9 @@ def get_orders():
 @mod_admin.route('/editOrderByID/<int:order_id>/', methods=['GET', 'POST'])
 def edit_order_by_id(order_id):
     if request.headers.get('Authorization') == API_KEY:
+        order = db.session.query(models.Orders).filter_by(id=order_id).one()
+        shop = order.shop
         if request.method == 'POST':
-            order = db.session.query(models.Orders).filter_by(id=order_id).one()
             if request.form['shipping_address'] is not None:
                 order.shipping_address = request.form['shipping_address']
             if request.form['quantity'] is not None:
@@ -69,5 +70,5 @@ def edit_order_by_id(order_id):
             db.session.commit()
             return render_template('Admin/EditOrder.html', orders=order)
         else:
-            return render_template('Admin/OrdersList.html')
+            return render_template('Admin/OrdersList.html', shop=shop)
     return API_KEY_ERROR
