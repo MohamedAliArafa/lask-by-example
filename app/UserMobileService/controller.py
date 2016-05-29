@@ -67,6 +67,7 @@ def fb_login():
             return jsonify(response=new_id)
     return API_KEY_ERROR
 
+
 #
 # @mod_mobile_user.route('/HomePage/JSON')
 # def home_page():
@@ -606,12 +607,13 @@ def make_order():
             item_id = req_json['item_id']
             user_id = req_json['user_id']
             quantity = req_json['quantity']
+            shipping_address = req_json['shipping_address']
             item = db.session.query(models.Items).filter_by(id=item_id).one()
             user = db.session.query(models.User).filter_by(id=user_id).one()
             shop = db.session.query(models.Shop).filter_by(id=item.shop_id).one()
             order = db.session.query(models.Orders).filter_by(user_id=user_id, item_id=item_id).first()
             if order is None:
-                order = models.Orders(user=user, item=item, quantity=quantity)
+                order = models.Orders(user=user, item=item, quantity=quantity, shipping_address=shipping_address)
                 client.send(user.device_token, "Order: " + item.name, notification={'title': "Order Sent",
                                                                                     'body': shop.shop_name + " Received Your Order"
                                                                                                              " and waiting for mod_mobile_userroval"})
@@ -620,6 +622,7 @@ def make_order():
                                                                                             "order for " + item.name})
             else:
                 order.quantity = quantity
+                order.shipping_address = shipping_address
                 print("OrderID: " + str(order.id) + ", ItemID:" + str(item.id) + ", UserID:" + str(user.id))
                 client.send(user.device_token, "Order: " + item.name, notification={'title': "Order Sent",
                                                                                     'body': "Your Order have been sent to shop "
