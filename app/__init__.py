@@ -4,16 +4,26 @@ from flask import Flask, render_template
 import os
 from flask_pushjack import FlaskGCM
 from flask.ext.login import LoginManager
+from flask.ext.api import FlaskAPI, status, exceptions
 
 # Import SQLAlchemy
 from flask.ext.sqlalchemy import SQLAlchemy
 
 # Define the WSGI application object
-app = Flask(__name__)
+app = FlaskAPI(__name__)
 
 # Configurations
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['DEFAULT_RENDERERS'] = [
+    'flask.ext.api.renderers.JSONRenderer',
+    'flask.ext.api.renderers.BrowsableAPIRenderer',
+]
+app.config['DEFAULT_PARSERS'] = [
+    'flask.ext.api.parsers.JSONParser',
+    'flask.ext.api.parsers.URLEncodedParser',
+    'flask.ext.api.parsers.MultiPartParser'
+]
 
 # GCM Config
 config = {

@@ -2,6 +2,8 @@ __author__ = 'fantom'
 from flask import Blueprint, request, render_template, flash, redirect, url_for, Response
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from app import db, login_manager, models
+from flask.ext.api.decorators import set_renderers
+from flask.ext.api.renderers import HTMLRenderer
 
 mod_site = Blueprint('website', __name__)
 
@@ -23,6 +25,7 @@ def logout():
 
 
 @mod_site.route('/')
+@set_renderers(HTMLRenderer)
 def welcome():
     # Welcome.
     if current_user.is_authenticated:
@@ -34,6 +37,7 @@ def welcome():
 @mod_site.route('/signUpShop', methods=['GET', 'POST'])
 @login_required
 # route for GetShopItems function here
+@set_renderers(HTMLRenderer)
 def sign_up_shop():
     if request.method == 'POST':
         if request.form['name'] and request.form['owner']:
@@ -53,6 +57,7 @@ def sign_up_shop():
 
 @mod_site.route('/GetShopItems')
 # route for GetShopItems function here
+@set_renderers(HTMLRenderer)
 def get_shop_items():
     print("current_user: " + str(current_user.id))
     shop_id = request.args.get('shop_id')
@@ -67,6 +72,7 @@ def get_shop_items():
 
 @mod_site.route('/editMyShop/<int:shop_id>', methods=['GET', 'POST'])
 # route for editMyShop function here
+@set_renderers(HTMLRenderer)
 def edit_shop(shop_id):
     if int(current_user.id) == int(shop_id):
         shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
@@ -99,6 +105,7 @@ def edit_shop(shop_id):
 @mod_site.route('/newShopItem/<int:shop_id>/', methods=['GET', 'POST'])
 @login_required
 # route for newShopItem function here
+@set_renderers(HTMLRenderer)
 def new_shop_item(shop_id):
     if int(current_user.id) == int(shop_id):
         global new_item
@@ -126,6 +133,7 @@ def new_shop_item(shop_id):
 @mod_site.route('/editShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
 @login_required
 # route for editShopItem function here
+@set_renderers(HTMLRenderer)
 def edit_shop_item(shop_id, item_id):
     if int(current_user.id) == int(shop_id):
         shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
@@ -166,6 +174,7 @@ def edit_shop_item(shop_id, item_id):
 @mod_site.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
 @login_required
 # route for deleteShopItem function here
+@set_renderers(HTMLRenderer)
 def delete_shop_item(shop_id, item_id):
     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
     item = db.session.query(models.Items).filter_by(id=item_id, shop_id=shop_id).one()
@@ -183,6 +192,7 @@ def delete_shop_item(shop_id, item_id):
 @mod_site.route('/myOrders/<int:shop_id>', methods=['GET', 'POST'])
 @login_required
 # route for myOrders function here
+@set_renderers(HTMLRenderer)
 def get_shop_orders(shop_id):
     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
     if int(current_user.id) == int(shop_id):
@@ -192,6 +202,7 @@ def get_shop_orders(shop_id):
 
 
 @mod_site.route("/login", methods=["GET", "POST"])
+@set_renderers(HTMLRenderer)
 def login():
     if request.method == 'POST':
         print("POST")

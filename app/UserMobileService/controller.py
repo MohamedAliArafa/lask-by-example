@@ -4,6 +4,9 @@ __author__ = 'fantom'
 import json
 from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory, redirect
 from app import db, API_KEY, API_KEY_ERROR, client, APP_ROOT
+from flask.ext.api.decorators import set_renderers
+from flask.ext.api import FlaskAPI, status, exceptions
+from flask.ext.api.renderers import HTMLRenderer
 from app import models
 import pandas
 
@@ -98,26 +101,15 @@ def fb_login():
 @mod_mobile_user.route('/HomePage/JSON')
 def home_page():
     if request.headers.get('Authorization') == API_KEY:
-        current = 0
-        out_put = "["
+        out_put = []
         categories = db.session.query(models.SubCategory)
         count = categories.count()
         print count
         for category in categories:
-            current += 1
-            if count == current:
-                items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Items=[i.serialize for i in items[:4]]).get_data(
-                    as_text=True)
-            else:
-                items = db.session.query(models.Items).filter_by(cat_id=category.id)
-                out_put += jsonify(Catname=category.name, Items=[i.serialize for i in items[:4]]).get_data(
-                    as_text=True)
-                out_put += ","
-            print(current)
-        out_put += "]"
+            items = db.session.query(models.Items).filter_by(cat_id=category.id)
+            cat_array = {'cat_name': category.name, 'items': [i.serialize for i in items[:4]]}
+            out_put.append(cat_array)
         return out_put
-        # return jsonify(Category=[i.serialize for i in categories])
     return API_KEY_ERROR
 
 
@@ -125,7 +117,7 @@ def home_page():
 def get_sub_categories_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         categories = db.session.query(models.SubCategory).filter_by(parentCat=cat_id)
-        return jsonify(Category=[i.serialize for i in categories])
+        return [i.serialize for i in categories]
     return API_KEY_ERROR
 
 
@@ -133,7 +125,7 @@ def get_sub_categories_by_id(cat_id):
 def get_category_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         category = db.session.query(models.Category).filter_by(id=cat_id)
-        return jsonify(Category=[i.serialize for i in category])
+        return [i.serialize for i in category]
     return API_KEY_ERROR
 
 
@@ -154,7 +146,7 @@ def get_category_by_id(cat_id):
 def get_shop(shop_id):
     if request.headers.get('Authorization') == API_KEY:
         shops = db.session.query(models.Shop).filter_by(id=shop_id)
-        return jsonify(Shop=[i.serialize for i in shops])
+        return [i.serialize for i in shops]
     return API_KEY_ERROR
 
 
@@ -162,7 +154,7 @@ def get_shop(shop_id):
 def get_shop_items_json(shop_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(shop_id=shop_id)
-        return jsonify(Items=[i.serialize for i in items])
+        return [i.serialize for i in items]
     return API_KEY_ERROR
 
 
@@ -170,7 +162,7 @@ def get_shop_items_json(shop_id):
 def get_item_json(item_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(id=item_id)
-        return jsonify(Items=[i.serialize for i in items])
+        return [i.serialize for i in items]
     return API_KEY_ERROR
 
 
@@ -178,7 +170,7 @@ def get_item_json(item_id):
 def get_item_by_cat_json(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         items = db.session.query(models.Items).filter_by(cat_id=cat_id)
-        return jsonify(Items=[i.serialize for i in items])
+        return [i.serialize for i in items]
     return API_KEY_ERROR
 
 
@@ -209,9 +201,9 @@ def new_shop_item():
         except:
             db.session.rollback()
             raise
-        return jsonify(response=new_id)
+        return {"response": new_id}
     else:
-        return jsonify(response=-1)
+        return {"response": -1}
 
 
 @mod_mobile_user.route('/editShopItem', methods=['GET', 'POST'])
@@ -244,7 +236,7 @@ def edit_shop_item():
             db.session.add(item)
             db.session.commit()
             # flash("New Item Edited!!")
-            return jsonify(response=1)
+            return {"response": 1}
         else:
             return render_template('editMenuItem.html', shop=shop, item=item, categories=categories)
     return API_KEY_ERROR
@@ -276,10 +268,10 @@ def signup():
             if len(user) > 0:
                 if user[0].email == username:
                     # email already exist
-                    return jsonify(response=-2)
+                    return {"response": -2}
                 if user[0].mobile == mobile:
                     # mobile already exist
-                    return jsonify(response=-3)
+                    return {"response": -3}
             else:
                 user = models.User(email=username, password=password, mobile=mobile)
                 try:
@@ -288,13 +280,13 @@ def signup():
                     new_id = user.id
                     db.session.commit()
                     # user_added = db.session.query(models.User).filter_by(email=username).all()
-                    return jsonify(response=new_id)
+                    return {"response": new_id}
                 except:
                     db.session.rollback()
                     raise
         else:
             # error
-            return jsonify(response=-1)
+            return {"response": -1}
     return API_KEY_ERROR
 
 
@@ -319,7 +311,7 @@ def signup_shop():
             if len(shop) > 0:
                 if shop[0].owner_email == owner_email:
                     # name already exist
-                    return jsonify(response=shop[0].id)
+                    return {"response": shop[0].id}
             else:
                 shop = models.Shop(owner_name=owner_name, owner_email=owner_email, password=password, mobile=mobile)
                 try:
@@ -330,9 +322,9 @@ def signup_shop():
                 except:
                     db.session.rollback()
                     raise
-                return jsonify(response=new_id)
+                return {"response": new_id}
         else:
-            return jsonify(response=-1)
+            return {"response": -1}
     return API_KEY_ERROR
 
 
@@ -345,13 +337,13 @@ def login_shop():
         user = db.session.query(models.Shop).filter_by(owner_email=username).all()
         if len(user) > 0:
             if user[0].password == password:
-                return jsonify(response=user[0].id)
+                return {"response": user[0].id}
             else:
                 # wrong password
-                return jsonify(response=-1)
+                return {"response": -1}
         else:
             # no matching email
-            return jsonify(response=-2)
+            return {"response": -2}
     return API_KEY_ERROR
 
 
@@ -385,7 +377,7 @@ def remove_from_shop_cart(user_id, item_id):
 def get_user_shop_cart(user_id):
     if request.headers.get('Authorization') == API_KEY:
         cart_items = db.session.query(models.ShoppingCart).filter_by(user_id=user_id).all()
-        return jsonify(Cart=[i.serialize for i in cart_items])
+        return [i.serialize for i in cart_items]
     return API_KEY_ERROR
 
 
@@ -401,7 +393,7 @@ def register_device():
         # client.send(device_token, "welcome To Bubble!!")
         db.session.add(user)
         db.session.commit()
-        return jsonify(response=device_token)
+        return {"response": device_token}
     return API_KEY_ERROR
 
 
@@ -417,11 +409,12 @@ def register_shop_device():
         # client.send(device_token, "welcome To Bubble!!")
         db.session.add(shop)
         db.session.commit()
-        return jsonify(response=device_token)
+        return {"response": device_token}
     return API_KEY_ERROR
 
 
 @mod_mobile_user.route('/sendPush', methods=['GET', 'POST'])
+@set_renderers(HTMLRenderer)
 def send_push():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
@@ -441,46 +434,51 @@ def send_push():
             <p><input type=submit value=Send>
         </form>
         ''')
-    return API_KEY_ERROR
+    raise exceptions.NotFound()
 
 
 @mod_mobile_user.route('/sendPushAll', methods=['GET', 'POST'])
+# @set_renderers(HTMLRenderer)
 def send_push_all():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
+            response = []
             users = db.session.query(models.User).all()
-            message = request.form['message']
-            title = request.form['title']
-            body = request.form['body']
-            icon = request.form['icon']
+            message = request.data.get('message', '')
+            title = request.data.get('title', '')
+            body = request.data.get('body', '')
+            icon = request.data.get('icon', '')
             for user in users:
                 if None is not user.device_token:
                     client.send(user.device_token, message,
                                 notification={'title': title, 'body': body, 'icon': icon})
-                    flash("Sent To" + user.name)
-        else:
-            return Response('''
-        <form action="" method="post">
-            <p><input type=text name=message>
-            <p><input type=text name=title>
-            <p><input type=text name=body>
-            <p><input type=text name=icon>
-            <p><input type=submit value=Send>
-        </form>
-        ''')
-    return API_KEY_ERROR
+                    # flash("Sent To" + user.name)
+                    response.append({"message": "sent to " + user.name})
+                response.append({"message": user.name + " has no device token"})
+            return response
+        # else:
+        #     return '''
+        # <form action="" method="post">
+        #     <p><input type=text name=message>
+        #     <p><input type=text name=title>
+        #     <p><input type=text name=body>
+        #     <p><input type=text name=icon>
+        #     <p><input type=submit value=Send>
+        # </form>
+        # '''
+            # return API_KEY_ERROR
 
 
 @mod_mobile_user.route('/getOrdersByShopID', methods=['GET', 'POST'])
-@login_required
+# @login_required
 # Task 3: Create route for deleteShopItem function here
 def get_shop_orders():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
             req_json = request.get_json()
-            shop_id = req_json['shop_id']
+            shop_id = request.data.get('shop_id', '')
             orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
-            return jsonify(Orders=[i.serialize for i in orders])
+            return [i.serialize for i in orders]
     return API_KEY_ERROR
 
 
