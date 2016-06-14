@@ -4,9 +4,6 @@ __author__ = 'fantom'
 import json
 from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory, redirect
 from app import db, API_KEY, API_KEY_ERROR, client, APP_ROOT
-from flask.ext.api.decorators import set_renderers
-from flask.ext.api import FlaskAPI, status, exceptions
-from flask.ext.api.renderers import HTMLRenderer
 from app import models
 import pandas
 
@@ -107,7 +104,7 @@ def home_page():
         print count
         for category in categories:
             items = db.session.query(models.Items).filter_by(cat_id=category.id)
-            cat_array = {'cat_name': category.name, 'items': [i.serialize for i in items[:4]]}
+            cat_array = {'Catname': category.name, 'Items': [i.serialize for i in items[:4]]}
             out_put.append(cat_array)
         return out_put
     return API_KEY_ERROR
@@ -414,7 +411,6 @@ def register_shop_device():
 
 
 @mod_mobile_user.route('/sendPush', methods=['GET', 'POST'])
-@set_renderers(HTMLRenderer)
 def send_push():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
@@ -434,7 +430,7 @@ def send_push():
             <p><input type=submit value=Send>
         </form>
         ''')
-    raise exceptions.NotFound()
+    return API_KEY_ERROR
 
 
 @mod_mobile_user.route('/sendPushAll', methods=['GET', 'POST'])
@@ -442,31 +438,27 @@ def send_push():
 def send_push_all():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == "POST":
-            response = []
             users = db.session.query(models.User).all()
-            message = request.data.get('message', '')
-            title = request.data.get('title', '')
-            body = request.data.get('body', '')
-            icon = request.data.get('icon', '')
+            message = request.form['message']
+            title = request.form['title']
+            body = request.form['body']
+            icon = request.form['icon']
             for user in users:
                 if None is not user.device_token:
                     client.send(user.device_token, message,
                                 notification={'title': title, 'body': body, 'icon': icon})
-                    # flash("Sent To" + user.name)
-                    response.append({"message": "sent to " + user.name})
-                response.append({"message": user.name + " has no device token"})
-            return response
-        # else:
-        #     return '''
-        # <form action="" method="post">
-        #     <p><input type=text name=message>
-        #     <p><input type=text name=title>
-        #     <p><input type=text name=body>
-        #     <p><input type=text name=icon>
-        #     <p><input type=submit value=Send>
-        # </form>
-        # '''
-            # return API_KEY_ERROR
+                    flash("Sent To" + user.name)
+        else:
+            return '''
+        <form action="" method="post">
+            <p><input type=text name=message>
+            <p><input type=text name=title>
+            <p><input type=text name=body>
+            <p><input type=text name=icon>
+            <p><input type=submit value=Send>
+        </form>
+        '''
+    return API_KEY_ERROR
 
 
 @mod_mobile_user.route('/getOrdersByShopID', methods=['GET', 'POST'])
@@ -476,7 +468,7 @@ def get_shop_orders():
     if request.headers.get('Authorization') == API_KEY:
         if request.method == 'POST':
             req_json = request.get_json()
-            shop_id = request.data.get('shop_id', '')
+            shop_id = int(request.data.get('shop_id', ''))
             orders = db.session.query(models.Orders).join(models.Items).filter(models.Items.shop_id == shop_id)
             return [i.serialize for i in orders]
     return API_KEY_ERROR
