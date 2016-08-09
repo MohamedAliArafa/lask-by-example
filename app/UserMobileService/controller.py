@@ -418,10 +418,11 @@ def send_push():
                 user_id = request.form['user_id']
                 message = request.form['message']
                 user = db.session.query(models.User).filter_by(id=user_id).one()
-                client.send(user.device_token, message)
-                return Response('<p>SENT to: ' + user.device_token)
-            else:
-                return
+                if None is not user and None is not user.device_token:
+                    client.send(user.device_token, message)
+                    return {"message": '<p>SENT to: ' + user.device_token}
+                else:
+                    return {"message": "Failed beacase of no user or no device token"}
         else:
             return Response('''
         <form action="" method="post">

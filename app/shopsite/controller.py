@@ -1,3 +1,5 @@
+from SOAPpy.Types import languageType
+
 __author__ = 'fantom'
 from flask import Blueprint, request, render_template, flash, redirect, url_for, Response
 from flask.ext.login import login_required, login_user, logout_user, current_user
@@ -92,6 +94,12 @@ def edit_shop(shop_id):
             if request.form['image']:
                 image_file = request.form['image']
                 shop.shop_profile_pic = image_file
+            if request.form['lon']:
+                longitude = request.form['lon']
+                shop.longitude = longitude
+            if request.form['lat']:
+                latitude = request.form['lat']
+                shop.latitude = latitude
             db.session.add(shop)
             db.session.commit()
             flash("shop Edited!!")
