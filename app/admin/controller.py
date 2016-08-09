@@ -72,3 +72,14 @@ def edit_order_by_id(order_id):
         else:
             return render_template('Admin/EditOrder.html', order=order)
     return API_KEY_ERROR
+
+
+@mod_admin.route('/addLocation/<int:shop_id>/<string:lon>/<string:lat>/', methods=['GET', 'POST'])
+def add_location(shop_id, lon, lat):
+    if request.headers.get('Authorization') == API_KEY:
+        shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+        shop.longitude = lon
+        shop.latitude = lat
+        db.session.add(shop)
+        db.session.commit()
+    return API_KEY_ERROR
