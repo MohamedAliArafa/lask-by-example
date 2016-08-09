@@ -20,7 +20,7 @@ def summery():
 def get_users():
     if request.headers.get('Authorization') == API_KEY:
         users = db.session.query(models.User).all()
-        return jsonify(User=[i.serialize for i in users])
+        return [i.serialize for i in users]
     return API_KEY_ERROR
 
 
@@ -28,7 +28,7 @@ def get_users():
 def get_all_shops():
     if request.headers.get('Authorization') == API_KEY:
         shops = db.session.query(models.Shop).all()
-        return jsonify(Shop=[i.serialize for i in shops])
+        return [i.serialize for i in shops]
     return API_KEY_ERROR
 
 
@@ -36,7 +36,7 @@ def get_all_shops():
 def get_all_categories():
     if request.headers.get('Authorization') == API_KEY:
         categories = db.session.query(models.Category).all()
-        return jsonify(Category=[i.serialize for i in categories])
+        return [i.serialize for i in categories]
     return API_KEY_ERROR
 
 
@@ -44,7 +44,7 @@ def get_all_categories():
 def get_sub_categories():
     if request.headers.get('Authorization') == API_KEY:
         categories = db.session.query(models.SubCategory).all()
-        return jsonify(Category=[i.serialize for i in categories])
+        return [i.serialize for i in categories]
     return API_KEY_ERROR
 
 
@@ -52,7 +52,7 @@ def get_sub_categories():
 def get_orders():
     if request.headers.get('Authorization') == API_KEY:
         orders = db.session.query(models.Orders).all()
-        return jsonify(orders=[i.serialize for i in orders])
+        return [i.serialize for i in orders]
     return API_KEY_ERROR
 
 
