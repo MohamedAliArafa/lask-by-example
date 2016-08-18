@@ -74,14 +74,13 @@ def edit_order_by_id(order_id):
     return API_KEY_ERROR
 
 
-@mod_admin.route('/addLocation', methods=['GET', 'POST'])
-def add_location():
+@mod_admin.route('/addLocation/<int:shop_id>/<float:lon>/<float:lat>/', methods=['GET', 'POST'])
+def add_location(shop_id, lon, lat):
     if request.headers.get('Authorization') == API_KEY:
-        shops = db.session.query(models.Shop)
-        for shop in shops:
-            shop.longitude = shop.latitude
-            shop.latitude = shop.longitude
-            db.session.add(shop)
-            db.session.commit()
+        shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+        shop.longitude = lat
+        shop.latitude = lon
+        db.session.add(shop)
+        db.session.commit()
         return "Location Updated!"
     return API_KEY_ERROR
