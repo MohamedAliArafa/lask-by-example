@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSON,DOUBLE_PRECISION
 
 
 class Result(db.Model):
@@ -33,8 +33,8 @@ class Shop(db.Model):
     mobile = db.Column(db.String)
     description = db.Column(db.String(250))
     short_description = db.Column(db.String(250))
-    longitude = db.Column(db.String)
-    latitude = db.Column(db.String)
+    longitude = db.Column(db.REAL)
+    latitude = db.Column(db.REAL)
     shop_address = db.Column(db.String(150))
     fb_token = db.Column(db.String)
     device_token = db.Column(db.String)
