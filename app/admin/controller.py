@@ -82,4 +82,5 @@ def add_location(shop_id, lon, lat):
         shop.latitude = lat
         db.session.add(shop)
         db.session.commit()
+        return "Location Updated!"
     return API_KEY_ERROR
