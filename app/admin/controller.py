@@ -74,7 +74,7 @@ def edit_order_by_id(order_id):
     return API_KEY_ERROR
 
 
-@mod_admin.route('/addLocation/<int:shop_id>/<string:lon>/<string:lat>/', methods=['GET', 'POST'])
+@mod_admin.route('/addLocation/<int:shop_id>/<float:lon>/<float:lat>/', methods=['GET', 'POST'])
 def add_location(shop_id, lon, lat):
     if request.headers.get('Authorization') == API_KEY:
         shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
