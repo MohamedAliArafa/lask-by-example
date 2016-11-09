@@ -21,7 +21,7 @@ def login():
         req_json = request.get_json()
         username = req_json['email']
         password = req_json['password']
-        user = db.session.query(models.User).filter_by(email=username).all()
+        user = db.session.query(models.Users).filter_by(email=username).all()
         if len(user) > 0:
             if user[0].password == password:
                 return jsonify(response=user)
@@ -40,31 +40,38 @@ def fb_login():
     gender = None
     profile_pic = None
     if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        print(str(req_json))
-        username = req_json['email']
-        if 'birthday' in req_json.keys():
-            birthday = req_json['birthday']
-        if 'gender' in req_json.keys():
-            gender = req_json['gender']
-        if 'picture' in req_json.keys():
-            profile_pic = req_json['picture']['data']['url']
-        name = req_json['name']
-        fb_token = req_json['fb_token']
-        fb_id = req_json['id']
-        # mobile = req_json['mobile']
-        user = db.session.query(models.User).filter_by(email=username).all()
-        if len(user) > 0:
-            return jsonify(response=user[0].id)
+        if request.method == 'POST':
+            req_json = request.get_json()
+            print(str(req_json))
+            username = req_json['email']
+            if 'birthday' in req_json.keys():
+                birthday = req_json['birthday']
+            if 'gender' in req_json.keys():
+                gender = req_json['gender']
+            if 'picture' in req_json.keys():
+                profile_pic = req_json['picture']['data']['url']
+            first_name = req_json['first_name']
+            last_name = req_json['last_name']
+            fb_token = req_json['fb_token']
+            fb_id = req_json['id']
+            # mobile = req_json['mobile']
+            user = db.session.query(models.Users).filter_by(email=username).all()
+            if len(user) > 0:
+                return jsonify(response=user[0].id)
+            else:
+                # no matching email
+                user = models.Users(first_name=first_name, last_name=last_name, birthday=birthday, gender=gender,
+                                    email=username, fb_token=fb_token, fb_id=fb_id)
+                image = models.Images(url=profile_pic)
+                db.session.add(user)
+                db.session.add(image)
+                db.session.flush()
+                user_id = user.id
+                db.session.merge(models.UserImages(user=user, image=image))
+                db.session.commit()
+                return jsonify(response=user_id)
         else:
-            # no matching email
-            user = models.User(name=name, DOB=birthday, gender=gender, email=username, fb_token=fb_token, fb_id=fb_id,
-                               profile_pic=profile_pic)
-            db.session.add(user)
-            db.session.flush()
-            new_id = user.id
-            db.session.commit()
-            return jsonify(response=new_id)
+            return {'error': 'POST request is REQUIRED!!'}
     return API_KEY_ERROR
 
 
@@ -95,27 +102,27 @@ def fb_login():
 
 #
 
-@mod_mobile_user.route('/HomePage/JSON')
+@mod_mobile_user.route('/HomePage')
 def home_page():
     if request.headers.get('Authorization') == API_KEY:
         out_put = []
-        categories = db.session.query(models.SubCategory)
+        categories = db.session.query(models.Category)
         count = categories.count()
         print count
         for category in categories:
-            items = db.session.query(models.Items).filter_by(cat_id=category.id)
-            cat_array = {'Catname': category.name, 'Items': [i.serialize for i in items[:4]]}
+            items = db.session.query(models.Products).filter_by(id_category=category.id)
+            cat_array = {'Catname': category.name, 'Products': [i.serialize for i in items[:4]]}
             out_put.append(cat_array)
         return out_put
     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/GetSubCategoriesById/<int:cat_id>/JSON')
-def get_sub_categories_by_id(cat_id):
-    if request.headers.get('Authorization') == API_KEY:
-        categories = db.session.query(models.SubCategory).filter_by(parentCat=cat_id)
-        return [i.serialize for i in categories]
-    return API_KEY_ERROR
+# @mod_mobile_user.route('/GetSubCategoriesById/<int:cat_id>/JSON')
+# def get_sub_categories_by_id(cat_id):
+#     if request.headers.get('Authorization') == API_KEY:
+#         categories = db.session.query(models.Category).filter_by(parentCat=cat_id)
+#         return [i.serialize for i in categories]
+#     return API_KEY_ERROR
 
 
 @mod_mobile_user.route('/GetCategoryById/<int:cat_id>/JSON')
@@ -139,104 +146,115 @@ def get_category_by_id(cat_id):
 #     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/GetShop/<int:shop_id>/JSON')
-def get_shop(shop_id):
+@mod_mobile_user.route('/GetProduct/<int:product_id>/JSON')
+def get_shop(product_id):
     if request.headers.get('Authorization') == API_KEY:
-        shops = db.session.query(models.Shop).filter_by(id=shop_id)
+        shops = db.session.query(models.Products).filter_by(id=product_id)
         return [i.serialize for i in shops]
     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/GetShopItems/<int:shop_id>/JSON')
-def get_shop_items_json(shop_id):
+# @mod_mobile_user.route('/GetShopItems/<int:shop_id>/JSON')
+# def get_shop_items_json(shop_id):
+#     if request.headers.get('Authorization') == API_KEY:
+#         items = db.session.query(models.Items).filter_by(shop_id=shop_id)
+#         return [i.serialize for i in items]
+#     return API_KEY_ERROR
+
+
+@mod_mobile_user.route('/GetItem', methods=['GET', 'POST'])
+def get_item_json():
     if request.headers.get('Authorization') == API_KEY:
-        items = db.session.query(models.Items).filter_by(shop_id=shop_id)
-        return [i.serialize for i in items]
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/GetItem/<int:item_id>/JSON')
-def get_item_json(item_id):
-    if request.headers.get('Authorization') == API_KEY:
-        items = db.session.query(models.Items).filter_by(id=item_id)
-        return [i.serialize for i in items]
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/GetItemByCategory/<int:cat_id>/JSON')
-def get_item_by_cat_json(cat_id):
-    if request.headers.get('Authorization') == API_KEY:
-        items = db.session.query(models.Items).filter_by(cat_id=cat_id)
-        return [i.serialize for i in items]
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
-# Task 1: Create route for newShopItem function here
-def new_shop_item():
-    req_json = request.get_json()
-    shop_id = req_json['shop_id']
-    name = req_json['name']
-    quantity = req_json['quantity']
-    price = req_json['price']
-    description = req_json['description']
-    # short_description = req_json['short_description']
-    image = req_json['image']
-    cat_id = req_json['cat_id']
-    global new_item
-    shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
-    if request.method == 'POST':
-        category = db.session.query(models.SubCategory).filter_by(id=cat_id).one()
-        new_item = models.Items(name=name, quantity=quantity, shop=shop, SubCategory=category,
-                                # short_description=short_description,
-                                price=price, description=description, image=image)
-        try:
-            db.session.add(new_item)
-            db.session.flush()
-            new_id = new_item.id
-            db.session.commit()
-        except:
-            db.session.rollback()
-            raise
-        return {"response": new_id}
-    else:
-        return {"response": -1}
-
-
-@mod_mobile_user.route('/editShopItem', methods=['GET', 'POST'])
-# Task 2: Create route for editShopItem function here
-def edit_shop_item():
-    if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        shop_id = req_json['shop_id']
-        item_id = req_json['item_id']
-        shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
-        categories = db.session.query(models.SubCategory).all()
-        item = db.session.query(models.Items).filter_by(id=item_id, shop_id=shop_id).one()
         if request.method == 'POST':
-            if not (req_json['name'] is None):
-                item.name = req_json['name']
-            if not (req_json['description'] is None):
-                item.description = req_json['description']
-            # if not (req_json['short_description'] is None):
-            #     item.description = req_json['short_description']
-            if not (req_json['quantity'] is None):
-                item.quantity = req_json['quantity']
-            if not (req_json['price'] is None):
-                item.price = req_json['price']
-            if not (req_json['cat_id'] is None):
-                item.category = db.session.query(models.SubCategory).filter_by(id=req_json['cat_id']).one()
-                item.cat_id = req_json['cat_id']
-            if not (req_json['image'] is None):
-                # filename = secure_filename(image_file.filename)
-                item.image = req_json['image']
-            db.session.add(item)
-            db.session.commit()
-            # flash("New Item Edited!!")
-            return {"response": 1}
+            req_json = request.get_json()
+            item_id = req_json['item_id']
+            print item_id
+            items = db.session.query(models.Products).filter_by(id=item_id)
+            return [i.serialize for i in items]
         else:
-            return render_template('editMenuItem.html', shop=shop, item=item, categories=categories)
+            return {'error': 'POST request is REQUIRED!!'}
     return API_KEY_ERROR
+
+
+@mod_mobile_user.route('/GetItemByCategory', methods=['GET', 'POST'])
+def get_item_by_cat_json():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            cat_id = req_json['cat_id']
+            items = db.session.query(models.Products).filter_by(id_category=cat_id)
+            return [i.serialize for i in items]
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
+
+
+# @mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
+# # Task 1: Create route for newShopItem function here
+# def new_shop_item():
+#     req_json = request.get_json()
+#     shop_id = req_json['shop_id']
+#     name = req_json['name']
+#     quantity = req_json['quantity']
+#     price = req_json['price']
+#     description = req_json['description']
+#     # short_description = req_json['short_description']
+#     image = req_json['image']
+#     cat_id = req_json['cat_id']
+#     global new_item
+#     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+#     if request.method == 'POST':
+#         category = db.session.query(models.SubCategory).filter_by(id=cat_id).one()
+#         new_item = models.Items(name=name, quantity=quantity, shop=shop, SubCategory=category,
+#                                 # short_description=short_description,
+#                                 price=price, description=description, image=image)
+#         try:
+#             db.session.add(new_item)
+#             db.session.flush()
+#             new_id = new_item.id
+#             db.session.commit()
+#         except:
+#             db.session.rollback()
+#             raise
+#         return {"response": new_id}
+#     else:
+#         return {"response": -1}
+
+
+# @mod_mobile_user.route('/editShopItem', methods=['GET', 'POST'])
+# # Task 2: Create route for editShopItem function here
+# def edit_shop_item():
+#     if request.headers.get('Authorization') == API_KEY:
+#         req_json = request.get_json()
+#         shop_id = req_json['shop_id']
+#         item_id = req_json['item_id']
+#         shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+#         categories = db.session.query(models.SubCategory).all()
+#         item = db.session.query(models.Items).filter_by(id=item_id, shop_id=shop_id).one()
+#         if request.method == 'POST':
+#             if not (req_json['name'] is None):
+#                 item.name = req_json['name']
+#             if not (req_json['description'] is None):
+#                 item.description = req_json['description']
+#             # if not (req_json['short_description'] is None):
+#             #     item.description = req_json['short_description']
+#             if not (req_json['quantity'] is None):
+#                 item.quantity = req_json['quantity']
+#             if not (req_json['price'] is None):
+#                 item.price = req_json['price']
+#             if not (req_json['cat_id'] is None):
+#                 item.category = db.session.query(models.SubCategory).filter_by(id=req_json['cat_id']).one()
+#                 item.cat_id = req_json['cat_id']
+#             if not (req_json['image'] is None):
+#                 # filename = secure_filename(image_file.filename)
+#                 item.image = req_json['image']
+#             db.session.add(item)
+#             db.session.commit()
+#             # flash("New Item Edited!!")
+#             return {"response": 1}
+#         else:
+#             return render_template('editMenuItem.html', shop=shop, item=item, categories=categories)
+#     return API_KEY_ERROR
 
 
 # @mod_mobile_user.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
@@ -256,100 +274,118 @@ def edit_shop_item():
 @mod_mobile_user.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        username = req_json['email']
-        password = req_json['password']
-        mobile = req_json['mobile']
-        if db.session.query(models.User).filter_by(email=username):
-            user = db.session.query(models.User).filter_by(email=username).all()
-            if len(user) > 0:
-                if user[0].email == username:
-                    # email already exist
-                    return {"response": -2}
-                if user[0].mobile == mobile:
-                    # mobile already exist
-                    return {"response": -3}
+        if request.method == 'POST':
+            req_json = request.get_json()
+            print(req_json)
+            first_name = req_json['first_name']
+            last_name = req_json['last_name']
+            username = req_json['email']
+            password = req_json['password']
+            # mobile = req_json['mobile']
+            if db.session.query(models.Users).filter_by(email=username):
+                user = db.session.query(models.Users).filter_by(email=username).all()
+                if len(user) > 0:
+                    if user[0].email == username:
+                        # email already exist
+                        return {"response": -2}
+                        # if user[0].mobile == mobile:
+                        #     # mobile already exist
+                        #     return {"response": -3}
+                else:
+                    user = models.Users(first_name=first_name, last_name=last_name, email=username, passwd=password)
+                    try:
+                        db.session.add(user)
+                        db.session.flush()
+                        new_id = user.id
+                        db.session.commit()
+                        # user_added = db.session.query(models.User).filter_by(email=username).all()
+                        return {"response": new_id}
+                    except:
+                        db.session.rollback()
+                        raise
             else:
-                user = models.User(email=username, password=password, mobile=mobile)
-                try:
-                    db.session.add(user)
-                    db.session.flush()
-                    new_id = user.id
-                    db.session.commit()
-                    # user_added = db.session.query(models.User).filter_by(email=username).all()
-                    return {"response": new_id}
-                except:
-                    db.session.rollback()
-                    raise
-        else:
-            # error
-            return {"response": -1}
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/signupShop', methods=['GET', 'POST'])
-def signup_shop():
-    if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        # shop_name = req_json['shop_name']
-        # shop_profile_pic = req_json['shop_profile_pic']
-        # shop_cover_pic = req_json['shop_cover_pic']
-        mobile = req_json['mobile']
-        # short_description = req_json['short_description']
-        # description = req_json['description']
-        # longitude = req_json['longitude']
-        # latitude = req_json['latitude']
-        # shop_address = req_json['shop_address']
-        owner_name = req_json['owner_name']
-        owner_email = req_json['owner_email']
-        password = req_json['password']
-        if db.session.query(models.Shop).filter_by(owner_email=owner_email):
-            shop = db.session.query(models.Shop).filter_by(owner_email=owner_email).all()
-            if len(shop) > 0:
-                if shop[0].owner_email == owner_email:
-                    # name already exist
-                    return {"response": shop[0].id}
-            else:
-                shop = models.Shop(owner_name=owner_name, owner_email=owner_email, password=password, mobile=mobile)
-                try:
-                    db.session.add(shop)
-                    db.session.flush()
-                    new_id = shop.id
-                    db.session.commit()
-                except:
-                    db.session.rollback()
-                    raise
-                return {"response": new_id}
-        else:
-            return {"response": -1}
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/loginShop', methods=['GET', 'POST'])
-def login_shop():
-    if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        username = req_json['email']
-        password = req_json['password']
-        user = db.session.query(models.Shop).filter_by(owner_email=username).all()
-        if len(user) > 0:
-            if user[0].password == password:
-                return {"response": user[0].id}
-            else:
-                # wrong password
+                # error
                 return {"response": -1}
         else:
-            # no matching email
-            return {"response": -2}
+            return {'error': 'POST request is REQUIRED!!'}
     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/addToShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
+# @mod_mobile_user.route('/signupShop', methods=['GET', 'POST'])
+# def signup_shop():
+#     if request.headers.get('Authorization') == API_KEY:
+#         req_json = request.get_json()
+#         # shop_name = req_json['shop_name']
+#         # shop_profile_pic = req_json['shop_profile_pic']
+#         # shop_cover_pic = req_json['shop_cover_pic']
+#         mobile = req_json['mobile']
+#         # short_description = req_json['short_description']
+#         # description = req_json['description']
+#         # longitude = req_json['longitude']
+#         # latitude = req_json['latitude']
+#         # shop_address = req_json['shop_address']
+#         owner_name = req_json['owner_name']
+#         owner_email = req_json['owner_email']
+#         password = req_json['password']
+#         if db.session.query(models.Shop).filter_by(owner_email=owner_email):
+#             shop = db.session.query(models.Shop).filter_by(owner_email=owner_email).all()
+#             if len(shop) > 0:
+#                 if shop[0].owner_email == owner_email:
+#                     # name already exist
+#                     return {"response": shop[0].id}
+#             else:
+#                 shop = models.Shop(owner_name=owner_name, owner_email=owner_email, password=password, mobile=mobile)
+#                 try:
+#                     db.session.add(shop)
+#                     db.session.flush()
+#                     new_id = shop.id
+#                     db.session.commit()
+#                 except:
+#                     db.session.rollback()
+#                     raise
+#                 return {"response": new_id}
+#         else:
+#             return {"response": -1}
+#     return API_KEY_ERROR
+
+
+# @mod_mobile_user.route('/loginShop', methods=['GET', 'POST'])
+# def login_shop():
+#     if request.headers.get('Authorization') == API_KEY:
+#         req_json = request.get_json()
+#         username = req_json['email']
+#         password = req_json['password']
+#         user = db.session.query(models.Shop).filter_by(owner_email=username).all()
+#         if len(user) > 0:
+#             if user[0].password == password:
+#                 return {"response": user[0].id}
+#             else:
+#                 # wrong password
+#                 return {"response": -1}
+#         else:
+#             # no matching email
+#             return {"response": -2}
+#     return API_KEY_ERROR
+
+# ToDo
+
+@mod_mobile_user.route('/addToCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
+def add_to_cart(user_id, item_id):
+    if request.headers.get('Authorization') == API_KEY:
+        user = db.session.query(models.Users).filter_by(id=user_id).one()
+        item = db.session.query(models.Products).filter_by(id=item_id).one()
+        db.session.merge(models.Cart(user=user, item=item))
+        db.session.commit()
+        return redirect(url_for('get_user_shop_cart', user_id=user_id))
+    return API_KEY_ERROR
+
+
+@mod_mobile_user.route('/newOrder/<int:user_id>', methods=['GET', 'POST'])
 def add_to_shop_cart(user_id, item_id):
     if request.headers.get('Authorization') == API_KEY:
-        user = db.session.query(models.User).filter_by(id=user_id).one()
-        item = db.session.query(models.Items).filter_by(id=item_id).one()
-        db.session.merge(models.ShoppingCart(user=user, item=item))
+        user = db.session.query(models.Users).filter_by(id=user_id).one()
+        item = db.session.query(models.Products).filter_by(id=item_id).one()
+        db.session.merge(models.Cart(user=user, item=item))
         db.session.commit()
         return redirect(url_for('get_user_shop_cart', user_id=user_id))
     return API_KEY_ERROR
@@ -359,10 +395,10 @@ def add_to_shop_cart(user_id, item_id):
 @mod_mobile_user.route('/removeFromShopCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
 def remove_from_shop_cart(user_id, item_id):
     if request.headers.get('Authorization') == API_KEY:
-        user = db.session.query(models.User).filter_by(id=user_id).one()
-        item = db.session.query(models.Items).filter_by(id=item_id).one()
-        if db.session.query(models.ShoppingCart).filter_by(user=user, item=item):
-            db.session.query(models.ShoppingCart).filter_by(user=user, item=item).one()
+        user = db.session.query(models.Users).filter_by(id=user_id).one()
+        item = db.session.query(models.Products).filter_by(id=item_id).one()
+        if db.session.query(models.Cart).filter_by(user=user, item=item):
+            db.session.query(models.Cart).filter_by(user=user, item=item).one()
             db.session.delete(item)
             db.session.commit()
             return redirect(url_for('get_user_shop_cart', user_id=user_id))
@@ -384,7 +420,7 @@ def register_device():
         req_json = request.get_json()
         user_id = req_json['user_id']
         device_token = req_json['device_token']
-        user = db.session.query(models.User).filter_by(id=user_id).one()
+        user = db.session.query(models.Users).filter_by(id=user_id).one()
         user.device_token = device_token
         print(device_token)
         # client.send(device_token, "welcome To Bubble!!")
@@ -417,7 +453,7 @@ def send_push():
             if request.form['user_id']:
                 user_id = request.form['user_id']
                 message = request.form['message']
-                user = db.session.query(models.User).filter_by(id=user_id).one()
+                user = db.session.query(models.Users).filter_by(id=user_id).one()
                 if None is not user and None is not user.device_token:
                     client.send(user.device_token, message)
                     return {"message": '<p>SENT to: ' + user.device_token}
@@ -496,9 +532,9 @@ def edit_user():
             email = req_json['email']
             gender = req_json['gender']
             password = req_json['password']
-            mobile = req_json['mobile']
+            # mobile = req_json['mobile']
             profile_pic = req_json['profile_pic']
-            user = db.session.query(models.User).filter_by(id=user_id).one()
+            user = db.session.query(models.Users).filter_by(id=user_id).one()
             if not (name is None):
                 user.name = name
             if not (email is None):
@@ -507,8 +543,8 @@ def edit_user():
                 user.gender = gender
             if not (password is None):
                 user.password = password
-            if not (mobile is None):
-                user.mobile = mobile
+            # if not (mobile is None):
+            #     user.mobile = mobile
             if not (profile_pic is None):
                 user.profile_pic = profile_pic
             db.session.add(user)

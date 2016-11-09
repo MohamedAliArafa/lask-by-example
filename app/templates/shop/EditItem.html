@@ -1,68 +1,234 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> {{ shop.shop_name }} </title>
+
+    <!-- Bootstrap -->
+    <link href="{{url_for('static', filename='vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{url_for('static', filename='vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{url_for('static', filename='vendors/nprogress/nprogress.css')}}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{url_for('static', filename='vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="{{url_for('static', filename='vendors/google-code-prettify/bin/prettify.min.css')}}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{{url_for('static', filename='vendors/select2/dist/css/select2.min.css')}}" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="{{url_for('static', filename='vendors/switchery/dist/switchery.min.css')}}" rel="stylesheet">
+    <!-- starrr -->
+    <link href="{{url_for('static', filename='vendors/starrr/dist/starrr.css')}}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{{url_for('static', filename='build/css/custom.min.css')}}" rel="stylesheet">
+
 </head>
-<body>
 
-<h1>
-    {{ shop.shop_name }} | New Shop Item | منتج جديد
-</h1>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>{{ shop.shop_name }}</span></a>
+                </div>
 
-<form action="{{url_for('website.edit_shop_item', shop_id=shop.id, item_id=item.id)}}" method="post"
-      enctype=multipart/form-data>
+                <div class="clearfix"></div>
 
-    <p>Name | الإسم</p>
-    <input type="text" size="30" name="name" placeholder="{{item.name}}">
+                <!-- menu profile quick info -->
+                <div class="profile">
+                    <div class="profile_pic">
+                        <img src="http://bubble.zeowls.com/uploads/{{ shop.shop_profile_pic }}" alt="..."
+                             class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome,</span>
 
-    <p>Description | الوصف </p>
-    <input type="text" size="30" name="description" placeholder="{{item.description}}">
+                        <h2>{{ shop.shop_name }}</h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
 
-    <p>Price | السعر</p>
-    <input type="text" size="30" name="price" placeholder="{{item.price}}">
+                <br/>
 
-    <p>Quantity | الكمية</p>
-    <input type="text" size="30" name="quantity" placeholder="{{item.quantity}}">
+                {% include 'menus.html' %}
 
-    <p>Photo | صورة</p>
+            </div>
+        </div>
 
-    <p><input type="text" name="image" placeholder="{{item.image}}">
+        {% include 'top_navigation.html' %}
 
-    <p>Category | الفئة</p>
-    <select name="cat_id" required="required">
-        <option value="" disabled="disabled" selected="selected">Please select a Category</option>
-        {% for main in main_cats %}
-        <option disabled="disabled" value="">{{main.name}}</option>
-        {% for cat in sub_cat[main.id] %}
-        <option value="{{cat.id}}">{{cat.name}}</option>
-        {% endfor %}
-        {% endfor %}
-        <!--<option value="" disabled="disabled" selected="selected">Please select a Category</option>-->
-        <!--<option value="" disabled="disabled">Clothing | ملابس</option>-->
-        <!--<option value="3">Children | أطفال</option>-->
-        <!--<option value="1">Crocheting | حياكة</option>-->
-        <!--<option value="12">Knitting | نسيج</option>-->
-        <!--<option value="" disabled="disabled">Crafts | حرف</option>-->
-        <!--<option value="2">Floral Craft | زهريات</option>-->
-        <!--<option value="8">Leather Craft | جلديات</option>-->
-        <!--<option value="9">Woodworking | أعمال خشبية</option>-->
-        <!--<option value="" disabled="disabled">Home | منزلية</option>-->
-        <!--<option value="4">Decor | ديكور</option>-->
-        <!--<option value="5">Lighting | إضاءة</option>-->
-        <!--<option value="7">Kitchen | مطبخ</option>-->
-        <!--<option value="" disabled="disabled">Accessory | إكسسوارات</option>-->
-        <!--<option value="6">Rings | خواتم</option>-->
-        <!--<option value="10">Necklaces | سلاسل</option>-->
-        <!--<option value="11">Earrings | الأقراط</option>-->
-        <!--<option value="13">Bracelets | أساور</option>-->
-        <!--<option value="" disabled="disabled">Artwork | أعمال فنية</option>-->
-        <!--<option value="14">Drawing | رسم</option>-->
-        <!--<option value="15">Glass Art | زجاج</option>-->
-        <!--<option value="16">Photography | تصوير</option>-->
-    </select>
-    <input type="submit" class="btn btn-primary btn-block btn-large" value="Edit | تعديل">
-    <a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}" class="btn btn-primary btn-block btn-large">Cancel</a>
-</form>
 
-<iframe src="http://bubble.zeowls.com/upload.php"></iframe>
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Edit " {{item.name}} "</h3>
+                    </div>
+
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h3>{{item.name}}
+                                    <small>{{item.description}}</small>
+                                </h3>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br/>
+
+                                <form action="{{url_for('website.edit_shop_item', shop_id=shop.id, item_id=item.id)}}"
+                                      method="post" enctype=multipart/form-data class="form-horizontal form-label-left">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name</label>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id="name" name="name"
+                                                   class="form-control col-md-7 col-xs-12" placeholder="{{item.name}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">
+                                            Description</label>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id="description" name="description"
+                                                   class="form-control col-md-7 col-xs-12"
+                                                   placeholder="{{item.description}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price
+                                        </label>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="price" name="price" class="form-control col-md-7 col-xs-12"
+                                                   type="text" placeholder="{{item.price}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price
+                                        </label>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="quantity" name="quantity" class="form-control col-md-7 col-xs-12"
+                                                   type="text" placeholder="{{item.quantity}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <img class="col-md-6 col-sm-6 col-xs-12"
+                                             src="http://bubble.zeowls.com/uploads/{{shop.shop_profile_pic}}">
+                                        <a class="btn btn-primary"
+                                           href="{{url_for('website.edit_shop_image', shop_id=shop.id)}}">Change</a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price
+                                        </label>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="image" name="image" class="form-control col-md-7 col-xs-12"
+                                                   type="text" placeholder="{{item.image}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">
+                                            Category
+                                        </label>
+
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <select class="select2_single form-control" tabindex="-1"
+                                                    id="category" name="cat_id">
+                                                {% for main in main_cats %}
+                                                <optgroup label="{{main.name}}">
+                                                    {% for cat in sub_cat[main.id] %}
+                                                    {% if cat.id == item.cat_id %}
+                                                    <option selected="selected" value="{{cat.id}}">{{cat.name}}</option>
+                                                    {% else %}
+                                                    <option value="{{cat.id}}">{{cat.name}}</option>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </optgroup>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                            <a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}" class="btn btn-primary">Cancel</a>
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="{{url_for('static', filename='vendors/jquery/dist/jquery.min.js')}}"></script>
+<!-- Bootstrap -->
+<script src="{{url_for('static', filename='vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- jQuery Tags Input -->
+<script src="{{url_for('static', filename='vendors/jquery.tagsinput/src/jquery.tagsinput.js')}}"></script>
+<!-- Switchery -->
+<script src="{{url_for('static', filename='vendors/switchery/dist/switchery.min.js')}}"></script>
+<!-- Select2 -->
+<script src="{{url_for('static', filename='vendors/select2/dist/js/select2.full.min.js')}}"></script>
+<!-- Custom Theme Scripts -->
+<script src="{{url_for('static', filename='build/js/custom.min.js')}}"></script>
+
+<!-- Select2 -->
+<script>
+    $(document).ready(function () {
+        $(".select2_single").select2({
+            placeholder: "Select a state"
+        });
+    });
+</script>
+<!-- /Select2 -->
 </body>
 </html>

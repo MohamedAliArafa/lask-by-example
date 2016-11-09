@@ -1,200 +1,34 @@
 from app import db
-from sqlalchemy.dialects.postgresql import JSON, DOUBLE_PRECISION
+from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION
 
 
-class Result(db.Model):
-    __tablename__ = 'results'
-
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String())
-    result_all = db.Column(JSON)
-    result_no_stop_words = db.Column(JSON)
-
-    def __init__(self, url, result_all, result_no_stop_words):
-        self.url = url
-        self.result_all = result_all
-        self.result_no_stop_words = result_no_stop_words
-
-    def __repr__(self):
-        return '<id {}>'.format(self.id)
-
-
-class Shop(db.Model):
-    __tablename__ = 'shop'
+class Images(db.Model):
+    __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_name = db.Column(db.String)
-    owner_email = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    gender = db.Column(db.CHAR)
-    shop_name = db.Column(db.String(250))
-    shop_profile_pic = db.Column(db.String(200))
-    shop_cover_pic = db.Column(db.String(200))
-    mobile = db.Column(db.String)
-    description = db.Column(db.String(250))
-    short_description = db.Column(db.String(250))
-    longitude = db.Column(DOUBLE_PRECISION)
-    latitude = db.Column(DOUBLE_PRECISION)
-    shop_address = db.Column(db.String(150))
-    fb_token = db.Column(db.String)
-    device_token = db.Column(db.String)
-    created = db.Column(db.DateTime, server_default=db.func.now())
-    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
-
-    def get_id(self):
-        return self.id
-
-    def get_email(self):
-        return self.email
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.shop_name,
-            'profile_pic': self.shop_profile_pic,
-            'cover_pic': self.shop_cover_pic,
-            'mobile': self.mobile,
-            'owner_email': self.owner_email,
-            'shop_address': self.shop_address,
-            'short_description': self.short_description,
-            'description': self.description,
-            'longitude': self.longitude,
-            'latitude': self.latitude,
-            'owner_name': self.owner_name,
-            'owner_profile_pic': self.shop_profile_pic,
-            'device_token': self.device_token,
-            'created': self.created,
-            'updated': self.updated
-        }
-
-
-class Category(db.Model):
-    __tablename__ = 'category'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
-    hasSub = db.Column(db.String(5))
+    url = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
         # Returns object data in easily serialized format
         return {
             'id': self.id,
-            'name': self.name,
-            'hasSub': self.hasSub
+            'url': self.url,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
         }
 
 
-class SubCategory(db.Model):
-    __tablename__ = 'sub_category'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
-    parentCat = db.Column(db.Integer, db.ForeignKey('category.id'))
-    category = db.relationship(Category, foreign_keys=[parentCat])
-
-    @property
-    def serialize(self):
-        # Returns object data in easily serialized format
-        return {
-            'id': self.id,
-            'name': self.name,
-            'category': self.category.name,
-            'parentCat': self.category.id
-        }
-
-
-class Items(db.Model):
-    __tablename__ = 'items'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    short_description = db.Column(db.String(250))
-    description = db.Column(db.String(500))
-    quantity = db.Column(db.Integer, nullable=False)
-    image = db.Column(db.String(50))
-    images = db.Column(JSON)
-    price = db.Column(db.String(8))
-    shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'))
-    shop = db.relationship(Shop)
-    cat_id = db.Column(db.Integer, db.ForeignKey('sub_category.id'))
-    SubCategory = db.relationship(SubCategory)
-    is_main = db.Column(db.Boolean)
-    created = db.Column(db.DateTime, server_default=db.func.now())
-    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
-
-    @property
-    def serialize(self):
-        # Returns object data in easily serialized format
-        return {
-            'id': self.id,
-            'name': self.name,
-            'short_description': self.short_description,
-            'description': self.description,
-            'price': self.price,
-            'quantity': self.quantity,
-            'image': self.image,
-            'images': self.images,
-            'shop_id': self.shop.id,
-            'shop_name': self.shop.shop_name,
-            'shop_short_desc': self.shop.short_description,
-            'shop_image': self.shop.shop_profile_pic,
-            'shop_address': self.shop.shop_address,
-            'cat_id': self.SubCategory.category.id,
-            'sub_cat_id': self.SubCategory.id,
-            'is_main': self.is_main,
-            'created': self.created,
-            'updated': self.updated
-        }
-
-
-class User(db.Model):
-    __tablename__ = 'users'
+class AgentsRole(db.Model):
+    __tablename__ = 'agents_role'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    email = db.Column(db.String, nullable=False)
-    password = db.Column(db.String)
-    mobile = db.Column(db.String)
-    gender = db.Column(db.String)
-    DOB = db.Column(db.String)
-    profile_pic = db.Column(db.String)
-    authenticated = db.Column(db.Boolean, default=False)
-    fb_token = db.Column(db.String)
-    fb_id = db.Column(db.String)
-    device_token = db.Column(db.String)
-    created = db.Column(db.DateTime, server_default=db.func.now())
-    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
-
-    def get_id(self):
-        return self.id
-
-    def get_email(self):
-        return self.email
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
+    description = db.Column(db.String)
 
     @property
     def serialize(self):
@@ -202,41 +36,205 @@ class User(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'email': self.email,
-            'gender': self.gender,
-            'DOB': self.DOB,
-            'password': self.password,
-            'mobile': self.mobile,
-            'profile_pic': self.profile_pic,
-            'authenticated': self.authenticated,
-            'device_token': self.device_token,
-            'created': self.created,
-            'updated': self.updated
+            'description': self.description,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
         }
 
 
-class ShoppingCart(db.Model):
-    __tablename__ = 'shopping_cart'
+class Agents(db.Model):
+    __tablename__ = 'agents'
 
-    user = db.relationship(User)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    item = db.relationship(Items)
-    item_id = db.Column(db.Integer, db.ForeignKey('items.id'), primary_key=True)
-    created = db.Column(db.DateTime, server_default=db.func.now())
-    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    email = db.Column(db.String)
+    passwd = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    role_id = db.Column(db.Integer, db.ForeignKey('agents_role.id'))
+    role = db.relationship(AgentsRole)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    def get_id(self):
+        return self.id
+
+    def get_email(self):
+        return self.email
+
+    def is_active(self):
+        return self.active
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.firstname,
+            'last_name': self.lastname,
+            'email': self.email,
+            'active': self.active,
+            'role_id': self.role_id,
+            'role_name': self.role.name,
+            'date_add': self.created,
+            'date_upd': self.updated
+        }
+
+
+class Users(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    passwd = db.Column(db.String, nullable=False)
+    profile_pic = db.Column(db.String)
+    birthday = db.Column(db.DateTime)
+    gender = db.Column(db.CHAR)
+    fav_lan = db.Column(db.Integer)
+    longitude = db.Column(DOUBLE_PRECISION)
+    latitude = db.Column(DOUBLE_PRECISION)
+    google_id = db.Column(db.String)
+    fb_token = db.Column(db.String)
+    fb_id = db.Column(db.String)
+    device_token = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    def get_id(self):
+        return self.id
+
+    def get_email(self):
+        return self.email
+
+    def is_active(self):
+        return self.active
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+            'birthday': self.birthday,
+            'gender': self.gender,
+            'fav_lan': self.fav_lan,
+            'longitude': self.longitude,
+            'latitude': self.latitude,
+            'fb_token': self.fb_token,
+            'google_id': self.google_id,
+            'device_token': self.device_token,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class Address(db.Model):
+    __tablename__ = 'address'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
+    floor_num = db.Column(db.Integer)
+    building_num = db.Column(db.Integer)
+    street_name = db.Column(db.String)
+    description = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
         # Returns object data in easily serialized format
         return {
-            'shop_id': self.item.shop.id,
-            'shop_name': self.item.shop.shop_name,
-            'item_id': self.item.id,
-            'item_name': self.item.name,
-            'item_desc': self.item.description,
-            'item_price': self.item.price,
-            'created': self.created,
-            'updated': self.updated
+            'id': self.id,
+            'id_user': self.id_user,
+            'floor_num': self.floor_num,
+            'building_num': self.building_num,
+            'street_name': self.street_name,
+            'description': self.description,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class Phone(db.Model):
+    __tablename__ = 'phone'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
+    code = db.Column(db.Integer)
+    number = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_user': self.id_user,
+            'code': self.floor_num,
+            'number': self.building_num,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class UserImages(db.Model):
+    __tablename__ = 'user_images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
+    id_image = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image = db.relationship(Images)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_user': self.id_user,
+            'id_image': self.floor_num,
+            'image_url': self.image.url,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class OrderStatus(db.Model):
+    __tablename__ = 'order_status'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
         }
 
 
@@ -244,42 +242,238 @@ class Orders(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    user = db.relationship(User)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    item = db.relationship(Items)
-    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    quantity = db.Column(db.Integer, default=1)
-    # 0: pending, 1: Confirmed by User
-    # 2: Confirmed by shop, 3: received by Delivery
-    # 4: Received by User
-    status = db.Column(db.Integer, default=0)
-    shipping_address = db.Column(db.String)
-    created = db.Column(db.DateTime, server_default=db.func.now())
-    updated = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+    id_current_state = db.Column(db.Integer, db.ForeignKey('order_status.id'))
+    status = db.relationship(OrderStatus)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
+    id_address = db.Column(db.Integer, db.ForeignKey('address.id'))
+    address = db.relationship(Address)
+    id_phone = db.Column(db.Integer, db.ForeignKey('phone.id'))
+    phone = db.relationship(Phone)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     @property
     def serialize(self):
         # Returns object data in easily serialized format
         return {
             'id': self.id,
-            'user_id': self.user.id,
-            'user_name': self.user.name,
-            'user_mobile': self.user.mobile,
-            'user_email': self.user.email,
-            'shipping_address': self.shipping_address,
-            'shop_id': self.item.shop.id,
-            'shop_name': self.item.shop.shop_name,
-            'shop_image': self.item.shop.shop_profile_pic,
-            'shop_mobile': self.item.shop.mobile,
-            'shop_email': self.item.shop.owner_email,
-            'shop_address': self.item.shop.shop_address,
-            'item_id': self.item.id,
-            'item_name': self.item.name,
-            'item_image': self.item.image,
-            'item_desc': self.item.description,
-            'item_price': self.item.price,
-            'item_quantity': self.quantity,
-            'order_status': self.status,
-            'created': self.created,
-            'updated': self.updated
+            'id_user': self.id_user,
+            'id_image': self.floor_num,
+            'image_url': self.image.url,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class OrderProcess(db.Model):
+    __tablename__ = 'order_process'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_order = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order = db.relationship(OrderStatus)
+    id_agent = db.Column(db.Integer, db.ForeignKey('agents.id'))
+    agent = db.relationship(Agents)
+    id_status = db.Column(db.Integer, db.ForeignKey('order_status.id'))
+    status = db.relationship(OrderStatus)
+    message = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_user': self.id_user,
+            'id_image': self.floor_num,
+            'image_url': self.image.url,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class Category(db.Model):
+    __tablename__ = 'category'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_parent = db.Column(db.Integer)
+    level_depth = db.Column(db.Integer)
+    name = db.Column(db.String(20), nullable=False)
+    id_image = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image = db.relationship(Images)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_parent': self.id_parent,
+            'level_depth': self.level_depth,
+            'name': self.name,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class Products(db.Model):
+    __tablename__ = 'products'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(500))
+    id_supplier = db.Column(db.Integer)
+    id_manufacturer = db.Column(db.Integer)
+    id_category = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship(Category)
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.String(8))
+    on_sale = db.Column(db.Boolean)
+    wholesale_price = db.Column(db.DECIMAL)
+    reduction_price = db.Column(db.DECIMAL)
+    reduction_percent = db.Column(db.FLOAT)
+    reduction_from = db.Column(db.DateTime)
+    reduction_to = db.Column(db.DateTime)
+    out_of_stock = db.Column(db.Boolean)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'id_supplier': self.id_supplier,
+            'id_manufacturer': self.id_manufacturer,
+            'id_category': self.id_category,
+            'category': self.category.name,
+            'quantity': self.quantity,
+            'price': self.price,
+            'on_sale': self.on_sale,
+            'wholesale_price': self.wholesale_price,
+            'reduction_price': self.reduction_price,
+            'reduction_percent': self.reduction_percent,
+            'reduction_from': self.reduction_from,
+            'reduction_to': self.reduction_to,
+            'out_of_stock': self.out_of_stock,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class ProductAttribute(db.Model):
+    __tablename__ = 'product_attribute'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_product = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product = db.relationship(Products)
+    attr_name = db.Column(db.String)
+    attr_description = db.Column(db.String)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_product': self.id_product,
+            'product': self.product.name,
+            'attr_name': self.attr_name,
+            'attr_description': self.attr_description,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class ProductImages(db.Model):
+    __tablename__ = 'product_images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_product = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product = db.relationship(Products)
+    id_image = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image = db.relationship(Images)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_product': self.id_product,
+            'product': self.product.name,
+            'id_image': self.id_image,
+            'image_url': self.image.url,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class UserRecentlyViewed(db.Model):
+    __tablename__ = 'use_recently_viewed'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
+    id_product = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product = db.relationship(Products)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_user': self.id_user,
+            'id_product': self.floor_num,
+            'product': self.product.name,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
+        }
+
+
+class Cart(db.Model):
+    __tablename__ = 'cart'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_order = db.Column(db.Integer, db.ForeignKey('orders.id'))
+    order = db.relationship(Orders)
+    id_product = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product = db.relationship(Products)
+    quantity = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
+    date_add = db.Column(db.DateTime, server_default=db.func.now())
+    date_upd = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serialized format
+        return {
+            'id': self.id,
+            'id_order': self.id_order,
+            'id_product': self.id_product,
+            'active': self.active,
+            'date_add': self.date_add,
+            'date_upd': self.date_upd
         }

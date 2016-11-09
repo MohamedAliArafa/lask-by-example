@@ -20,6 +20,7 @@ jsonschema==2.5.1
 Mako==1.0.4
 Markdown==2.6.6
 MarkupSafe==0.23
+mechanize==0.2.5
 numpy==1.11.0
 openpyxl==2.3.5
 pandas==0.18.1

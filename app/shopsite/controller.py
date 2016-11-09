@@ -1,11 +1,46 @@
+import json
+import os
+import mechanize
+
 __author__ = 'fantom'
 from flask import Blueprint, request, render_template, flash, redirect, url_for, Response
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from app import db, login_manager, models
 from flask.ext.api.decorators import set_renderers
 from flask.ext.api.renderers import HTMLRenderer
+from HTMLParser import HTMLParser
+from werkzeug.utils import secure_filename
 
 mod_site = Blueprint('website', __name__)
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+
+class MLStripper(HTMLParser):
+    def error(self, message):
+        pass
+
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.reset()
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)
+
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @login_manager.user_loader
@@ -21,7 +56,7 @@ def load_user(user_id):
 @login_required
 def logout():
     logout_user()
-    return Response('<p>Logged out</p>')
+    return redirect(url_for('website.welcome'))
 
 
 @mod_site.route('/')
@@ -31,7 +66,7 @@ def welcome():
     if current_user.is_authenticated:
         return redirect(url_for('website.get_shop_items', shop_id=int(current_user.id)))
     else:
-        return render_template('shop/Login.html')
+        return render_template('gentelella/production/login.html')
 
 
 @mod_site.route('/signUpShop', methods=['GET', 'POST'])
@@ -53,6 +88,20 @@ def sign_up_shop():
             flash("Shop Added!!")
             return redirect(url_for('website.new_shop_item', shop_id=new_id))
     return render_template('shop/NewShop.html')
+
+
+@mod_site.route('/home')
+# route for GetShopItems function here
+@set_renderers(HTMLRenderer)
+def home():
+    print("current_user: " + str(current_user.id))
+    shop_id = request.args.get('shop_id')
+    print("shop_id: " + str(shop_id))
+    if int(current_user.id) == int(shop_id):
+        shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+        return render_template('gentelella/production/index.html', shop=shop)
+    else:
+        return Response('Not Authorized')
 
 
 @mod_site.route('/GetShopItems')
@@ -89,9 +138,6 @@ def edit_shop(shop_id):
                 shop.shop_address = request.form['shop_address']
             if request.form.get('mobile'):
                 shop.mobile = request.form['mobile']
-            if request.form['image']:
-                image_file = request.form['image']
-                shop.shop_profile_pic = image_file
             if request.form['lon']:
                 longitude = request.form['lon']
                 shop.longitude = longitude
@@ -104,6 +150,45 @@ def edit_shop(shop_id):
             return redirect(url_for('website.get_shop_items', shop_id=shop_id))
         else:
             return render_template('shop/EditShop.html', shop=shop)
+    else:
+        Response("Not Authorised")
+
+
+@mod_site.route('/editMyShop/uploadImage/<int:shop_id>', methods=['GET', 'POST'])
+# route for editMyShop function here
+@set_renderers(HTMLRenderer)
+def edit_shop_image(shop_id):
+    if int(current_user.id) == int(shop_id):
+        shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+        if request.method == 'POST':
+            if request.files['file']:
+                # check if the post request has the file part
+                if 'file' not in request.files:
+                    flash('No file part')
+                file_upload = request.files['file']
+                # if user does not select file, browser also
+                # submit a empty part without filename
+                if file_upload.filename == '':
+                    flash('No selected file')
+                if file_upload and allowed_file(file_upload.filename):
+                    filename = secure_filename(file_upload.filename)
+                    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    browser = mechanize.Browser()
+                    browser.open("http://bubble.zeowls.com/upload.php")
+                    # file uploading
+                    form = browser.form = browser.forms().next()
+                    form.add_file(file_upload, filename=os.path.basename(filename))
+                    send_response = browser.submit()
+                    data = strip_tags(send_response.get_data().replace("\n", "").replace(" ", ""))
+                    obj = json.loads(data)
+                    image_file = obj['image']
+                    shop.shop_profile_pic = image_file
+            db.session.add(shop)
+            db.session.commit()
+            flash("shop Edited!!")
+            return redirect(url_for('website.edit_shop', shop_id=shop_id))
+        else:
+            return render_template('shop/ImageUpload.html', shop=shop)
     else:
         Response("Not Authorised")
 
@@ -220,11 +305,11 @@ def login():
         if user is None:
             # flash('Username or Password is invalid', 'error')
             errors.append("Username or Password is invalid")
-            return render_template('shop/Login.html', errors=errors)
+            return render_template('gentelella/production/login.html', errors=errors)
         else:
             user.authenticated = True
             login_user(user)
             # flash('Logged in successfully')
-            return redirect(request.args.get('next') or url_for('website.get_shop_items', shop_id=user.id))
+            return redirect(request.args.get('next') or url_for('website.home', shop_id=user.id))
     else:
-        return render_template('shop/Login.html')
+        return render_template('gentelella/production/login.html')

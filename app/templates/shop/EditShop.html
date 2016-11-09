@@ -1,10 +1,12 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 <body>
 <h1>
     Edit {{ shop.shop_name }}
+    <a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}">Cancel</a>
 </h1>
 
 <form action="{{url_for('website.edit_shop', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
@@ -28,8 +30,8 @@
     <input type="number" size="11" name="mobile" placeholder="{{ shop.mobile }}">
 
     <p>Image</p>
-
-    <p><input type="text" name="image" placeholder="{{ shop.shop_profile_pic }}">
+    <img src="http://bubble.zeowls.com/uploads/{{shop.shop_profile_pic}}" alt="Mountain View" style="width:304px;height:228px;">
+    <a href="{{url_for('website.edit_shop_image', shop_id=shop.id)}}">Change</a>
 
     <p>Location</p>
 
@@ -46,10 +48,7 @@
         <!--<option value="4">Home Store</option>-->
         <!--</select>-->
         <input type="submit" class="btn btn-primary btn-block btn-large" value="Edit">
-        <a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}">Cancel</a>
 </form>
-
-<iframe src="http://bubble.zeowls.com/upload.php"></iframe>
 
 </body>
 </html>

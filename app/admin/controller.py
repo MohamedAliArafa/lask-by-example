@@ -1,9 +1,44 @@
+import json
+import mechanize as mechanize
+
 __author__ = 'fantom'
 from flask import Blueprint, request, jsonify, render_template
-from app import db, API_KEY, API_KEY_ERROR
+from app import db, API_KEY, API_KEY_ERROR, app
 from app import models
+import os
+from flask import Flask, request, redirect, url_for
+from werkzeug.utils import secure_filename
+from flask.ext.api.decorators import set_renderers
+from flask.ext.api.renderers import HTMLRenderer
+from HTMLParser import HTMLParser
+
+UPLOAD_FOLDER = '/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 mod_admin = Blueprint('admin', __name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+class MLStripper(HTMLParser):
+    def error(self, message):
+        pass
+
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.reset()
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)
+
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 
 @mod_admin.route('/')
@@ -83,4 +118,41 @@ def add_location(shop_id, lon, lat):
         db.session.add(shop)
         db.session.commit()
         return "Location Updated!"
+    return API_KEY_ERROR
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+@mod_admin.route('/uploadImage', methods=['GET', 'POST'])
+@set_renderers(HTMLRenderer)
+def upload_image():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                # flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit a empty part without filename
+            if file.filename == '':
+                # flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                browser = mechanize.Browser()
+                browser.open("http://bubble.zeowls.com/upload.php")
+                # file uploading
+                form = browser.form = browser.forms().next()
+                form.add_file(file, filename=os.path.basename(filename))
+                send_response = browser.submit()
+                data = strip_tags(send_response.get_data().replace("\n", "").replace(" ", ""))
+                print data
+                obj = json.loads(data)
+                return obj['image']
+        return render_template('Admin/ImageUpload.html')
     return API_KEY_ERROR
