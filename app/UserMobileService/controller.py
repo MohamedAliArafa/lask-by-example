@@ -176,6 +176,46 @@ def get_item_json():
     return API_KEY_ERROR
 
 
+@mod_mobile_user.route('/AddItemImage', methods=['GET', 'POST'])
+def add_item_image_json():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            item_id = req_json['item_id']
+            image_url = req_json['image_url']
+            image = models.Images(url=image_url)
+            db.session.add(image)
+            db.session.flush()
+            image_id = image.id
+            print item_id
+            item = db.session.query(models.Products).filter_by(id=item_id)
+            item_image = models.ProductImages(id_product=item.id, id_image=image_id)
+            db.session.add(item_image)
+            db.session.commit()
+            return [i.serialize for i in item]
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
+
+
+@mod_mobile_user.route('/AddItemMainImage', methods=['GET', 'POST'])
+def add_item_main_image_json():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            item_id = req_json['item_id']
+            image_url = req_json['image_url']
+            print item_id
+            item = db.session.query(models.Products).filter_by(id=item_id)
+            item.main_image = image_url
+            db.session.add(item)
+            db.session.commit()
+            return [i.serialize for i in item]
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
+
+
 @mod_mobile_user.route('/GetItemByCategory', methods=['GET', 'POST'])
 def get_item_by_cat_json():
     if request.headers.get('Authorization') == API_KEY:

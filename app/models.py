@@ -336,6 +336,7 @@ class Products(db.Model):
     category = db.relationship(Category)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.String(8))
+    main_image = db.Column(db.String)
     on_sale = db.Column(db.Boolean)
     wholesale_price = db.Column(db.DECIMAL)
     reduction_price = db.Column(db.DECIMAL)
@@ -360,6 +361,7 @@ class Products(db.Model):
             'category': self.category.name,
             'quantity': self.quantity,
             'price': self.price,
+            'main_image': self.main_image,
             'on_sale': self.on_sale,
             'wholesale_price': self.wholesale_price,
             'reduction_price': self.reduction_price,
