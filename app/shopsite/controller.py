@@ -262,6 +262,47 @@ def edit_shop_item(shop_id, item_id):
         return Response("Not Authorised")
 
 
+@mod_site.route('/editItem/<int:item_id>/', methods=['GET', 'POST'])
+@login_required
+# route for editShopItem function here
+@set_renderers(HTMLRenderer)
+def edit_item(item_id):
+    # if int(current_user.id) == int(shop_id):
+    #     shop = db.session.query(models.Shop).filter_by(id=shop_id).one()
+        item = db.session.query(models.Products).filter_by(id=item_id).one()
+        main_cats = db.session.query(models.Category).all()
+        # sub_cat = {}
+        # for cat in main_cats:
+        #     print(cat.name)
+        #     sub_cat[cat.id] = db.session.query(models.SubCategory).filter_by(parentCat=cat.id)
+        if request.method == 'POST':
+            if request.form['name']:
+                item.name = request.form['name']
+            if request.form['description']:
+                item.description = request.form['description']
+            if request.form['quantity']:
+                item.quantity = request.form['quantity']
+            if request.form['price']:
+                item.price = request.form['price']
+            if request.form.get('cat_id'):
+                print('category', request.form.get('cat_id'))
+                item.cat_id = request.form['cat_id']
+            if request.form['image']:
+                image_file = request.form['image']
+                item.image = image_file
+            # item.images = [{"id": 1, "url": "570269c0f2302.png"}, {"id": 2, "url": "570269c0f2302.png"},
+            #                {"id": 3, "url": "570269c0f2302.png"}, {"id": 4, "url": "570269c0f2302.png"},
+            #                {"id": 5, "url": "570269c0f2302.png"}, ]
+            db.session.add(item)
+            db.session.commit()
+            flash("New Item Edited!!")
+            # return redirect(url_for('mobile.get_item_json'))
+        else:
+            return render_template('shop/EditItem.html', item=item, main_cats=main_cats)
+    # else:
+    #     return Response("Not Authorised")
+
+
 @mod_site.route('/deleteShopItem/<int:shop_id>/<int:item_id>/', methods=['GET', 'POST'])
 @login_required
 # route for deleteShopItem function here

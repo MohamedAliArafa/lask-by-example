@@ -24,10 +24,16 @@ print("session init ...")
 # agent_ahmed = session.query(Agents).filter_by(first_name="Ahmed").first()
 # print("Agent " + agent_ahmed.first_name + ": Loaded")
 
-Cooker = session.query(Category).filter_by(id=1).first()
-TV = session.query(Category).filter_by(id=2).first()
-Refrigerators = session.query(Category).filter_by(id=3).first()
-Washing = session.query(Category).filter_by(id=4).first()
+Cooker = Category(name="Cooker")
+TV = Category(name="TV")
+Refrigerators = Category(name="Refrigerators")
+Washing = Category(name="Washing")
+
+session.add(Cooker)
+session.add(TV)
+session.add(Refrigerators)
+session.add(Washing)
+session.commit()
 
 # Menu for UrbanBurger
 Products2 = Products(name="Rose NG8210 Electrical Twin Cooker, Silver",
@@ -202,7 +208,8 @@ Products5 = Products(name="Kiriazi KW 1209 Front Load Washing Machine - 9 Kg, Si
 session.add(Products5)
 session.commit()
 
-Products2 = Products(name="Kiriazi KW 1210 Front Load Washing Machine - 10 Kg, White", description="Washing capacity: 10 Kg. Possibility of spin speed controlling up till 1200 r.p.m. Digital panel with Special design showing washing process, elapsed time to finish the washing cycle, water temperature. Electronic program to show troubles or faults accompanying the washing process. ",
+Products2 = Products(name="Kiriazi KW 1210 Front Load Washing Machine - 10 Kg, White",
+                     description="Washing capacity: 10 Kg. Possibility of spin speed controlling up till 1200 r.p.m. Digital panel with Special design showing washing process, elapsed time to finish the washing cycle, water temperature. Electronic program to show troubles or faults accompanying the washing process. ",
                      price="6.80", category=Washing, quantity=10)
 
 session.add(Products2)
@@ -247,25 +254,29 @@ Products1 = Products(name="UnionAir 43 Inch HD LED Smart TV- M-LD-43UN-SM801-ASD
 session.add(Products1)
 session.commit()
 
-Products2 = Products(name="UnionAir 39 Inch HD LED Smart TV - M-LD-39UN-SM628-EXD", description="Bring high resolution entertainment to your homes with the UnionAir 39inch HD LED Smart TV. One of the most important and conspicuous features of this television include its huge 39inch Edge LED backlit panel that generates fantastic 1366 x 768 pixel resolution images. The TV comes fitted ",
+Products2 = Products(name="UnionAir 39 Inch HD LED Smart TV - M-LD-39UN-SM628-EXD",
+                     description="Bring high resolution entertainment to your homes with the UnionAir 39inch HD LED Smart TV. One of the most important and conspicuous features of this television include its huge 39inch Edge LED backlit panel that generates fantastic 1366 x 768 pixel resolution images. The TV comes fitted ",
                      price="7.95", category=TV, quantity=10)
 
 session.add(Products2)
 session.commit()
 
-Products3 = Products(name="UnionAir 55 Inch Smart FullHD LED TV - M-LD-55UN-SM628-EXD", description="Online Audio& Video: Four smart advantages making your Monitor the home entertainment centre‎:‎ Massive resources view on demand‎;‎ intelligent program memory‎;‎ Real‎-time recommendation‎;‎ Multi‎-screen synchronously broadcast‎.‎Built‎-in Wi‎-Fi: Built‎-in Wi‎-Fi module",
+Products3 = Products(name="UnionAir 55 Inch Smart FullHD LED TV - M-LD-55UN-SM628-EXD",
+                     description="Online Audio& Video: Four smart advantages making your Monitor the home entertainment centre‎:‎ Massive resources view on demand‎;‎ intelligent program memory‎;‎ Real‎-time recommendation‎;‎ Multi‎-screen synchronously broadcast‎.‎Built‎-in Wi‎-Fi: Built‎-in Wi‎-Fi module",
                      price="6.50", category=TV, quantity=10)
 
 session.add(Products3)
 session.commit()
 
-Products4 = Products(name="Philips 32 Inch HD LED TV - 32PHA4100 ", description="Picture/Display: Display: LED HD TV Diagonal screen size: 32 inch / 80 cm Panel resolution: 1366 x 768p Aspect ratio: 16:9 Picture enhancement: Digital Crystal Clear, 100 Hz Perfect Motion Rate Brightness: 200 cd/m² Smart Interaction: Ease of Use: One-stop Home button Firmware ",
+Products4 = Products(name="Philips 32 Inch HD LED TV - 32PHA4100 ",
+                     description="Picture/Display: Display: LED HD TV Diagonal screen size: 32 inch / 80 cm Panel resolution: 1366 x 768p Aspect ratio: 16:9 Picture enhancement: Digital Crystal Clear, 100 Hz Perfect Motion Rate Brightness: 200 cd/m² Smart Interaction: Ease of Use: One-stop Home button Firmware ",
                      price="6.75", category=TV, quantity=10)
 
 session.add(Products4)
 session.commit()
 
-Products2 = Products(name="Samsung 49 Inch Curved Full HD Smart LED TV - 49K6500", description="With the Samsung 49K6500 49inch Curved Full HD Smart LED TV, you can enjoy watching your favorite TV shows or movies with your family. This Samsung LED TV features Auto Depth Enhancer that adds greater depth to the scenes for a more lifelike viewing experience",
+Products2 = Products(name="Samsung 49 Inch Curved Full HD Smart LED TV - 49K6500",
+                     description="With the Samsung 49K6500 49inch Curved Full HD Smart LED TV, you can enjoy watching your favorite TV shows or movies with your family. This Samsung LED TV features Auto Depth Enhancer that adds greater depth to the scenes for a more lifelike viewing experience",
                      price="7.00", category=TV, quantity=10)
 
 session.add(Products2)
