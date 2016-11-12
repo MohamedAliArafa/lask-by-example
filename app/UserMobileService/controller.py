@@ -229,6 +229,14 @@ def get_item_by_cat_json():
     return API_KEY_ERROR
 
 
+@mod_mobile_user.route('/GetAllCategories', methods=['GET', 'POST'])
+def get_all_cat_json():
+    if request.headers.get('Authorization') == API_KEY:
+        cats = db.session.query(models.Category).all()
+        return [i.serialize for i in cats]
+    return API_KEY_ERROR
+
+
 # @mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
 # # Task 1: Create route for newShopItem function here
 # def new_shop_item():

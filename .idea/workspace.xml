@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f615e159-0fe4-4e0d-ad6c-818e176f369a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/UserMobileService/controller.py" afterPath="$PROJECT_DIR$/app/UserMobileService/controller.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models.py" afterPath="$PROJECT_DIR$/app/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="flask-by-example.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,13 +30,13 @@
     <favorites_list name="flask-by-example" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.62009066">
+    <splitter split-orientation="horizontal" split-proportion="0.54531723">
       <split-first>
         <leaf>
           <file leaf-file-name="manage.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/manage.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-2.7692308">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
                   <folding />
                 </state>
@@ -56,7 +56,7 @@
           <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/run.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-2.7692308">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
                   <folding />
                 </state>
@@ -75,11 +75,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="lotsofitems.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="lotsofitems.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/lotsofitems.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-6.923077">
-                  <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.033088237">
+                  <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
                   <folding />
                 </state>
               </provider>
@@ -88,8 +88,8 @@
           <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/__init__.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+                <state vertical-scroll-proportion="-31.153847">
+                  <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
                   <folding>
                     <element signature="e#60#100#0" expanded="true" />
                   </folding>
@@ -97,11 +97,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="controller.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="controller.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/UserMobileService/controller.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.26901668">
-                  <caret line="179" column="18" selection-start-line="179" selection-start-column="18" selection-end-line="179" selection-end-column="18" />
+                <state vertical-scroll-proportion="-3.351852">
+                  <caret line="279" column="65" selection-start-line="279" selection-start-column="60" selection-end-line="279" selection-end-column="65" />
                   <folding />
                 </state>
               </provider>
@@ -110,7 +110,7 @@
           <file leaf-file-name="controller.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/shopsite/controller.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-15.230769">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="323" column="26" selection-start-line="323" selection-start-column="18" selection-end-line="323" selection-end-column="26" />
                   <folding />
                 </state>
@@ -144,8 +144,8 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.43356642">
-                  <caret line="338" column="37" selection-start-line="338" selection-start-column="37" selection-end-line="338" selection-end-column="37" />
+                <state vertical-scroll-proportion="0.8181818">
+                  <caret line="364" column="16" selection-start-line="364" selection-start-column="16" selection-end-line="364" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -276,6 +276,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Hyper" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flask-by-example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hyper" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrations" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flask-by-example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Hyper" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrations" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="versions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -975,16 +1007,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding>
-            <element signature="e#60#100#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -995,23 +1017,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/shopsite/controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.230769">
+        <state vertical-scroll-proportion="0.0">
           <caret line="323" column="26" selection-start-line="323" selection-start-column="18" selection-end-line="323" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lotsofitems.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.923077">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7692308">
+        <state vertical-scroll-proportion="0.0">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
@@ -1019,7 +1033,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7692308">
+        <state vertical-scroll-proportion="0.0">
           <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
           <folding />
         </state>
@@ -1035,10 +1049,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-31.153847">
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="e#60#100#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/UserMobileService/controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.26901668">
-          <caret line="179" column="18" selection-start-line="179" selection-start-column="18" selection-end-line="179" selection-end-column="18" />
+        <state vertical-scroll-proportion="-3.351852">
+          <caret line="279" column="65" selection-start-line="279" selection-start-column="60" selection-end-line="279" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lotsofitems.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.033088237">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
           <folding />
         </state>
       </provider>
