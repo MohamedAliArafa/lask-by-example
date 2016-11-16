@@ -335,7 +335,7 @@ class Products(db.Model):
     id_category = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship(Category)
     quantity = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.String(8))
+    price = db.Column(DOUBLE_PRECISION)
     main_image = db.Column(db.String)
     on_sale = db.Column(db.Boolean)
     wholesale_price = db.Column(db.DECIMAL)

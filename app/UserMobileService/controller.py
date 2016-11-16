@@ -237,6 +237,20 @@ def get_all_cat_json():
     return API_KEY_ERROR
 
 
+@mod_mobile_user.route('/ClearAllProducts', methods=['GET', 'POST'])
+def delete_all_cat_json():
+    if request.headers.get('Authorization') == API_KEY:
+        try:
+            products_deleted = db.session.query(models.Products).delete()
+            cats_deleted = db.session.query(models.Category).delete()
+            db.session.commit()
+            return "No of Products: " + products_deleted + " \nNo of Cat: " + cats_deleted
+        except:
+            db.session.rollback()
+            return "Nothing to delete"
+    return API_KEY_ERROR
+
+
 # @mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
 # # Task 1: Create route for newShopItem function here
 # def new_shop_item():
