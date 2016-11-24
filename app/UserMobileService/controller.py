@@ -1,11 +1,12 @@
+# coding=utf-8
 from flask.ext.login import login_required
-
-__author__ = 'fantom'
 import json
+import pandas
 from flask import Blueprint, request, jsonify, render_template, url_for, Response, flash, send_from_directory, redirect
 from app import db, API_KEY, API_KEY_ERROR, client, APP_ROOT
 from app import models
-import pandas
+
+__author__ = 'fantom'
 
 mod_mobile_user = Blueprint('mobile', __name__)
 
@@ -15,6 +16,8 @@ def date_handler(obj):
     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
+# user related functions
+# 1_user login by @email and @password
 @mod_mobile_user.route('/login', methods=['GET', 'POST'])
 def login():
     if request.headers.get('Authorization') == API_KEY:
@@ -34,6 +37,7 @@ def login():
     return API_KEY_ERROR
 
 
+# facebook login saving details
 @mod_mobile_user.route('/FBlogin', methods=['GET', 'POST'])
 def fb_login():
     birthday = None
@@ -75,33 +79,66 @@ def fb_login():
     return API_KEY_ERROR
 
 
-#
-# @mod_mobile_user.route('/HomePage/JSON')
-# def home_page():
-#     if request.headers.get('Authorization') == API_KEY:
-#         current = 0
-#         out_put = "["
-#         categories = db.session.query(models.SubCategory)
-#         count = categories.count()
-#         print count
-#         for category in categories:
-#             current += 1
-#             if count == current:
-#                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-#                 out_put += jsonify(Category=[i.serialize for i in items[:4]]).get_data(as_text=True)
-#             else:
-#                 items = db.session.query(models.Items).filter_by(cat_id=category.id)
-#                 out_put += jsonify(Category=[i.serialize for i in items[:4]]).get_data(as_text=True)
-#                 out_put += ","
-#             print(current)
-#         out_put += "]"
-#         return out_put
-#         # return jsonify(Category=[i.serialize for i in categories])
-#     return API_KEY_ERROR
+# sign up user by @email and @password
+@mod_mobile_user.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            print(req_json)
+            first_name = req_json['first_name']
+            last_name = req_json['last_name']
+            username = req_json['email']
+            password = req_json['password']
+            # mobile = req_json['mobile']
+            if db.session.query(models.Users).filter_by(email=username):
+                user = db.session.query(models.Users).filter_by(email=username).all()
+                if len(user) > 0:
+                    if user[0].email == username:
+                        # email already exist
+                        return {"response": -2}
+                        # if user[0].mobile == mobile:
+                        #     # mobile already exist
+                        #     return {"response": -3}
+                else:
+                    user = models.Users(first_name=first_name, last_name=last_name, email=username, passwd=password)
+                    try:
+                        db.session.add(user)
+                        db.session.flush()
+                        new_id = user.id
+                        db.session.commit()
+                        # user_added = db.session.query(models.User).filter_by(email=username).all()
+                        return {"response": new_id}
+                    except:
+                        db.session.rollback()
+                        raise
+            else:
+                # error
+                return {"response": -1}
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
 
 
-#
+# register device for push notifications
+@mod_mobile_user.route('/registerDevice', methods=['GET', 'POST'])
+def register_device():
+    if request.headers.get('Authorization') == API_KEY:
+        req_json = request.get_json()
+        user_id = req_json['user_id']
+        device_token = req_json['device_token']
+        user = db.session.query(models.Users).filter_by(id=user_id).one()
+        user.device_token = device_token
+        print(device_token)
+        client.send(device_token, "welcome To HyperTechno")
+        client.send(device_token, "مرحبا بكم في هايبرتكنو")
+        db.session.add(user)
+        db.session.commit()
+        return {"response": device_token}
+    return API_KEY_ERROR
 
+
+# Home page display 4 items from all categories
 @mod_mobile_user.route('/HomePage')
 def home_page():
     if request.headers.get('Authorization') == API_KEY:
@@ -117,6 +154,35 @@ def home_page():
     return API_KEY_ERROR
 
 
+# display item detail by @item_id
+@mod_mobile_user.route('/GetItem', methods=['GET', 'POST'])
+def get_item_json():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            item_id = req_json['item_id']
+            print item_id
+            items = db.session.query(models.Products).filter_by(id=item_id)
+            return [i.serialize for i in items]
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
+
+
+# display items in category by @cat_id
+@mod_mobile_user.route('/GetItemByCategory', methods=['GET', 'POST'])
+def get_item_by_cat_json():
+    if request.headers.get('Authorization') == API_KEY:
+        if request.method == 'POST':
+            req_json = request.get_json()
+            cat_id = req_json['cat_id']
+            items = db.session.query(models.Products).filter_by(id_category=cat_id)
+            return [i.serialize for i in items]
+        else:
+            return {'error': 'POST request is REQUIRED!!'}
+    return API_KEY_ERROR
+
+
 # @mod_mobile_user.route('/GetSubCategoriesById/<int:cat_id>/JSON')
 # def get_sub_categories_by_id(cat_id):
 #     if request.headers.get('Authorization') == API_KEY:
@@ -125,11 +191,21 @@ def home_page():
 #     return API_KEY_ERROR
 
 
+# display category details by id
+# ToDo make it post request and remove the radiant id call
 @mod_mobile_user.route('/GetCategoryById/<int:cat_id>/JSON')
 def get_category_by_id(cat_id):
     if request.headers.get('Authorization') == API_KEY:
         category = db.session.query(models.Category).filter_by(id=cat_id)
         return [i.serialize for i in category]
+    return API_KEY_ERROR
+
+
+@mod_mobile_user.route('/GetAllCategories')
+def get_all_cat_json():
+    if request.headers.get('Authorization') == API_KEY:
+        cats = db.session.query(models.Category).all()
+        return [i.serialize for i in cats]
     return API_KEY_ERROR
 
 
@@ -146,12 +222,12 @@ def get_category_by_id(cat_id):
 #     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/GetProduct/<int:product_id>/JSON')
-def get_shop(product_id):
-    if request.headers.get('Authorization') == API_KEY:
-        shops = db.session.query(models.Products).filter_by(id=product_id)
-        return [i.serialize for i in shops]
-    return API_KEY_ERROR
+# @mod_mobile_user.route('/GetProduct/<int:product_id>/JSON')
+# def get_shop(product_id):
+#     if request.headers.get('Authorization') == API_KEY:
+#         shops = db.session.query(models.Products).filter_by(id=product_id)
+#         return [i.serialize for i in shops]
+#     return API_KEY_ERROR
 
 
 # @mod_mobile_user.route('/GetShopItems/<int:shop_id>/JSON')
@@ -160,21 +236,6 @@ def get_shop(product_id):
 #         items = db.session.query(models.Items).filter_by(shop_id=shop_id)
 #         return [i.serialize for i in items]
 #     return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/GetItem', methods=['GET', 'POST'])
-def get_item_json():
-    if request.headers.get('Authorization') == API_KEY:
-        if request.method == 'POST':
-            req_json = request.get_json()
-            item_id = req_json['item_id']
-            print item_id
-            items = db.session.query(models.Products).filter_by(id=item_id)
-            return [i.serialize for i in items]
-        else:
-            return {'error': 'POST request is REQUIRED!!'}
-    return API_KEY_ERROR
-
 
 @mod_mobile_user.route('/AddItemImage', methods=['GET', 'POST'])
 def add_item_image_json():
@@ -216,39 +277,18 @@ def add_item_main_image_json():
     return API_KEY_ERROR
 
 
-@mod_mobile_user.route('/GetItemByCategory', methods=['GET', 'POST'])
-def get_item_by_cat_json():
-    if request.headers.get('Authorization') == API_KEY:
-        if request.method == 'POST':
-            req_json = request.get_json()
-            cat_id = req_json['cat_id']
-            items = db.session.query(models.Products).filter_by(id_category=cat_id)
-            return [i.serialize for i in items]
-        else:
-            return {'error': 'POST request is REQUIRED!!'}
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/GetAllCategories', methods=['GET', 'POST'])
-def get_all_cat_json():
-    if request.headers.get('Authorization') == API_KEY:
-        cats = db.session.query(models.Category).all()
-        return [i.serialize for i in cats]
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/ClearAllProducts', methods=['GET', 'POST'])
-def delete_all_cat_json():
-    if request.headers.get('Authorization') == API_KEY:
-        try:
-            products_deleted = db.session.query(models.Products).delete()
-            cats_deleted = db.session.query(models.Category).delete()
-            db.session.commit()
-            return "No of Products: " + products_deleted + " \nNo of Cat: " + cats_deleted
-        except:
-            db.session.rollback()
-            return "Nothing to delete"
-    return API_KEY_ERROR
+# @mod_mobile_user.route('/ClearAllProducts', methods=['GET', 'POST'])
+# def delete_all_cat_json():
+#     if request.headers.get('Authorization') == API_KEY:
+#         try:
+#             products_deleted = db.session.query(models.Products).delete()
+#             cats_deleted = db.session.query(models.Category).delete()
+#             db.session.commit()
+#             return "No of Products: " + products_deleted + " \nNo of Cat: " + cats_deleted
+#         except:
+#             db.session.rollback()
+#             return "Nothing to delete"
+#     return API_KEY_ERROR
 
 
 # @mod_mobile_user.route('/newShopItem', methods=['GET', 'POST'])
@@ -333,46 +373,6 @@ def delete_all_cat_json():
 #         return render_template('deleteMenuItem.html', shop=shop, item=item)
 
 
-@mod_mobile_user.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.headers.get('Authorization') == API_KEY:
-        if request.method == 'POST':
-            req_json = request.get_json()
-            print(req_json)
-            first_name = req_json['first_name']
-            last_name = req_json['last_name']
-            username = req_json['email']
-            password = req_json['password']
-            # mobile = req_json['mobile']
-            if db.session.query(models.Users).filter_by(email=username):
-                user = db.session.query(models.Users).filter_by(email=username).all()
-                if len(user) > 0:
-                    if user[0].email == username:
-                        # email already exist
-                        return {"response": -2}
-                        # if user[0].mobile == mobile:
-                        #     # mobile already exist
-                        #     return {"response": -3}
-                else:
-                    user = models.Users(first_name=first_name, last_name=last_name, email=username, passwd=password)
-                    try:
-                        db.session.add(user)
-                        db.session.flush()
-                        new_id = user.id
-                        db.session.commit()
-                        # user_added = db.session.query(models.User).filter_by(email=username).all()
-                        return {"response": new_id}
-                    except:
-                        db.session.rollback()
-                        raise
-            else:
-                # error
-                return {"response": -1}
-        else:
-            return {'error': 'POST request is REQUIRED!!'}
-    return API_KEY_ERROR
-
-
 # @mod_mobile_user.route('/signupShop', methods=['GET', 'POST'])
 # def signup_shop():
 #     if request.headers.get('Authorization') == API_KEY:
@@ -429,8 +429,8 @@ def signup():
 #             return {"response": -2}
 #     return API_KEY_ERROR
 
-# ToDo
 
+# ToDo
 @mod_mobile_user.route('/addToCart/<int:user_id>/<int:item_id>', methods=['GET', 'POST'])
 def add_to_cart(user_id, item_id):
     if request.headers.get('Authorization') == API_KEY:
@@ -473,22 +473,6 @@ def get_user_shop_cart(user_id):
     if request.headers.get('Authorization') == API_KEY:
         cart_items = db.session.query(models.ShoppingCart).filter_by(user_id=user_id).all()
         return [i.serialize for i in cart_items]
-    return API_KEY_ERROR
-
-
-@mod_mobile_user.route('/registerDevice', methods=['GET', 'POST'])
-def register_device():
-    if request.headers.get('Authorization') == API_KEY:
-        req_json = request.get_json()
-        user_id = req_json['user_id']
-        device_token = req_json['device_token']
-        user = db.session.query(models.Users).filter_by(id=user_id).one()
-        user.device_token = device_token
-        print(device_token)
-        # client.send(device_token, "welcome To Bubble!!")
-        db.session.add(user)
-        db.session.commit()
-        return {"response": device_token}
     return API_KEY_ERROR
 
 

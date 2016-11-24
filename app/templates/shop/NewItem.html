@@ -5,10 +5,10 @@
 </head>
 <body>
 <h1>
-    {{ shop.shop_name }} | New Menu Item
+    {{ agent.first_name }} | New Item
 </h1>
 
-<form action="{{url_for('website.new_shop_item', shop_id=shop.id)}}" method="post" enctype=multipart/form-data>
+<form action="{{url_for('website.new_item', agent_id=agent.id)}}" method="post" enctype=multipart/form-data>
 
     <p>Name | الإسم</p>
     <input type="text" required="required" size="30" name="name">
@@ -29,10 +29,7 @@
     <select name="cat_id" required="required">
         <option value="" disabled="disabled" selected="selected">Please select a Category</option>
         {% for main in main_cats %}
-        <option disabled="disabled" value="">{{main.name}}</option>
-        {% for cat in sub_cat[main.id] %}
-        <option value="{{cat.id}}">{{cat.name}}</option>
-        {% endfor %}
+        <option value="{{main.id}}">{{main.name}}</option>
         {% endfor %}
     </select>
 

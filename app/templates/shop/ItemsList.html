@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title> {{ shop.shop_name }} </title>
+    <title> {{ agent.first_name }} </title>
 
     <!-- Bootstrap -->
     <link href="{{url_for('static', filename='vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -42,7 +42,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>{{ shop.shop_name }}</span></a>
+                    <a href="index.html" class="site_title"><i class="fa fa-header"></i> <span>{{ agent.first_name }}
+                     {{ agent.first_name }}</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -50,13 +51,13 @@
                 <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
-                        <img src="http://bubble.zeowls.com/uploads/{{ shop.shop_profile_pic }}" alt="..."
-                             class="img-circle profile_img">
+                        <!--<img src="http://bubble.zeowls.com/uploads/{ shop.shop_profile_pic }}" alt="..."-->
+                             <!--class="img-circle profile_img">-->
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
 
-                        <h2>{{ shop.shop_name }}</h2>
+                        <h2>{{ agent.first_name }}</h2>
                     </div>
                 </div>
                 <!-- /menu profile quick info -->
@@ -73,7 +74,7 @@
         <!-- /page content -->
         <div class="right_col" role="main">
             <!--<h1>-->
-            <!--{{ shop.shop_name }} <a href="{{url_for('website.edit_shop', shop_id=shop.id)}}">Edit Shop</a>-->
+            <!--{ shop.shop_name }} <a href="{url_for('website.edit_shop', shop_id=shop.id)}}">Edit Shop</a>-->
             <!--</h1>-->
 
             <div class="page-title">
@@ -132,6 +133,7 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
+                                <th>image</th>
                                 <th>Edit</th>
                             </tr>
                             </thead>
@@ -153,8 +155,13 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.description}}</td>
                                 <td>{{ item.price }}</td>
+                                <td>
+                                    <img class="control-label col-md-3 col-sm-3 col-xs-12"
+                                             style="width:80px;height:80px;"
+                                             src="http://bubble.zeowls.com/uploads/{{item.main_image}}">
+                                </td>
                                 <td><a class="fa fa-edit" href="{{url_for('website.edit_shop_item',
-                                     shop_id=item.shop_id, item_id=item.id)}}"></a>
+                                     agent_id=agent.id, item_id=item.id)}}"></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -168,7 +175,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                ZeOwls ltd<a href="https://ZeOwls.com">ZeOwls.com</a>
             </div>
             <div class="clearfix"></div>
         </footer>

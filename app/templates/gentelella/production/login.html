@@ -45,10 +45,10 @@
                     <h1>Login Form</h1>
 
                     <div>
-                        <input type="text" class="form-control" name="username" placeholder="Username" required=""/>
+                        <input type="text" class="form-control" name="username" placeholder="Email" required="required"/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required="required"/>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-default submit" value="Log in">
@@ -66,10 +66,9 @@
                         <br/>
 
                         <div>
-                            <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                            <h1><i class="fa fa-header"></i> HyperTechno (ZeOwls System)</h1>
 
-                            <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and
-                                Terms</p>
+                            <p>©2016 All Rights Reserved.</p>
                         </div>
                     </div>
                 </form>
@@ -78,20 +77,25 @@
 
         <div id="register" class="animate form registration_form">
             <section class="login_content">
-                <form action="{{url_for('website.sign_up_shop')}}" method="post" enctype=multipart/form-data>
+                <form action="{{url_for('website.sign_up_agent')}}" method="post" enctype="multipart/form-data">
                     <h1>Create Account</h1>
 
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required=""/>
+                        <input name="first_name" type="text" class="form-control" placeholder="First Name" required="required"/>
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" required=""/>
+                        <input name="last_name" type="text" class="form-control" placeholder="Last Name" required="required"/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required=""/>
+                        <input name="email" type="email" class="form-control" placeholder="Email" required="required"/>
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">Submit</a>
+                        <input name="passwd" type="password" class="form-control" placeholder="Password" required="required"/>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="submit" class="btn btn-default submit" value="Submit">
+                        </label>
                     </div>
 
                     <div class="clearfix"></div>
@@ -105,7 +109,7 @@
                         <br/>
 
                         <div>
-                            <h1><i class="fa fa-paw"></i>HyperTechno!</h1>
+                            <h1><i class="fa fa-header"></i>HyperTechno!</h1>
 
                             <p>©2016 All Rights Reserved. ZeOwls ltd</p>
                         </div>

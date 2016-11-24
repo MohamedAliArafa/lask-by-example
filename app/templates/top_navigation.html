@@ -10,11 +10,11 @@
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                        aria-expanded="false">
-                        <img src="http://bubble.zeowls.com/uploads/{{shop.shop_profile_pic}}" alt="">{{shop.shop_name}}
+                        <!--<img src="http://bubble.zeowls.com/uploads/{{agent.profile_pic}}" alt="">{{agent.first_name}}-->
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="{{url_for('website.edit_shop', shop_id=shop.id)}}"> Edit</a></li>
+                        <li><a href="{{url_for('website.edit_agent', agent_id=agent.id)}}"> Edit</a></li>
                         <li>
                             <a href="javascript:;">
                                 <span class="badge bg-red pull-right">50%</span>

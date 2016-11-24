@@ -3,7 +3,7 @@
     <div class="menu_section">
         <h3>General</h3>
         <ul class="nav side-menu">
-            <li><a href="{{url_for('website.home', shop_id=shop.id)}}"><i class="fa fa-home"></i> Home </a>
+            <li><a href="{{url_for('website.home', agent_id=agent.id)}}"><i class="fa fa-home"></i> Home </a>
                 <!--<ul class="nav child_menu">-->
                     <!--<li><a href="index.html">Dashboard</a></li>-->
                     <!--<li><a href="index2.html">Dashboard2</a></li>-->
@@ -12,7 +12,7 @@
             </li>
             <li><a><i class="fa fa-edit"></i> Add New <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{url_for('website.new_shop_item', shop_id=shop.id)}}">Item</a></li>
+                    <li><a href="{{url_for('website.new_item', agent_id=agent.id)}}">Item</a></li>
                     <li><a href="#">Category</a></li>
                     <li><a href="#">Agent</a></li>
                     <!--<li><a href="form_wizards.html">Form Wizard</a></li>-->
@@ -36,7 +36,7 @@
             <!--</li>-->
             <li><a><i class="fa fa-table"></i> Edit/View <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{url_for('website.get_shop_items', shop_id=shop.id)}}">Item</a></li>
+                    <li><a href="{{url_for('website.get_items', agent_id=agent.id)}}">Item</a></li>
                     <li><a href="#">Category</a></li>
                     <li><a href="#">Agent</a></li>
                 </ul>

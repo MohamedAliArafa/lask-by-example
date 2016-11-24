@@ -67,6 +67,18 @@ class Agents(db.Model):
         return self.active
 
     @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
     def serialize(self):
         return {
             'id': self.id,
@@ -242,6 +254,8 @@ class Orders(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
+    id_cart = db.Column(db.Integer, db.ForeignKey('cart.id'))
+    cart = db.relationship(OrderStatus)
     id_current_state = db.Column(db.Integer, db.ForeignKey('order_status.id'))
     status = db.relationship(OrderStatus)
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -459,8 +473,8 @@ class Cart(db.Model):
     __tablename__ = 'cart'
 
     id = db.Column(db.Integer, primary_key=True)
-    id_order = db.Column(db.Integer, db.ForeignKey('orders.id'))
-    order = db.relationship(Orders)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(Users)
     id_product = db.Column(db.Integer, db.ForeignKey('products.id'))
     product = db.relationship(Products)
     quantity = db.Column(db.Integer)
@@ -473,7 +487,7 @@ class Cart(db.Model):
         # Returns object data in easily serialized format
         return {
             'id': self.id,
-            'id_order': self.id_order,
+            'id_order': self.id_user,
             'id_product': self.id_product,
             'active': self.active,
             'date_add': self.date_add,

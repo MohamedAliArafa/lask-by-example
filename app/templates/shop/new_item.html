@@ -47,7 +47,7 @@
                 <div class="profile">
                     <div class="profile_pic">
                         <!--<img src="http://bubble.zeowls.com/uploads/{ shop.shop_profile_pic }}" alt="..."-->
-                        <!--class="img-circle profile_img">-->
+                             <!--class="img-circle profile_img">-->
                     </div>
                     <div class="profile_info">
                         <span>Welcome,</span>
@@ -72,7 +72,7 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>Edit " {{item.name}} "</h3>
+                        <h3>New Product</h3>
                     </div>
 
                     <div class="title_right">
@@ -91,9 +91,6 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h3>{{item.name}}
-                                    <small>{{item.description}}</small>
-                                </h3>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -115,7 +112,7 @@
                             <div class="x_content">
                                 <br/>
 
-                                <form action="{{url_for('website.edit_shop_item', agent_id=agent.id, item_id=item.id)}}"
+                                <form action="{{url_for('website.new_item', agent_id=agent.id)}}"
                                       method="post" enctype=multipart/form-data class="form-horizontal form-label-left">
 
                                     <div class="form-group">
@@ -123,7 +120,8 @@
 
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id="name" name="name"
-                                                   class="form-control col-md-7 col-xs-12" placeholder="{{item.name}}">
+                                                   class="form-control col-md-7 col-xs-12" placeholder=
+                                                           "Rose NG8210 Electrical Twin Cooker">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -133,7 +131,8 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" id="description" name="description"
                                                    class="form-control col-md-7 col-xs-12"
-                                                   placeholder="{{item.description}}">
+                                                   placeholder="Electric Double Burner Color: Silver 2 Switches to
+                                                    Control Each Burner’s Temperature Power">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -142,7 +141,7 @@
 
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="price" name="price" class="form-control col-md-7 col-xs-12"
-                                                   type="text" placeholder="{{item.price}}">
+                                                   type="text" placeholder="1356.95">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -151,34 +150,30 @@
 
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input id="quantity" name="quantity" class="form-control col-md-7 col-xs-12"
-                                                   type="text" placeholder="{{item.quantity}}">
+                                                   type="text" placeholder="10">
                                         </div>
                                     </div>
 
                                     <!--<div class="form-group">-->
-                                    <!--<img class="col-md-6 col-sm-6 col-xs-12"-->
-                                    <!--src="http://bubble.zeowls.com/uploads/{shop.shop_profile_pic}}">-->
-                                    <!--<a class="btn btn-primary"-->
-                                    <!--href="{url_for('website.edit_shop_image', shop_id=shop.id)}}">Change</a>-->
+                                        <!--<img class="col-md-6 col-sm-6 col-xs-12"-->
+                                             <!--src="http://bubble.zeowls.com/uploads/{shop.shop_profile_pic}}">-->
+                                        <!--<a class="btn btn-primary"-->
+                                           <!--href="{url_for('website.edit_shop_image', shop_id=shop.id)}}">Change</a>-->
                                     <!--</div>-->
-                                    <div class="form-group">
-                                        <img class="control-label col-md-3 col-sm-3 col-xs-12"
-                                             style="width:128px;height:128px;"
-                                             src="http://bubble.zeowls.com/uploads/{{item.main_image}}">
-
-                                    </div>
-                                    <div class="form-group">
-                                        <a class="btn btn-primary"
-                                           href="{{url_for('website.edit_item_image', agent_id=agent.id, item_id=item.id)}}">Change</a>
-                                    </div>
                                     <!--<div class="form-group">-->
-                                    <!--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price-->
-                                    <!--</label>-->
-
-                                    <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                                    <!--<input id="image" name="image" class="form-control col-md-7 col-xs-12"-->
-                                    <!--type="text" placeholder="{{item.image}}">-->
+                                        <!--<img class="col-md-6 col-sm-6 col-xs-12"-->
+                                             <!--src="http://bubble.zeowls.com/uploads/{item.main_image}}">-->
+                                        <!--<a class="btn btn-primary"-->
+                                           <!--href="{url_for('website.edit_item_image', agent_id=agent.id, item_id=item.id)}}">Change</a>-->
                                     <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Price-->
+                                        <!--</label>-->
+
+                                        <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+                                            <!--<input id="image" name="image" class="form-control col-md-7 col-xs-12"-->
+                                                   <!--type="text" placeholder="{item.image}}">-->
+                                        <!--</div>-->
                                     <!--</div>-->
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">
@@ -190,14 +185,7 @@
                                                     id="category" name="cat_id">
                                                 {% for main in main_cats %}
                                                 <optgroup label="{{main.name}}">
-                                                    <!--{ for cat in sub_cat[main.id] %}-->
-                                                    {% if main.id == item.cat_id %}
-                                                    <option selected="selected" value="{{main.id}}">{{main.name}}
-                                                    </option>
-                                                    {% else %}
                                                     <option value="{{main.id}}">{{main.name}}</option>
-                                                    {% endif %}
-                                                    <!--{ endfor %}-->
                                                 </optgroup>
                                                 {% endfor %}
                                             </select>
@@ -206,8 +194,7 @@
                                     <div class="ln_solid"></div>
                                     <div class="form-group">
                                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                            <a href="{{url_for('website.get_items', agent_id=agent.id)}}"
-                                               class="btn btn-primary">Cancel</a>
+                                            <a href="{{url_for('website.get_items', agent_id=agent.id)}}" class="btn btn-primary">Cancel</a>
                                             <button type="submit" class="btn btn-success">Submit</button>
                                         </div>
                                     </div>
