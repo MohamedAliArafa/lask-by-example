@@ -86,7 +86,7 @@ def sign_up_agent():
             new_id = new_agent.id
             db.session.commit()
             print("Agent " + new_agent.first_name)
-            return redirect(url_for('website.home', shop_id=new_id))
+            return redirect(url_for('website.home', agent_id=new_id))
     return render_template('gentelella/production/login.html')
 
 
