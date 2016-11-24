@@ -191,7 +191,7 @@
                                                 {% for main in main_cats %}
                                                 <optgroup label="{{main.name}}">
                                                     <!--{ for cat in sub_cat[main.id] %}-->
-                                                    {% if main.id == item.cat_id %}
+                                                    {% if main.id == item.id_category %}
                                                     <option selected="selected" value="{{main.id}}">{{main.name}}
                                                     </option>
                                                     {% else %}
